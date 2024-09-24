@@ -12,6 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cookbook.login.LoginScreen
 import com.example.cookbook.onboarding.Onboarding1Screen
+import com.example.cookbook.onboarding.SecondOnboardingScreen
+import com.example.cookbook.onboarding.ThirdOnboardingView
+import com.example.cookbook.onboarding.navigation.MyAppNavigationView
 import com.example.cookbook.ui.theme.CookBookTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Onboarding1Screen()
+                    MyAppNavigationView()
                 }
             }
         }
