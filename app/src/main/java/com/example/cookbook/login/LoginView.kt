@@ -1,5 +1,6 @@
 package com.example.cookbook.login
 
+import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -29,7 +30,7 @@ fun LoginScreen() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Back Button
@@ -88,6 +89,17 @@ fun LoginScreen() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        // Forgot your password Text
+        Text(
+            text = "Forgot your password?",
+            fontSize = 17.sp,
+            color = Color(0xFFFFA500),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         // Login Button
         Button(
             onClick = {  },
@@ -95,25 +107,14 @@ fun LoginScreen() {
                 .shadow(10.dp)
                 .fillMaxWidth()
                 .height(50.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFA500)) // Orange color
+            border = BorderStroke(1.dp,Color.White),
+            shape = RoundedCornerShape(30.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Login", fontSize = 18.sp, color = Color.White)
+            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Forgot your password Text
-        Text(
-            text = "Forgot your password?",
-            fontSize = 17.sp,
-            color = Color(0x00000000),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-        )
-
         Spacer(modifier = Modifier.height(50.dp))
-
     }
 }
 

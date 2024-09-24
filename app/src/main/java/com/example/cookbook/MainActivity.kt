@@ -25,7 +25,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Onboarding1Screen()
+                    //Onboarding1Screen()
+                    LoginScreen()
                 }
             }
         }
