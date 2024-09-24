@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.cookbook.login.LoginScreen
+import com.example.cookbook.onboarding.Onboarding1Screen
+import com.example.cookbook.signup.SignUpScreen
 import com.example.cookbook.ui.theme.CookBookTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Onboarding1Screen()
                 }
             }
         }
