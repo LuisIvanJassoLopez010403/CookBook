@@ -56,7 +56,7 @@ fun SignupScreen() {
 
         // Title Text
         Text(
-            text = "Login",
+            text = "Sign up",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -68,7 +68,7 @@ fun SignupScreen() {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text(text = "Username:") },
+            label = { Text(text = "Email:") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -96,7 +96,7 @@ fun SignupScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         // Username Input
         var confirm by remember { mutableStateOf(TextFieldValue("")) }
@@ -123,7 +123,7 @@ fun SignupScreen() {
             Text(text = "Login", fontSize = 18.sp, color = Color.White)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
 
 
