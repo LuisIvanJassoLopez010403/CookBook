@@ -43,6 +43,7 @@ fun LoginScreen() {
 
         Spacer(modifier = Modifier.height(70.dp))
 
+        //Image Logo
         Image(
             painter = painterResource(id = R.drawable.cookbooklogo3),
             contentDescription = "Cookbook Logo",
