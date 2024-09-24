@@ -14,7 +14,7 @@ import com.example.cookbook.login.LoginScreen
 import com.example.cookbook.onboarding.Onboarding1Screen
 import com.example.cookbook.signup.SignUpScreen
 import com.example.cookbook.ui.theme.CookBookTheme
-
+//Clase principal
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
