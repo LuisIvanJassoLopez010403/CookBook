@@ -33,22 +33,21 @@ class Onboarding1Activity : ComponentActivity() {
 @Composable
 fun Onboarding1Screen() {
     Column(
+        Modifier.background(Color(0xFFF6F6F6)),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
-        // Image at the top
         Image(
-            painter = painterResource(id = R.drawable.aonboarding),
+            painter = painterResource(id = R.drawable.aaonboarding),
             contentDescription = "Descripción de la imagen",
             modifier = Modifier
                 .fillMaxWidth()
                 .size(300.dp),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillBounds
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
-        // Progress Indicator
         Row(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -61,28 +60,26 @@ fun Onboarding1Screen() {
             Box(modifier = Modifier.size(12.dp, 12.dp).background(Color.Gray, RoundedCornerShape(6.dp)))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
-        // Subtitle
         Text(
             text = "Share & Find Recipes",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFFFF9800) // Orange color
+            color = Color(0xFFFF9800),
+            modifier = Modifier.shadow(17.dp)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
-        // Description Text
         Text(
             text = "Share your recipes with the world or find your next favorite meal by exploring other users’ profiles.",
             fontSize = 14.sp,
             color = Color.Black
         )
 
-        Spacer(modifier = Modifier.weight(1f)) // Spacer to push buttons to the bottom
+        Spacer(modifier = Modifier.height(40.dp))
 
-        // Buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -94,9 +91,11 @@ fun Onboarding1Screen() {
                 Text(text = "Skip", color = Color.White)
             }
 
+            Spacer(modifier = Modifier.width(200.dp))
+
             Button(
                 onClick = { /* Handle Next logic */ },
-                colors = ButtonDefaults.buttonColors(Color(0xFFFFA500)) // Orange color
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFA500))
             ) {
                 Text(text = "Next", fontWeight = FontWeight.Bold, color = Color.White)
             }
