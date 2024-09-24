@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import com.example.cookbook.R
 class SignUpActivity : ComponentActivity() {
+    // Comentario
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
