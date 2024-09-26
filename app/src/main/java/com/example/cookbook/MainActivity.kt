@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.cookbook.login.LoginScreen
 import com.example.cookbook.onboarding.Onboarding1Screen
 import com.example.cookbook.signup.SignUpScreen
+import com.example.cookbook.title.TitleScreen
 import com.example.cookbook.ui.theme.CookBookTheme
 //Clase principal
 class MainActivity : ComponentActivity() {
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Onboarding1Screen()
-                    LoginScreen()
+                    TitleScreen()
                 }
             }
         }
