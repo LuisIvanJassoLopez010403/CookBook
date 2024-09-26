@@ -91,10 +91,13 @@ fun SecondOnboardingScreen(navController: NavController) {
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .padding(bottom = 70.dp)
         ) {
             TextButton(
                 onClick = { /* Handle Skip logic */ }

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -70,7 +71,7 @@ fun Onboarding1Screen(navController: NavController) {
         Spacer(modifier = Modifier.height(45.dp))
 
         Text(
-            text = "Share & Find Recipes",
+            text = stringResource(id = R.string.ShareandFindRecipes),
             fontSize = 35.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFFF9800),
@@ -94,16 +95,18 @@ fun Onboarding1Screen(navController: NavController) {
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
 
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .padding(bottom = 70.dp)
         ) {
             TextButton(
                 onClick = { /* Handle Skip logic */ }
             ) {
                 Text(
-                    text = "Skip",
+                    text = stringResource(id = R.string.Skip),
                     color = Color.Gray,
                     fontSize = 23.sp
                 )
@@ -115,7 +118,7 @@ fun Onboarding1Screen(navController: NavController) {
                 onClick = { navController.navigate("SecondOnboardingScreen") }
             ) {
                 Text(
-                    text = "Next",
+                    text = stringResource(id = R.string.Skip),
                     fontWeight = FontWeight.Bold,
                     fontSize = 23.sp,
                     color = Color(0xFFFFA500)
