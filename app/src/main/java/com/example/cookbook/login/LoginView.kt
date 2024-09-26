@@ -98,14 +98,15 @@ fun LoginView() {
                 .align(Alignment.CenterHorizontally)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(35.dp))
 
         // Login Button
         Button(
             onClick = {  },
             modifier = Modifier
                 .shadow(10.dp)
-                .fillMaxWidth()
+                .widthIn(min = 200.dp, max = 300.dp)
+                .align(Alignment.CenterHorizontally)
                 .height(50.dp),
             border = BorderStroke(1.dp,Color.White),
             shape = RoundedCornerShape(30.dp),
