@@ -1,10 +1,10 @@
 package com.example.cookbook.signup
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import com.example.cookbook.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -21,118 +21,125 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
-import com.example.cookbook.R
-class SignUpActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            SignUpScreen()
-        }
-    }
-}
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 
 @Composable
-fun SignUpScreen() {
+fun SignupScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .fillMaxWidth()
+            .padding(10.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Back Button
         Text(
-            text = "Back",
+            text = "< Back",
             fontSize = 18.sp,
-            color = Color(0xFFFFA500), // Orange color for the "Back" text
+            color = Color(0xFFFFA500),
             modifier = Modifier
                 .align(Alignment.Start)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(70.dp))
 
-        // Image with logo
+        //Image Logo
         Image(
-            painter = painterResource(id = R.drawable.aonboarding), // Your image
+            painter = painterResource(id = R.drawable.cookbooklogo3),
             contentDescription = "Cookbook Logo",
-            modifier = Modifier.size(150.dp),
-            contentScale = ContentScale.Fit
+            modifier = Modifier
+                .size(250.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
-        // Title Text
+// Title Text
         Text(
-            text = "Sign Up",
+            text = "Sign up",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
 
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Email Input
+
+// Email Input
         var email by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text(text = "Email") },
+            label = { Text(text = "Email:") },
             modifier = Modifier.fillMaxWidth()
         )
 
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Username Input
+
+// Username Input
         var username by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text(text = "Username") },
+            label = { Text(text = "Username:") },
             modifier = Modifier.fillMaxWidth()
         )
 
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Password Input
+
+// Password Input
         var password by remember { mutableStateOf(TextFieldValue("")) }
         var passwordVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(text = "Password") },
+            label = { Text(text = "Password:") },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
 
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
-        var confirmPasswordVisible by remember { mutableStateOf(false) }
+
+// Username Input
+        var confirm by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            label = { Text(text = "Confirm Password") },
-            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            value = confirm,
+            onValueChange = { confirm = it },
+            label = { Text(text = "Confirm Password:") },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // Sign Up Button
+        Spacer(modifier = Modifier.height(32.dp))
+
+
+        // Sign up Button
         Button(
-            onClick = { /* Handle sign up logic */ },
+            onClick = {  },
             modifier = Modifier
+                .shadow(10.dp)
                 .fillMaxWidth()
                 .height(50.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFA500)) // Orange color
+            border = BorderStroke(1.dp,Color.White),
+            shape = RoundedCornerShape(30.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Sign Up", fontSize = 18.sp, color = Color.White)
+            Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
+
+        Spacer(modifier = Modifier.height(50.dp))
     }
 }
-
 @Preview(showBackground = true)
 @Composable
-fun PreviewSignUpScreen() {
-    SignUpScreen()
+fun PreviewSignupScreen() {
+    SignupScreen()
 }
