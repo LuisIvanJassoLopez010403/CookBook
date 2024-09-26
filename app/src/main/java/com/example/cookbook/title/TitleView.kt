@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cookbook.R
 
 @Composable
-fun TitleScreen() {
+fun TitleView() {
     Column(
         modifier = Modifier
             .fillMaxWidth()

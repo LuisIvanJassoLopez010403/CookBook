@@ -27,17 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cookbook.R
 
-//class Onboarding1Activity : ComponentActivity() {
-  //  override fun onCreate(savedInstanceState: Bundle?) {
-  //      super.onCreate(savedInstanceState)
-  //      setContent {
-  //          Onboarding1Screen()
-  //      }
-  //  }
-//}
-
 @Composable
-fun Onboarding1Screen(navController: NavController) {
+fun FirstOnboardingView(navController: NavController) {
     val offset = Offset(5.0f, 10.0f)
 
     Column(

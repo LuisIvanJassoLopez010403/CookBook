@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 
 @Composable
-fun LoginScreen() {
+fun LoginView() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -116,10 +116,4 @@ fun LoginScreen() {
 
         Spacer(modifier = Modifier.height(50.dp))
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginScreen() {
-    LoginScreen()
 }
