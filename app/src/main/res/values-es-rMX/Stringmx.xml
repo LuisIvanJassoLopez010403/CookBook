@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CookBook</string>
+    //First Onboarding View
+    <string name="ShareandFindRecipes">Comparte y Encuentra Recetas</string>
+    <string name="Skip">Saltar</string>
+</resources>

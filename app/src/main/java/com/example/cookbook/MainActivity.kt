@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cookbook.login.LoginScreen
 import com.example.cookbook.onboarding.Onboarding1Screen
-import com.example.cookbook.signup.SignUpScreen
+import com.example.cookbook.onboarding.SecondOnboardingScreen
+import com.example.cookbook.onboarding.ThirdOnboardingView
+import com.example.cookbook.onboarding.navigation.MyAppNavigationView
 import com.example.cookbook.ui.theme.CookBookTheme
 //Clase principal
 class MainActivity : ComponentActivity() {
@@ -20,12 +22,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CookBookTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Onboarding1Screen()
+                    MyAppNavigationView()
                 }
             }
         }
