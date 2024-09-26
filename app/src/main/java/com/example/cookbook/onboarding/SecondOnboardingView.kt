@@ -1,24 +1,28 @@
 package com.example.cookbook.onboarding
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,17 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cookbook.R
 
-//class Onboarding1Activity : ComponentActivity() {
-  //  override fun onCreate(savedInstanceState: Bundle?) {
-  //      super.onCreate(savedInstanceState)
-  //      setContent {
-  //          Onboarding1Screen()
-  //      }
-  //  }
-//}
-
 @Composable
-fun Onboarding1Screen(navController: NavController) {
+fun SecondOnboardingScreen(navController: NavController) {
     val offset = Offset(5.0f, 10.0f)
 
     Column(
@@ -46,7 +41,7 @@ fun Onboarding1Screen(navController: NavController) {
         verticalArrangement = Arrangement.Top
     ) {
         Image(
-            painter = painterResource(id = R.drawable.aaonboarding),
+            painter = painterResource(id = R.drawable.secondonboardingimage),
             contentDescription = "Descripción de la imagen",
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,9 +56,9 @@ fun Onboarding1Screen(navController: NavController) {
                 .align(Alignment.CenterHorizontally)
                 .shadow(10.dp)
         ) {
-            Box(modifier = Modifier.size(22.dp, 12.dp).background(Color(0xFFFF9800), RoundedCornerShape(6.dp)))
-            Spacer(modifier = Modifier.width(6.dp))
             Box(modifier = Modifier.size(12.dp, 12.dp).background(Color.Gray, RoundedCornerShape(6.dp)))
+            Spacer(modifier = Modifier.width(6.dp))
+            Box(modifier = Modifier.size(22.dp, 12.dp).background(Color(0xFFFF9800), RoundedCornerShape(6.dp)))
             Spacer(modifier = Modifier.width(6.dp))
             Box(modifier = Modifier.size(12.dp, 12.dp).background(Color.Gray, RoundedCornerShape(6.dp)))
         }
@@ -71,7 +66,7 @@ fun Onboarding1Screen(navController: NavController) {
         Spacer(modifier = Modifier.height(45.dp))
 
         Text(
-            text = stringResource(id = R.string.ShareandFindRecipes),
+            text = "Explore Options",
             fontSize = 35.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFFF9800),
@@ -86,15 +81,17 @@ fun Onboarding1Screen(navController: NavController) {
         Spacer(modifier = Modifier.height(35.dp))
 
         Text(
-            text = "Share your recipes with the\n" +
-                    "world or find your next\n" +
-                    "favorite meal by exploring\n" +
-                    "other users’ profiles.",
+            text = "Explore different recipes\n" +
+                    "made it easier by filtering\n" +
+                    "based on ingredients,\n" +
+                    "preparation time, or preferred\n" +
+                    "type of cuisine.",
             fontSize = 20.sp,
             color = Color.Black,
             textAlign = TextAlign.Center
         )
 
+        Spacer(modifier = Modifier.weight(1f))
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -106,7 +103,7 @@ fun Onboarding1Screen(navController: NavController) {
                 onClick = { /* Handle Skip logic */ }
             ) {
                 Text(
-                    text = stringResource(id = R.string.Skip),
+                    text = "Skip",
                     color = Color.Gray,
                     fontSize = 23.sp
                 )
@@ -115,10 +112,10 @@ fun Onboarding1Screen(navController: NavController) {
             Spacer(modifier = Modifier.padding(100.dp))
 
             TextButton(
-                onClick = { navController.navigate("SecondOnboardingScreen") }
+                onClick = { navController.navigate("ThirdOnboardingView") }
             ) {
                 Text(
-                    text = stringResource(id = R.string.Skip),
+                    text = "Next",
                     fontWeight = FontWeight.Bold,
                     fontSize = 23.sp,
                     color = Color(0xFFFFA500)
