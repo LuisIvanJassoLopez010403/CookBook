@@ -1,5 +1,6 @@
 package com.example.cookbook.signup
 
+import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -29,7 +30,7 @@ fun SignupScreen() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Back Button
@@ -43,6 +44,7 @@ fun SignupScreen() {
 
         Spacer(modifier = Modifier.height(70.dp))
 
+        //Image Logo
         Image(
             painter = painterResource(id = R.drawable.cookbooklogo3),
             contentDescription = "Cookbook Logo",
@@ -54,16 +56,18 @@ fun SignupScreen() {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Title Text
+// Title Text
         Text(
             text = "Sign up",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
 
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Email Input
+
+// Email Input
         var email by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = email,
@@ -72,9 +76,11 @@ fun SignupScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Username Input
+
+// Username Input
         var username by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = username,
@@ -83,9 +89,11 @@ fun SignupScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Password Input
+
+// Password Input
         var password by remember { mutableStateOf(TextFieldValue("")) }
         var passwordVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
@@ -96,9 +104,11 @@ fun SignupScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
+
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Username Input
+
+// Username Input
         var confirm by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = confirm,
@@ -107,29 +117,27 @@ fun SignupScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(32.dp))
 
 
-        // Login Button
+        // Sign up Button
         Button(
             onClick = {  },
             modifier = Modifier
                 .shadow(10.dp)
                 .fillMaxWidth()
                 .height(50.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFA500)) // Orange color
+            border = BorderStroke(1.dp,Color.White),
+            shape = RoundedCornerShape(30.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Login", fontSize = 18.sp, color = Color.White)
+            Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-
+        Spacer(modifier = Modifier.height(50.dp))
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignupScreen() {
