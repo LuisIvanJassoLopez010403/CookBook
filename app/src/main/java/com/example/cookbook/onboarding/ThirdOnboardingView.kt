@@ -95,7 +95,7 @@ fun ThirdOnboardingView(navController: NavController){
         Spacer(modifier = Modifier.height(50.dp))
 
         Button(
-            onClick = {  },
+            onClick = { navController.navigate("TitleView") },
             modifier = Modifier
                 .shadow(10.dp)
                 .height(50.dp)
