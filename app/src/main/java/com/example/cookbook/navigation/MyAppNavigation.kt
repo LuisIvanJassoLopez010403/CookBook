@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.onboarding.FirstOnboardingView
 import com.example.cookbook.onboarding.SecondOnboardingScreen
 import com.example.cookbook.onboarding.ThirdOnboardingView
+import com.example.cookbook.title.TitleView
 
 
 @Composable
@@ -23,6 +24,9 @@ fun MyAppNavigationView() {
             }
             composable(Routes.ThirdOnboardingView) {
                 ThirdOnboardingView(navController)
+            }
+            composable(Routes.TitleView) {
+                TitleView(navController)
             }
         })
 }
