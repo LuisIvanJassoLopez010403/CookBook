@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.onboarding.FirstOnboardingView
-import com.example.cookbook.onboarding.SecondOnboardingScreen
+import com.example.cookbook.onboarding.SecondOnboardingView
 import com.example.cookbook.onboarding.ThirdOnboardingView
 import com.example.cookbook.title.TitleView
 
@@ -17,13 +17,13 @@ fun MyAppNavigationView() {
     NavHost(navController = navController,
         startDestination = Routes.FirstOnboardingView, builder = {
             composable(Routes.FirstOnboardingView) {
-                FirstOnboardingView(navController)
+                FirstOnboardingView()
             }
             composable(Routes.SecondOnboardingView) {
-                SecondOnboardingScreen(navController)
+                SecondOnboardingView()
             }
             composable(Routes.ThirdOnboardingView) {
-                ThirdOnboardingView(navController)
+                ThirdOnboardingView()
             }
             composable(Routes.TitleView) {
                 TitleView(navController)
