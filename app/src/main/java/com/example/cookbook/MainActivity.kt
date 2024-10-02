@@ -14,6 +14,8 @@ import com.example.cookbook.navigation.MyAppNavigationView
 import com.example.cookbook.onboarding.FirstOnboardingView
 import com.example.cookbook.onboarding.OnboardingView
 import com.example.cookbook.ui.theme.CookBookTheme
+
+
 //Clase principal
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    OnboardingView()
+                    MyAppNavigationView()
                 }
             }
         }

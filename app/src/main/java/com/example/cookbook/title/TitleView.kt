@@ -24,10 +24,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.cookbook.R
 
 @Composable
-fun TitleView() {
+fun TitleView(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,12 +40,12 @@ fun TitleView() {
             painter = painterResource(id = R.drawable.cookbooklogo3),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
-                .size(250.dp)
+                .size(350.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Button(
             onClick = {  },
@@ -59,7 +60,7 @@ fun TitleView() {
             Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Button(
             onClick = {  },
@@ -67,11 +68,11 @@ fun TitleView() {
                 .shadow(10.dp)
                 .fillMaxWidth()
                 .height(50.dp),
-            border = BorderStroke(1.dp, Color.White),
+            border = BorderStroke(1.dp, color = Color(0xFFFFA500)),
             shape = RoundedCornerShape(30.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFA500))
         ) {
-            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFFFFF))
         }
     }
 }
