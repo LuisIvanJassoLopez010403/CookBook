@@ -126,7 +126,8 @@ fun SignupScreen() {
             onClick = {  },
             modifier = Modifier
                 .shadow(10.dp)
-                .fillMaxWidth()
+                .widthIn(min = 200.dp, max = 300.dp)
+                .align(Alignment.CenterHorizontally)
                 .height(50.dp),
             border = BorderStroke(1.dp,Color.White),
             shape = RoundedCornerShape(30.dp),
