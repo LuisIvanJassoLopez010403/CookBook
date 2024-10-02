@@ -15,7 +15,6 @@ import com.example.cookbook.onboarding.FirstOnboardingView
 import com.example.cookbook.onboarding.OnboardingView
 import com.example.cookbook.ui.theme.CookBookTheme
 
-
 //Clase principal
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
