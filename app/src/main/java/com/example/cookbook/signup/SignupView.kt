@@ -53,7 +53,7 @@ fun SignUpScreen() {
 
         // Image with logo
         Image(
-            painter = painterResource(id = R.drawable.aonboarding), // Your image
+            painter = painterResource(id = R.drawable.firstonboardingview), // Your image
             contentDescription = "Cookbook Logo",
             modifier = Modifier.size(150.dp),
             contentScale = ContentScale.Fit

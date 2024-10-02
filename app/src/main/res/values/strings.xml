@@ -3,4 +3,12 @@
     //First Onboarding View
     <string name="ShareandFindRecipes">Share &amp; Find Recipes</string>
     <string name="Skip">Skip</string>
+    <string name="Back">Back</string>
+    <string name="Next">Next</string>
+    <string name="gstarted">Get Started</string>
+    //Second Onboarding View
+    <string name="Exoptions">Explore Options</string>
+    <string name="secdescription">Explore different recipes\n made it easier by filtering\nbased on ingredients,\npreparation time, or preferred\ntype of cuisine.</string>
+    //Third Onboarding View
+    <string name="CreLists">Crear Listas</string>
 </resources>
