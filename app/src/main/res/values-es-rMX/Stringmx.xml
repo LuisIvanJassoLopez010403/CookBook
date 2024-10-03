@@ -9,7 +9,7 @@
     <string name="gstarted">Comenzar</string>
     //Second Onboarding View
     <string name="Exoptions">Explora Opciones</string>
-    <string name="secdescription">Explore different recipes\n made it easier by filtering\nbased on ingredients,\npreparation time, or preferred\ntype of cuisine.</string>
+    <string name="secdescription">Explora diferentes recetas\nde manera sencilla filtrando\nsegún los ingredientes,\nel tiempo de preparación o\n el tipo de cocina preferido.</string>
     //Third Onboarding View
     <string name="CreLists">Crea Listas</string>
 </resources>
