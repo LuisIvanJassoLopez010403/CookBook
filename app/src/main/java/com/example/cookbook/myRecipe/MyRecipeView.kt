@@ -49,7 +49,7 @@ fun MyRecipeView() {
                 // "Edit" Button
                 Button(
                     onClick = { /* Acción de edición */ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFF9800)),
+                    //colors = ButtonDefaults.buttonColor(Color(0xFFFF9800)),
                     modifier = Modifier
                         .width(80.dp)
                         .height(30.dp)
