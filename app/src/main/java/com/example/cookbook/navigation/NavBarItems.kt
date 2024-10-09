@@ -1,24 +1,30 @@
 package com.example.cookbook.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Casino
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 
 val NavBarItems = listOf(
     BarItem(
-        title = "First Partial",
-        image = Icons.Filled.Casino,
+        title = "Home",
+        image = Icons.Filled.Home,
         route = Routes.LoginView
     ),
     BarItem(
-        title = "Second Partial",
-        image = Icons.Filled.CheckCircle,
+        title = "Search",
+        image = Icons.Filled.Search,
         route = Routes.LoginView
     ),
     BarItem(
-        title = "Third Partial",
-        image = Icons.Filled.Image,
+        title = "Add",
+        image = Icons.Filled.Add,
+        route = Routes.LoginView
+    ),
+    BarItem(
+        title = "User",
+        image = Icons.Filled.Person,
         route = Routes.LoginView
     ),
 )

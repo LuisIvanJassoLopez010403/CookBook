@@ -31,7 +31,6 @@ import androidx.navigation.NavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserView(navController: NavController) {
     Scaffold(

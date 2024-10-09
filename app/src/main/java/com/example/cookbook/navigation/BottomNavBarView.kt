@@ -13,7 +13,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavBarView(navController: NavController) {
-    BottomAppBar(containerColor = Color.Red) {
+    BottomAppBar(containerColor = Color(0xFFFFA500)) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
 
