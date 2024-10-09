@@ -24,10 +24,12 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavController
+import com.example.cookbook.navigation.Routes
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingView() {
+fun OnboardingView(navController: NavController) {
 
     val offset = Offset(x = 2f, y = 2f)
 
@@ -153,7 +155,7 @@ fun OnboardingView() {
                 .padding(start = 25.dp, end = 25.dp)
         ){
             Button(
-                onClick = { /* Handle Next logic */ },
+                onClick = { navController.navigate(Routes.TitleView) },
                 colors = ButtonDefaults.buttonColors(Color.White),
                 modifier = Modifier
                     .fillMaxWidth()

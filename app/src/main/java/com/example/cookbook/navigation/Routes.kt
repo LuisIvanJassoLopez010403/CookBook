@@ -7,4 +7,5 @@ object Routes {
     var TitleView = "TitleView"
     var LoginView = "LoginView"
     var UserView = "UserView"
+    var OnboardingView = "OnboardingView"
 }
