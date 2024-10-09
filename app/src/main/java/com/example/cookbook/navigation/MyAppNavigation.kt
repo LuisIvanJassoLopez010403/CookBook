@@ -8,6 +8,7 @@ import com.example.cookbook.onboarding.FirstOnboardingView
 import com.example.cookbook.onboarding.SecondOnboardingView
 import com.example.cookbook.onboarding.ThirdOnboardingView
 import com.example.cookbook.title.TitleView
+import com.example.cookbook.user.UserView
 
 
 @Composable
@@ -27,6 +28,9 @@ fun MyAppNavigationView() {
             }
             composable(Routes.TitleView) {
                 TitleView(navController)
+            }
+            composable(Routes.UserView) {
+                UserView(navController)
             }
         })
 }
