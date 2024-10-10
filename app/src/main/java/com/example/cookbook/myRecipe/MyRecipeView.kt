@@ -1,8 +1,6 @@
 package com.example.cookbook.myRecipe
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
@@ -11,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -40,16 +37,18 @@ fun MyRecipeView() {
             ) {
                 // "Back" Text
                 Text(
-                    text = "Back",
+                    text = "Black",
                     color = Color(0xFFFF9800),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
+
+
                 )
 
-                // "Edit" Button
+                // Boton Edit
                 Button(
-                    onClick = { /* Acción de edición */ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFF9800)),
+                    onClick = { /* Edicion */ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF9800)), // Corregido
                     modifier = Modifier
                         .width(80.dp)
                         .height(30.dp)
@@ -70,7 +69,7 @@ fun MyRecipeView() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                // Título "Tacos de Carnitas" en el centro
+                // Título  en el centro (editar receta)
                 Text(
                     text = "Tacos de Carnitas",
                     fontSize = 24.sp,
@@ -93,7 +92,7 @@ fun MyRecipeView() {
                     contentScale = ContentScale.Crop
                 )
 
-                // Receta (scrollable content)
+                // Receta (scrollable content), modificar
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
