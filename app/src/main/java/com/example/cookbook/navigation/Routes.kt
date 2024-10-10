@@ -6,4 +6,6 @@ object Routes {
     var ThirdOnboardingView = "ThirdOnboardingView"
     var TitleView = "TitleView"
     var LoginView = "LoginView"
+    var UserView = "UserView"
+    var OnboardingView = "OnboardingView"
 }

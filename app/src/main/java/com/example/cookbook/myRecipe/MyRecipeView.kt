@@ -6,9 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -37,18 +35,16 @@ fun MyRecipeView() {
             ) {
                 // "Back" Text
                 Text(
-                    text = "Black",
+                    text = "Back",
                     color = Color(0xFFFF9800),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
-
-
                 )
 
-                // Boton Edit
+                // "Edit" Button
                 Button(
-                    onClick = { /* Edicion */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF9800)), // Corregido
+                    onClick = { /* Acción de edición */ },
+                    //colors = ButtonDefaults.buttonColor(Color(0xFFFF9800)),
                     modifier = Modifier
                         .width(80.dp)
                         .height(30.dp)
@@ -69,7 +65,7 @@ fun MyRecipeView() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                // Título  en el centro (editar receta)
+                // Título "Tacos de Carnitas" en el centro
                 Text(
                     text = "Tacos de Carnitas",
                     fontSize = 24.sp,
@@ -92,7 +88,7 @@ fun MyRecipeView() {
                     contentScale = ContentScale.Crop
                 )
 
-                // Receta (scrollable content), modificar
+                // Receta (scrollable content)
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()

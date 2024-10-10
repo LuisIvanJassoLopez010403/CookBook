@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cookbook.R
+import com.example.cookbook.navigation.Routes
 
 @Composable
 fun TitleView(navController: NavController) {
@@ -48,7 +49,7 @@ fun TitleView(navController: NavController) {
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(
-            onClick = {  },
+            onClick = {  navController.navigate(Routes.UserView) },
             modifier = Modifier
                 .shadow(10.dp)
                 .fillMaxWidth()
