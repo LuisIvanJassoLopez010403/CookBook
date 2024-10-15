@@ -22,9 +22,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.Routes
 
@@ -49,9 +51,9 @@ fun TitleView(navController: NavController) {
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(
-            onClick = {  navController.navigate(Routes.UserView) },
+            onClick = {  navController.navigate(Routes.SignupView) },
             modifier = Modifier
-                .shadow(10.dp)
+                .shadow(10.dp, RoundedCornerShape(25.dp))
                 .fillMaxWidth()
                 .height(50.dp),
             border = BorderStroke(1.dp, Color.White),
@@ -64,9 +66,9 @@ fun TitleView(navController: NavController) {
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(
-            onClick = {  },
+            onClick = { navController.navigate(Routes.LoginView) },
             modifier = Modifier
-                .shadow(10.dp)
+                .shadow(10.dp, RoundedCornerShape(25.dp))
                 .fillMaxWidth()
                 .height(50.dp),
             border = BorderStroke(1.dp, color = Color(0xFFFFA500)),
@@ -76,4 +78,9 @@ fun TitleView(navController: NavController) {
             Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFFFFF))
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun PreviewTitleView() {
+    TitleView(rememberNavController())
 }

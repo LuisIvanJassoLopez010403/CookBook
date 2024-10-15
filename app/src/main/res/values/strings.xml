@@ -2,6 +2,7 @@
     <string name="app_name">CookBook</string>
     //First Onboarding View
     <string name="ShareandFindRecipes">Share &amp; Find Recipes</string>
+    <string name="FirstOnboardingDescription">Share your recipes with the\nworld or find your next\nfavorite meal by exploring\nother users’ profiles.</string>
     <string name="Skip">Skip</string>
     <string name="Back">Back</string>
     <string name="Next">Next</string>
@@ -10,5 +11,8 @@
     <string name="Exoptions">Explore Options</string>
     <string name="secdescription">Explore different recipes\n made it easier by filtering\nbased on ingredients,\npreparation time, or preferred\ntype of cuisine.</string>
     //Third Onboarding View
-    <string name="CreLists">Crear Listas</string>
+    <string name="CreLists">Create Lists</string>
+    <string name="ThirdOnboardingDescription">Save your favorite recipes\nand create your own lists to\naccommodate each recipe for\nthe right occasion.</string>
+    //initialSearch
+    <string name="Search">Search</string>
 </resources>
