@@ -25,7 +25,10 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
+import com.example.cookbook.myRecipe.MyRecipeView
 
 @Composable
 fun BuscadorinicialView(navController: NavController) {
@@ -80,4 +83,9 @@ fun BuscadorinicialView(navController: NavController) {
             )
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun BuscadorinicialView() {
+    BuscadorinicialView(rememberNavController())
 }

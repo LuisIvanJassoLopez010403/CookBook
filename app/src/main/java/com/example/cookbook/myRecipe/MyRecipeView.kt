@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -19,10 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 
+
 @Composable
-fun MyRecipeView() {
+fun MyRecipeView(navController: NavHostController) {
     Scaffold(
         topBar = {
             // Barra superior fija con "Back" y botón "Edit"
@@ -44,7 +50,7 @@ fun MyRecipeView() {
                 // "Edit" Button
                 Button(
                     onClick = { /* Acción de edición */ },
-                    //colors = ButtonDefaults.buttonColor(Color(0xFFFF9800)),
+                    colors = ButtonDefaults.buttonColors(Color(0xFFFF9800)),
                     modifier = Modifier
                         .width(80.dp)
                         .height(30.dp)
@@ -95,6 +101,7 @@ fun MyRecipeView() {
                         .padding(16.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
+                    //Falta de poner la receta real (En ingles)
                     item {
                         Text(
                             text = """
@@ -113,3 +120,14 @@ fun MyRecipeView() {
         }
     )
 }
+
+@Composable
+fun MovilesAndroidTheme(content: () -> Unit) {
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewMyRecipeView() {
+        MyRecipeView(rememberNavController())
+    }
