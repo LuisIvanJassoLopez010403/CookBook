@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.buscador.BuscadorinicialView
+import com.example.cookbook.login.LoginView
 import com.example.cookbook.myRecipe.MyRecipeView
 import com.example.cookbook.onboarding.FirstOnboardingView
 import com.example.cookbook.onboarding.OnboardingView
@@ -39,18 +40,21 @@ fun MyAppNavigationView() {
             composable(Routes.TitleView) {
                 TitleView(navController)
             }
+            composable(Routes.SignupView){
+                SignupView(navController)
+            }
+            composable(Routes.LoginView) {
+                LoginView(navController)
+            }
             composable(Routes.UserView) {
                 UserView(navController)
             }
-
             composable(Routes.BuscadorinicialView) {
                 BuscadorinicialView(navController)
             }
             composable(Routes.MyRecipeView){
                 MyRecipeView(navController)
             }
-            composable(Routes.SignupView){
-                SignupView(navController)
-            }
+
         })
 }
