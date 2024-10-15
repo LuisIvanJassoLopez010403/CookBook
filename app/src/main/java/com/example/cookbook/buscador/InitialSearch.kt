@@ -86,6 +86,6 @@ fun BuscadorinicialView(navController: NavController) {
 }
 @Preview(showBackground = true)
 @Composable
-fun BuscadorinicialView() {
+fun PreviewBuscadorinicialView() {
     BuscadorinicialView(rememberNavController())
 }

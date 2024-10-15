@@ -129,5 +129,5 @@ fun MovilesAndroidTheme(content: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMyRecipeView() {
-        MyRecipeView(rememberNavController())
-    }
+    MyRecipeView(rememberNavController())
+}
