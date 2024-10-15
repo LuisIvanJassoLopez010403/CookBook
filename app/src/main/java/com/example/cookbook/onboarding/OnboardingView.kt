@@ -1,5 +1,6 @@
 package com.example.cookbook.onboarding
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,6 +10,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cookbook.R
 import kotlinx.coroutines.launch
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.cookbook.navigation.Routes
@@ -31,8 +31,7 @@ import com.example.cookbook.navigation.Routes
 @Composable
 fun OnboardingView(navController: NavController) {
 
-    val offset = Offset(x = 2f, y = 2f)
-
+    val pager = 3
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
 
@@ -53,47 +52,23 @@ fun OnboardingView(navController: NavController) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Box(
-            if(pagerState.currentPage == 0) {
-                Modifier
-                    .size(22.dp, 12.dp)
-                    .background(Color(0xFFFFA500), RoundedCornerShape(6.dp))
+        repeat(pager) { page ->
+            // Animar el tamaño de cada indicador
+            val size by animateDpAsState(
+                targetValue = if (pagerState.currentPage == page) 22.dp else 12.dp
+            )
+
+            Box(
+                modifier = Modifier
+                    .size(size, 12.dp)
+                    .background(
+                        if (pagerState.currentPage == page) Color(0xFFFFA500) else Color.Gray,
+                        RoundedCornerShape(6.dp)
+                    )
                     .shadow(10.dp)
-            } else {
-                Modifier
-                    .size(12.dp, 12.dp)
-                    .background(Color.Gray, RoundedCornerShape(6.dp))
-                    .shadow(10.dp)
-            }
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Box(
-            if(pagerState.currentPage == 1) {
-                Modifier
-                    .size(22.dp, 12.dp)
-                    .background(Color(0xFFFFA500), RoundedCornerShape(6.dp))
-                    .shadow(10.dp)
-            } else {
-                Modifier
-                    .size(12.dp, 12.dp)
-                    .background(Color.Gray, RoundedCornerShape(6.dp))
-                    .shadow(10.dp)
-            }
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Box(
-            if(pagerState.currentPage == 2) {
-                Modifier
-                    .size(22.dp, 12.dp)
-                    .background(Color(0xFFFFA500), RoundedCornerShape(6.dp))
-                    .shadow(10.dp)
-            } else {
-                Modifier
-                    .size(12.dp, 12.dp)
-                    .background(Color.Gray, RoundedCornerShape(6.dp))
-                    .shadow(10.dp)
-            }
-        )
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+        }
     }
 
     if (pagerState.currentPage == 0 || pagerState.currentPage == 1) {
@@ -101,24 +76,30 @@ fun OnboardingView(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom,
             modifier = Modifier
-                .padding(bottom = 70.dp)
+                .padding(bottom = 35.dp)
                 .padding(start = 25.dp, end = 25.dp)
         ) {
-            TextButton(
-                onClick = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+            if (pagerState.currentPage == 0){
+                TextButton(
+                    {
+                        navController.navigate(Routes.TitleView)
                     }
-                }
-            ) {
-                if (pagerState.currentPage == 0) {
+                ) {
                     Text(
                         text = stringResource(id = R.string.Skip),
                         color = Color.Gray,
                         fontSize = 23.sp,
                         textAlign = TextAlign.Center
                     )
-                } else {
+                }
+            } else {
+                TextButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        }
+                    }
+                ) {
                     Text(
                         text = stringResource(id = R.string.Back),
                         color = Color.Gray,
@@ -151,7 +132,7 @@ fun OnboardingView(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom,
             modifier = Modifier
-                .padding(bottom = 70.dp)
+                .padding(bottom = 35.dp)
                 .padding(start = 25.dp, end = 25.dp)
         ){
             Button(

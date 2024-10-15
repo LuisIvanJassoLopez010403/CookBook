@@ -67,10 +67,7 @@ fun ThirdOnboardingView(){
         Spacer(modifier = Modifier.height(35.dp))
 
         Text(
-            text = "Save your favorite recipes\n" +
-                    "and create your own lists to\n" +
-                    "accommodate each recipe for\n" +
-                    "the right occasion.",
+            text = stringResource(id = R.string.ThirdOnboardingDescription),
             fontSize = 20.sp,
             color = Color.Black,
             textAlign = TextAlign.Center

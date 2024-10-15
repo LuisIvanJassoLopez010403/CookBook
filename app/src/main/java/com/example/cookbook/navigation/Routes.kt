@@ -8,4 +8,5 @@ object Routes {
     var LoginView = "LoginView"
     var UserView = "UserView"
     var OnboardingView = "OnboardingView"
+    var BuscadorinicialView = "BuscadorinicialView"
 }
