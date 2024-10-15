@@ -1,34 +1,21 @@
 package com.example.cookbook.onboarding
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.cookbook.R
 
 @Composable
@@ -62,10 +49,7 @@ fun FirstOnboardingView() {
         Spacer(modifier = Modifier.height(35.dp))
 
         Text(
-            text = "Share your recipes with the\n" +
-                    "world or find your next\n" +
-                    "favorite meal by exploring\n" +
-                    "other users’ profiles.",
+            text = stringResource(id = R.string.FirstOnboardingDescription),
             fontSize = 20.sp,
             color = Color.Black,
             textAlign = TextAlign.Center

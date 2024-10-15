@@ -51,7 +51,7 @@ fun TitleView(navController: NavController) {
         Button(
             onClick = {  navController.navigate(Routes.UserView) },
             modifier = Modifier
-                .shadow(10.dp)
+                .shadow(10.dp, RoundedCornerShape(25.dp))
                 .fillMaxWidth()
                 .height(50.dp),
             border = BorderStroke(1.dp, Color.White),
@@ -64,9 +64,9 @@ fun TitleView(navController: NavController) {
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(
-            onClick = {  },
+            onClick = { navController.navigate(Routes.BuscadorinicialView) },
             modifier = Modifier
-                .shadow(10.dp)
+                .shadow(10.dp, RoundedCornerShape(25.dp))
                 .fillMaxWidth()
                 .height(50.dp),
             border = BorderStroke(1.dp, color = Color(0xFFFFA500)),
