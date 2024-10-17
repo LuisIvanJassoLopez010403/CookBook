@@ -1,8 +1,9 @@
-package com.example.cookbook.login
+package com.example.cookbook.presentation.login.views
 
 import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,18 +15,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.cookbook.navigation.Routes
 
 @Composable
-fun ChangePasswordView() {
+fun LoginView(navController: NavController) {
+    Row(
+        horizontalArrangement = Arrangement.Start
+    ) {
+        TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
+            Text(
+                text = "< Back",
+                fontSize = 18.sp,
+                color = Color(0xFFFFA500),
+                modifier = Modifier,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -33,15 +51,7 @@ fun ChangePasswordView() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Back Button
-        Text(
-            text = "< Back",
-            fontSize = 18.sp,
-            color = Color(0xFFFFA500),
-            modifier = Modifier
-                .align(Alignment.Start)
-        )
-
+        
         Spacer(modifier = Modifier.height(70.dp))
 
         //Image Logo
@@ -58,48 +68,62 @@ fun ChangePasswordView() {
 
         // Title Text
         Text(
-            text = "Forgot your password?",
+            text = "Login",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        var passwordVisible by remember { mutableStateOf(false) }
+        // Username Input
+        var username by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text(text = "New Password") },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            value = username,
+            onValueChange = { username = it },
+            label = { Text(text = "Username") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        var confirm by remember { mutableStateOf(TextFieldValue("")) }
+        // Password Input
+        var password by remember { mutableStateOf(TextFieldValue("")) }
+        var passwordVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
-            value = confirm,
-            onValueChange = { confirm = it },
-            label = { Text(text = "Confirm New Password") },
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(text = "Password") },
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // Forgot your password Text
+        Text(
+            text = "Forgot your password?",
+            fontSize = 17.sp,
+            color = Color(0xFFFFA500),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(35.dp))
 
-        // Send Verification Code Button
+        // Login Button
         Button(
             onClick = {  },
             modifier = Modifier
-                .shadow(10.dp)
                 .widthIn(min = 200.dp, max = 300.dp)
                 .align(Alignment.CenterHorizontally)
-                .height(50.dp),
+                .height(50.dp)
+                .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
+                .shadow(10.dp, RoundedCornerShape(25.dp)),
             border = BorderStroke(1.dp,Color.White),
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Change Password", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -108,6 +132,6 @@ fun ChangePasswordView() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewChangePasswordView() {
-    ChangePasswordView()
+fun PreviewLoginView() {
+    LoginView(rememberNavController())
 }

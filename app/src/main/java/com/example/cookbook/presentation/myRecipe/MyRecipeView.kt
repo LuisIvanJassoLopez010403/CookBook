@@ -1,4 +1,4 @@
-package com.example.cookbook.myRecipe
+package com.example.cookbook.presentation.myRecipe
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 

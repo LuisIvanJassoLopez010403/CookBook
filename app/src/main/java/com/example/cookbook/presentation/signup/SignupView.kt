@@ -1,4 +1,4 @@
-package com.example.cookbook.signup
+package com.example.cookbook.presentation.signup
 
 import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
@@ -26,9 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.myRecipe.MyRecipeView
 import com.example.cookbook.navigation.Routes
 
 @Composable
@@ -55,7 +53,7 @@ fun SignupView(navController: NavController) {
     ) {
 
 
-        Spacer(modifier = Modifier.height(70.dp))
+        //Spacer(modifier = Modifier.height(70.dp))
 
         //Image Logo
         Image(
@@ -67,7 +65,7 @@ fun SignupView(navController: NavController) {
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        //Spacer(modifier = Modifier.height(40.dp))
 
 // Title Text
         Text(
@@ -77,7 +75,7 @@ fun SignupView(navController: NavController) {
         )
 
 
-        Spacer(modifier = Modifier.height(16.dp))
+        //Spacer(modifier = Modifier.height(16.dp))
 
 
 // Email Input
@@ -90,7 +88,7 @@ fun SignupView(navController: NavController) {
         )
 
 
-        Spacer(modifier = Modifier.height(8.dp))
+        //Spacer(modifier = Modifier.height(8.dp))
 
 
 // Username Input
@@ -103,7 +101,7 @@ fun SignupView(navController: NavController) {
         )
 
 
-        Spacer(modifier = Modifier.height(8.dp))
+        //Spacer(modifier = Modifier.height(8.dp))
 
 
 // Password Input
@@ -118,7 +116,7 @@ fun SignupView(navController: NavController) {
         )
 
 
-        Spacer(modifier = Modifier.height(8.dp))
+        //Spacer(modifier = Modifier.height(8.dp))
 
 
 // Username Input
@@ -131,7 +129,7 @@ fun SignupView(navController: NavController) {
         )
 
 
-        Spacer(modifier = Modifier.height(32.dp))
+        //Spacer(modifier = Modifier.height(32.dp))
 
 
         // Sign up Button
@@ -147,7 +145,7 @@ fun SignupView(navController: NavController) {
             Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        //Spacer(modifier = Modifier.height(50.dp))
     }
 }
 

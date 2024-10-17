@@ -1,4 +1,4 @@
-package com.example.cookbook.title
+package com.example.cookbook.presentation.title
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -54,7 +56,7 @@ fun TitleView(navController: NavController) {
             onClick = {  navController.navigate(Routes.SignupView) },
             modifier = Modifier
                 .shadow(10.dp, RoundedCornerShape(25.dp))
-                .fillMaxWidth()
+                .width(350.dp)
                 .height(50.dp),
             border = BorderStroke(1.dp, Color.White),
             shape = RoundedCornerShape(30.dp),
@@ -69,7 +71,7 @@ fun TitleView(navController: NavController) {
             onClick = { navController.navigate(Routes.LoginView) },
             modifier = Modifier
                 .shadow(10.dp, RoundedCornerShape(25.dp))
-                .fillMaxWidth()
+                .width(350.dp)
                 .height(50.dp),
             border = BorderStroke(1.dp, color = Color(0xFFFFA500)),
             shape = RoundedCornerShape(30.dp),
