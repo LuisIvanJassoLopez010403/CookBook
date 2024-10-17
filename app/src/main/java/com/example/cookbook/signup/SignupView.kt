@@ -23,9 +23,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.cookbook.myRecipe.MyRecipeView
 
 @Composable
-fun SignupScreen() {
+fun SignupView(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,8 +143,9 @@ fun SignupScreen() {
         Spacer(modifier = Modifier.height(50.dp))
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun PreviewSignupScreen() {
-    SignupScreen()
+fun PreviewSignupView() {
+    SignupView(rememberNavController())
 }
