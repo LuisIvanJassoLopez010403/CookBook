@@ -3,6 +3,7 @@ package com.example.cookbook.signup
 import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,13 +24,28 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.myRecipe.MyRecipeView
+import com.example.cookbook.navigation.Routes
 
 @Composable
 fun SignupView(navController: NavController) {
+    Row(
+        horizontalArrangement = Arrangement.Start
+    ) {
+        TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
+            Text(
+                text = "< Back",
+                fontSize = 18.sp,
+                color = Color(0xFFFFA500),
+                modifier = Modifier,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,14 +53,7 @@ fun SignupView(navController: NavController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Back Button
-        Text(
-            text = "< Back",
-            fontSize = 18.sp,
-            color = Color(0xFFFFA500),
-            modifier = Modifier
-                .align(Alignment.Start)
-        )
+
 
         Spacer(modifier = Modifier.height(70.dp))
 
@@ -127,15 +136,13 @@ fun SignupView(navController: NavController) {
 
         // Sign up Button
         Button(
-            onClick = {  },
+            onClick = { navController.navigate(Routes.TitleView) },    //Modificar la ruta a la pantalla inicial
+            colors = ButtonDefaults.buttonColors(Color.White),
             modifier = Modifier
-                .shadow(10.dp)
-                .widthIn(min = 200.dp, max = 300.dp)
-                .align(Alignment.CenterHorizontally)
-                .height(50.dp),
-            border = BorderStroke(1.dp,Color.White),
-            shape = RoundedCornerShape(30.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
+                .fillMaxWidth()
+                .height(50.dp)
+                .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
+                .shadow(10.dp, RoundedCornerShape(25.dp))
         ) {
             Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
