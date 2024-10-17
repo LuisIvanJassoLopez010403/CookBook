@@ -4,16 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.buscador.BuscadorinicialView
-import com.example.cookbook.login.LoginView
-import com.example.cookbook.myRecipe.MyRecipeView
-import com.example.cookbook.onboarding.FirstOnboardingView
-import com.example.cookbook.onboarding.OnboardingView
-import com.example.cookbook.onboarding.SecondOnboardingView
-import com.example.cookbook.onboarding.ThirdOnboardingView
-import com.example.cookbook.signup.SignupView
-import com.example.cookbook.title.TitleView
-import com.example.cookbook.user.UserView
+import com.example.cookbook.presentation.buscador.BuscadorinicialView
+import com.example.cookbook.presentation.login.views.LoginView
+import com.example.cookbook.presentation.myRecipe.MyRecipeView
+import com.example.cookbook.presentation.onboarding.FirstOnboardingView
+import com.example.cookbook.presentation.onboarding.OnboardingView
+import com.example.cookbook.presentation.onboarding.SecondOnboardingView
+import com.example.cookbook.presentation.onboarding.ThirdOnboardingView
+import com.example.cookbook.presentation.signup.SignupView
+import com.example.cookbook.presentation.title.TitleView
+import com.example.cookbook.presentation.user.UserView
 
 // Prueba
 @Composable

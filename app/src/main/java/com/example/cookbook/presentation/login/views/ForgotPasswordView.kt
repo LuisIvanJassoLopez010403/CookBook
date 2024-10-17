@@ -1,4 +1,4 @@
-package com.example.cookbook.login
+package com.example.cookbook.presentation.login.views
 
 import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
@@ -14,21 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.signup.SignupView
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun LoginView(navController: NavController) {
+fun ForgotPasswordView() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,7 +56,7 @@ fun LoginView(navController: NavController) {
 
         // Title Text
         Text(
-            text = "Login",
+            text = "Forgot your password?",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -79,31 +74,17 @@ fun LoginView(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Password Input
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        var passwordVisible by remember { mutableStateOf(false) }
+        var email by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text(text = "Password") },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(text = "Email") },
             modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // Forgot your password Text
-        Text(
-            text = "Forgot your password?",
-            fontSize = 17.sp,
-            color = Color(0xFFFFA500),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(35.dp))
 
-        // Login Button
+        // Send Verification Code Button
         Button(
             onClick = {  },
             modifier = Modifier
@@ -115,7 +96,7 @@ fun LoginView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = "Send Verification Code", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -124,6 +105,6 @@ fun LoginView(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewLoginView() {
-    LoginView(rememberNavController())
+fun PreviewForgotPasswordView() {
+    ForgotPasswordView()
 }

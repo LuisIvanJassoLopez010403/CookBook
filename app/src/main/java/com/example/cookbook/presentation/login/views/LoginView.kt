@@ -1,4 +1,4 @@
-package com.example.cookbook.signup
+package com.example.cookbook.presentation.login.views
 
 import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
@@ -24,12 +24,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.myRecipe.MyRecipeView
 
 @Composable
-fun SignupView(navController: NavController) {
+fun LoginView(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,72 +58,51 @@ fun SignupView(navController: NavController) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-// Title Text
+        // Title Text
         Text(
-            text = "Sign up",
+            text = "Login",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
 
-
         Spacer(modifier = Modifier.height(16.dp))
 
-
-// Email Input
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text(text = "Email:") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-// Username Input
+        // Username Input
         var username by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text(text = "Username:") },
+            label = { Text(text = "Username") },
             modifier = Modifier.fillMaxWidth()
         )
 
-
         Spacer(modifier = Modifier.height(8.dp))
 
-
-// Password Input
+        // Password Input
         var password by remember { mutableStateOf(TextFieldValue("")) }
         var passwordVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(text = "Password:") },
+            label = { Text(text = "Password") },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(30.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-// Username Input
-        var confirm by remember { mutableStateOf(TextFieldValue("")) }
-        OutlinedTextField(
-            value = confirm,
-            onValueChange = { confirm = it },
-            label = { Text(text = "Confirm Password:") },
-            modifier = Modifier.fillMaxWidth()
+        // Forgot your password Text
+        Text(
+            text = "Forgot your password?",
+            fontSize = 17.sp,
+            color = Color(0xFFFFA500),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
         )
 
+        Spacer(modifier = Modifier.height(35.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-
-        // Sign up Button
+        // Login Button
         Button(
             onClick = {  },
             modifier = Modifier
@@ -137,7 +114,7 @@ fun SignupView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -146,6 +123,6 @@ fun SignupView(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewSignupView() {
-    SignupView(rememberNavController())
+fun PreviewLoginView() {
+    LoginView(rememberNavController())
 }

@@ -1,5 +1,8 @@
 package com.example.cookbook.navigation
 
+/**
+ * Routes used in the app.
+ */
 object Routes {
 
     //Onboarding
