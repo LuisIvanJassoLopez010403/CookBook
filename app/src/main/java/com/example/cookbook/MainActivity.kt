@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.example.cookbook.navigation.MyAppNavigationView
 import com.example.cookbook.onboarding.FirstOnboardingView
 import com.example.cookbook.onboarding.OnboardingView
+import com.example.cookbook.onboarding.Prueba
 import com.example.cookbook.ui.theme.CookBookTheme
 import com.example.cookbook.user.UserView
 
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     MyAppNavigationView()
+                    //Prueba()
                 }
             }
         }
