@@ -27,11 +27,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-<<<<<<< HEAD:app/src/main/java/com/example/cookbook/login/LoginView.kt
 import com.example.cookbook.navigation.Routes
-import com.example.cookbook.signup.SignupView
-=======
->>>>>>> fa6428d78f6475d465ba103189204a1805f50622:app/src/main/java/com/example/cookbook/presentation/login/views/LoginView.kt
 
 @Composable
 fun LoginView(navController: NavController) {
