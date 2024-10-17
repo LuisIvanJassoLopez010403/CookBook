@@ -1,4 +1,4 @@
-package com.example.cookbook.user
+package com.example.cookbook.presentation.user
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +34,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.title.TitleView
 
 @Composable
 fun UserView(navController: NavController) {

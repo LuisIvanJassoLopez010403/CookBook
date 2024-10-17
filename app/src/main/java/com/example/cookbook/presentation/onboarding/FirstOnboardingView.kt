@@ -1,4 +1,5 @@
-package com.example.cookbook.onboarding
+package com.example.cookbook.presentation.onboarding
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cookbook.R
 
 @Composable
-fun ThirdOnboardingView() {
+fun FirstOnboardingView() {
 
     Box (
         modifier = Modifier
@@ -34,7 +35,7 @@ fun ThirdOnboardingView() {
             verticalArrangement = Arrangement.Top
         ) {
             Image(
-                painter = painterResource(id = R.drawable.thirdonboardingview),
+                painter = painterResource(id = R.drawable.firstonboardingview),
                 contentDescription = "Descripción de la imagen",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -45,7 +46,7 @@ fun ThirdOnboardingView() {
             Spacer(modifier = Modifier.height(95.dp))
 
             Text(
-                text = stringResource(id = R.string.CreLists),
+                text = stringResource(id = R.string.ShareandFindRecipes),
                 fontSize = 35.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFFF9800),
@@ -55,7 +56,7 @@ fun ThirdOnboardingView() {
             Spacer(modifier = Modifier.height(35.dp))
 
             Text(
-                text = stringResource(id = R.string.secdescription),
+                text = stringResource(id = R.string.FirstOnboardingDescription),
                 fontSize = 20.sp,
                 color = Color.Black,
                 textAlign = TextAlign.Center
