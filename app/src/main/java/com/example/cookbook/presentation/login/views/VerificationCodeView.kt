@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,16 +31,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.navigation.Routes
 
 @Composable
-fun ForgotPasswordView(navController: NavController) {
+fun VerificationCodeView(navController: NavController) {
     // Variables de TextFields
-    var email by remember { mutableStateOf(TextFieldValue("")) }
-    var username by remember { mutableStateOf(TextFieldValue("")) }
+    var verificationcode by remember { mutableStateOf(TextFieldValue("")) }
 
     // TextButton para regresar a pantalla de Login
     Row(
         horizontalArrangement = Arrangement.Start
     ) {
-        TextButton(onClick = { navController.navigate(Routes.LoginView) }) {
+        TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
             Text(
                 text = "< Back",
                 fontSize = 18.sp,
@@ -80,23 +80,23 @@ fun ForgotPasswordView(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // TextField de email
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text(text = "Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier.fillMaxWidth()
+        // Instrucciones
+        Text(
+            text = "A verification code has been sent to\nthe email linked to your account.",
+            fontSize = 20.sp,
+            color = Color.Black,
+            textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // TextField de username
+        // TextField de verification code
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text(text = "Username") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            value = verificationcode,
+            onValueChange = { verificationcode = it },
+            label = { Text(text = "Verification Code") },
+            placeholder = { Text(text = "XXXXXX",color = Color.Gray)},
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -104,18 +104,18 @@ fun ForgotPasswordView(navController: NavController) {
 
         // Boton de envio de codigo de verificacion
         Button(
-            onClick = { navController.navigate(Routes.VerificationCodeView) },
+            onClick = { navController.navigate(Routes.ChangePasswordView) },
             modifier = Modifier
                 .widthIn(min = 200.dp, max = 300.dp)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp)
                 .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
                 .shadow(10.dp, RoundedCornerShape(25.dp)),
-            border = BorderStroke(1.dp, Color.White),
+            border = BorderStroke(1.dp,Color.White),
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Send Verification Code", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = "Verify", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
@@ -124,6 +124,6 @@ fun ForgotPasswordView(navController: NavController) {
 // Preview
 @Preview(showBackground = true)
 @Composable
-fun PreviewForgotPasswordView() {
-    ForgotPasswordView(rememberNavController())
+fun PreviewVerificationCodeView() {
+    VerificationCodeView(rememberNavController())
 }
