@@ -5,7 +5,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.presentation.buscador.BuscadorinicialView
+import com.example.cookbook.presentation.login.views.ChangePasswordView
+import com.example.cookbook.presentation.login.views.ForgotPasswordView
 import com.example.cookbook.presentation.login.views.LoginView
+import com.example.cookbook.presentation.login.views.VerificationCodeView
 import com.example.cookbook.presentation.myRecipe.MyRecipeView
 import com.example.cookbook.presentation.onboarding.FirstOnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingView
@@ -46,6 +49,15 @@ fun MyAppNavigationView() {
             composable(Routes.LoginView) {
                 LoginView(navController)
             }
+            composable(Routes.ForgotPasswordView){
+                ForgotPasswordView(navController)
+            }
+            composable(Routes.VerificationCodeView){
+                VerificationCodeView(navController)
+            }
+            composable(Routes.ChangePasswordView){
+                ChangePasswordView(navController)
+            }
             composable(Routes.UserView) {
                 UserView(navController)
             }
@@ -55,6 +67,5 @@ fun MyAppNavigationView() {
             composable(Routes.MyRecipeView){
                 MyRecipeView(navController)
             }
-
         })
 }

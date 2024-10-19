@@ -2,6 +2,7 @@ package com.example.cookbook.presentation.signup
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,9 +10,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,6 +31,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -40,7 +46,9 @@ fun SignupView(navController: NavController) {
     var username by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
+    var passwordVisible by remember { mutableStateOf(false) }
     var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
     var address by remember { mutableStateOf(TextFieldValue("")) }
     var birthDate by remember { mutableStateOf("") }
 
@@ -84,7 +92,7 @@ fun SignupView(navController: NavController) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        // Logo
+        // Image Logo
         Image(
             painter = painterResource(id = R.drawable.cookbooklogo3),
             contentDescription = "Cookbook Logo",
@@ -118,6 +126,7 @@ fun SignupView(navController: NavController) {
                     value = username,
                     onValueChange = { username = it },
                     label = { Text(text = "Username") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -128,6 +137,7 @@ fun SignupView(navController: NavController) {
                     value = email,
                     onValueChange = { email = it },
                     label = { Text(text = "Email") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -137,20 +147,46 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text(text = "Password") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("Password") },
+                    singleLine = true,
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        val image = if (passwordVisible)
+                            Icons.Filled.Visibility
+                        else Icons.Filled.VisibilityOff
+
+                        val description = if (passwordVisible) "Hide password" else "Show password"
+
+                        IconButton(onClick = {passwordVisible = !passwordVisible}){
+                            Icon(imageVector  = image, description)
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                //TextField de Confirm Password
+                // TextField de Confirm Password
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = { Text(text = "Confirm Password") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text(" Confirm Password") },
+                    singleLine = true,
+                    visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        val image = if (confirmPasswordVisible)
+                            Icons.Filled.Visibility
+                        else Icons.Filled.VisibilityOff
+
+                        val description = if (confirmPasswordVisible) "Hide password" else "Show password"
+
+                        IconButton(onClick = {confirmPasswordVisible = !confirmPasswordVisible}){
+                            Icon(imageVector  = image, description)
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -160,6 +196,7 @@ fun SignupView(navController: NavController) {
                     value = address,
                     onValueChange = { address = it },
                     label = { Text(text = "Address") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -222,16 +259,18 @@ fun SignupView(navController: NavController) {
                 // Boton de SignUp
                 Button(
                     onClick = { navController.navigate(Routes.TitleView) },
-                    colors = ButtonDefaults.buttonColors(Color.White),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .widthIn(min = 200.dp, max = 300.dp)
+                        .align(Alignment.CenterHorizontally)
                         .height(50.dp)
                         .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
-                        .shadow(10.dp, RoundedCornerShape(25.dp))
+                        .shadow(10.dp, RoundedCornerShape(25.dp)),
+                    border = BorderStroke(1.dp,Color.White),
+                    shape = RoundedCornerShape(30.dp),
+                    colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                 ) {
-                    Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
+                    Text(text = "SignUp", fontSize = 18.sp, color = Color(0xFFFFA500))
                 }
-
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }

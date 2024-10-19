@@ -13,6 +13,9 @@ object Routes {
     var LoginView = "LoginView"
     var UserView = "UserView"
     var SignupView = "SignupView"
+    var ForgotPasswordView = "ForgotPasswordView"
+    var VerificationCodeView = "VerificationCodeView"
+    var ChangePasswordView = "ChangePasswordView"
 
 
     //App views

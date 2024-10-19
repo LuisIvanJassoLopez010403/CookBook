@@ -7,6 +7,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -31,6 +36,12 @@ import com.example.cookbook.navigation.Routes
 
 @Composable
 fun LoginView(navController: NavController) {
+    //Variables de TextFields
+    var username by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    // TextButton para regresar a pantalla de inicio
     Row(
         horizontalArrangement = Arrangement.Start
     ) {
@@ -52,7 +63,7 @@ fun LoginView(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(60.dp))
 
         //Image Logo
         Image(
@@ -64,55 +75,68 @@ fun LoginView(navController: NavController) {
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // Title Text
+        // Titulo de Vista
         Text(
             text = "Login",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // Username Input
-        var username by remember { mutableStateOf(TextFieldValue("")) }
+        // TextField de username
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
             label = { Text(text = "Username") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-        // Password Input
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        var passwordVisible by remember { mutableStateOf(false) }
+        // TextField de password
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(text = "Password") },
+            label = { Text("Password") },
+            singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            modifier = Modifier.fillMaxWidth(),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+
+                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                IconButton(onClick = {passwordVisible = !passwordVisible}){
+                    Icon(imageVector  = image, description)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // Forgot your password Text
-        Text(
-            text = "Forgot your password?",
-            fontSize = 17.sp,
-            color = Color(0xFFFFA500),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-        )
+        // TextButton para iniciar proceso de recuperacion de contrasena
+        TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
+            Text(
+                text = "Forgot your password?",
+                fontSize = 18.sp,
+                color = Color(0xFFFFA500),
+                modifier = Modifier,
+                textAlign = TextAlign.Center
+            )
+        }
 
-        Spacer(modifier = Modifier.height(35.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
-        // Login Button
+        // Boton de Login
         Button(
-            onClick = {  },
+            onClick = { navController.navigate(Routes.TitleView) },
             modifier = Modifier
                 .widthIn(min = 200.dp, max = 300.dp)
                 .align(Alignment.CenterHorizontally)
@@ -125,11 +149,11 @@ fun LoginView(navController: NavController) {
         ) {
             Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
         }
-
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
+// Preview
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginView() {
