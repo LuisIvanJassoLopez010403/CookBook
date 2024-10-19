@@ -136,8 +136,9 @@ fun LoginView(navController: NavController) {
 
         // Boton de Login
         Button(
-            onClick = { navController.navigate(Routes.TitleView) },
+            onClick = { navController.navigate(Routes.HomeView) },
             modifier = Modifier
+                .shadow(10.dp, RoundedCornerShape(25.dp))
                 .widthIn(min = 200.dp, max = 300.dp)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp)
