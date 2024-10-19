@@ -1,8 +1,5 @@
 package com.example.cookbook.navigation
 
-/**
- * Routes used in the app.
- */
 object Routes {
 
     //Onboarding
@@ -12,13 +9,15 @@ object Routes {
     var OnboardingView = "OnboardingView"
 
     //Inicio de sesion
-    var TitleView = "TitleView"     //Sin modificar mayusculas
-    var LoginView = "LoginView"     //Sin modificar mayusculas
+    var TitleView = "TitleView"
+    var LoginView = "LoginView"
     var UserView = "UserView"
-    var BuscadorinicialView = "BuscadorinicialView"
+    var SignupView = "SignupView"
+
 
     //App views
+    var BuscadorinicialView = "BuscadorinicialView"
     var MyRecipeView = "MyRecipeView"
-    var SignupView = "SignupView"
+
 
 }
