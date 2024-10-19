@@ -10,12 +10,12 @@ val NavBarItems = listOf(
     BarItem(
         title = "Home",
         image = Icons.Filled.Home,
-        route = Routes.LoginView
+        route = Routes.HomeView
     ),
     BarItem(
         title = "Search",
         image = Icons.Filled.Search,
-        route = Routes.LoginView
+        route = Routes.InitialFinderView
     ),
     BarItem(
         title = "Add",
@@ -25,6 +25,6 @@ val NavBarItems = listOf(
     BarItem(
         title = "User",
         image = Icons.Filled.Person,
-        route = Routes.LoginView
+        route = Routes.UserView
     ),
 )

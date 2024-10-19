@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cookbook.navigation.Routes
 
 @Composable
 fun LoginView(navController: NavController) {
@@ -104,9 +105,9 @@ fun LoginView(navController: NavController) {
 
         // Login Button
         Button(
-            onClick = {  },
+            onClick = { navController.navigate(Routes.HomeView) },
             modifier = Modifier
-                .shadow(10.dp)
+                .shadow(10.dp, RoundedCornerShape(25.dp))
                 .widthIn(min = 200.dp, max = 300.dp)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp),
