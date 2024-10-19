@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -64,7 +65,10 @@ fun SignupView(navController: NavController) {
     // Variables de Dropdown Menu
     var expanded by remember { mutableStateOf(false) }
     var selectedGender by remember { mutableStateOf("") }
-    val genderOptions = listOf("Male", "Female", "Other")
+    val genderOption1 = stringResource(id = R.string.GenderOp1)
+    val genderOption2 = stringResource(id = R.string.GenderOp2)
+    val genderOption3 = stringResource(id = R.string.GenderOp3)
+    val genderOptions = listOf(genderOption1,genderOption2,genderOption3)
 
     // TextButton para regresar a pantalla de inicio
     Row(
@@ -72,7 +76,7 @@ fun SignupView(navController: NavController) {
     ) {
         TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
             Text(
-                text = "< Back",
+                text = "< " + stringResource(id = R.string.Back),
                 fontSize = 18.sp,
                 color = Color(0xFFFFA500),
                 modifier = Modifier,
@@ -80,7 +84,6 @@ fun SignupView(navController: NavController) {
             )
         }
     }
-
 
     Column(
         modifier = Modifier
@@ -94,7 +97,7 @@ fun SignupView(navController: NavController) {
 
         // Image Logo
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo3),
+            painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
                 .size(250.dp)
@@ -106,7 +109,7 @@ fun SignupView(navController: NavController) {
 
         // Titulo de vista
         Text(
-            text = "Sign up",
+            text = stringResource(id = R.string.Signup),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -125,7 +128,7 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text(text = "Username") },
+                    label = { Text(text = stringResource(id = R.string.Username)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -136,7 +139,7 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text(text = "Email") },
+                    label = { Text(text = stringResource(id = R.string.Email)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -147,7 +150,7 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text(text = stringResource(id = R.string.Password)) },
                     singleLine = true,
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -171,7 +174,7 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = { Text(" Confirm Password") },
+                    label = { Text(text = stringResource(id = R.string.ConfirmPassword)) },
                     singleLine = true,
                     visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -195,7 +198,7 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = address,
                     onValueChange = { address = it },
-                    label = { Text(text = "Address") },
+                    label = { Text(text = stringResource(id = R.string.Address)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -206,7 +209,7 @@ fun SignupView(navController: NavController) {
                 OutlinedTextField(
                     value = birthDate,
                     onValueChange = {},
-                    label = { Text(text = "Birthdate") },
+                    label = { Text(text = stringResource(id = R.string.Birthdate)) },
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
                     trailingIcon = {
@@ -224,7 +227,7 @@ fun SignupView(navController: NavController) {
                     OutlinedTextField(
                         value = selectedGender,
                         onValueChange = {},
-                        label = { Text(text = "Gender") },
+                        label = { Text(text = stringResource(id = R.string.Gender)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { expanded = true },
@@ -269,7 +272,7 @@ fun SignupView(navController: NavController) {
                     shape = RoundedCornerShape(30.dp),
                     colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                 ) {
-                    Text(text = "SignUp", fontSize = 18.sp, color = Color(0xFFFFA500))
+                    Text(text = stringResource(id = R.string.Signup), fontSize = 18.sp, color = Color(0xFFFFA500))
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }

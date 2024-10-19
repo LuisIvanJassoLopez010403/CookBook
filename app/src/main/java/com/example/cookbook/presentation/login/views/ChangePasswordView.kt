@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -48,7 +49,7 @@ fun ChangePasswordView(navController: NavController) {
     ) {
         TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
             Text(
-                text = "< Back",
+                text = "< " + stringResource(id = R.string.Back),
                 fontSize = 18.sp,
                 color = Color(0xFFFFA500),
                 modifier = Modifier,
@@ -68,7 +69,7 @@ fun ChangePasswordView(navController: NavController) {
 
         //Image Logo
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo3),
+            painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
                 .size(250.dp)
@@ -80,7 +81,7 @@ fun ChangePasswordView(navController: NavController) {
 
         // Titulo de Vista
         Text(
-            text = "Change Password",
+            text = stringResource(id = R.string.Changepasswd),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -91,7 +92,7 @@ fun ChangePasswordView(navController: NavController) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(" New Password") },
+            label = { Text(text = stringResource(id = R.string.Newpasswd)) },
             singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -115,7 +116,7 @@ fun ChangePasswordView(navController: NavController) {
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text(" Confirm Password") },
+            label = { Text(text = stringResource(id = R.string.Confirmnewpasswd)) },
             singleLine = true,
             visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -148,7 +149,7 @@ fun ChangePasswordView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Change Password", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = stringResource(id = R.string.Changepasswd), fontSize = 18.sp, color = Color(0xFFFFA500))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }

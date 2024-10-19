@@ -5,7 +5,7 @@
     <string name="ShareandFindRecipes">Comparte y Encuentra Recetas</string>
     <string name="FirstOnboardingDescription">Comparte tus recetas con el\nmundo o encuentra tu\npróxima comida favorita\nexplorando los perfiles de\notros usuarios.</string>
     <string name="Skip">Saltar</string>
-    <string name="Back">Atras</string>
+    <string name="Back">Atrás</string>
     <string name="Next">Siguiente</string>
     <string name="gstarted">Comenzar</string>
     //Second Onboarding View
@@ -14,6 +14,28 @@
     //Third Onboarding View
     <string name="CreLists">Crea Listas</string>
     <string name="ThirdOnboardingDescription">Guarda tus recetas favoritas y\ncrea tus propias listas para\nacomodar cada receta para la\nocasión adecuada.</string>
+    //Signup View
+    <string name="Signup">Registrarse</string>
+    <string name="Username">Usuario</string>
+    <string name="Email">Correo</string>
+    <string name="Password">Contraseña</string>
+    <string name="ConfirmPassword">Confirmar Contraseña</string>
+    <string name="Address">Dirección</string>
+    <string name="Birthdate">Día de Nacimiento</string>
+    <string name="Gender">Género</string>
+    <string name="GenderOp1">Masculino</string>
+    <string name="GenderOp2">Femenino</string>
+    <string name="GenderOp3">Otro</string>
+    //Login View
+    <string name="Login">Iniciar sesión</string>
+    <string name="Forgotpasswd">¿Olvidaste tu contraseña?</string>
+    <string name="Verificationcode">Código de verificación</string>
+    <string name="Sendverificationcode">Enviar Código de Verificación</string>
+    <string name="Verificationcodetext">Se envió un código de verificación al\ncorreo electrónico vinculado a su cuenta.</string>
+    <string name="Verifybtn">Verificar</string>
+    <string name="Changepasswd">Cambiar Contraseña</string>
+    <string name="Newpasswd">Nueva Contraseña</string>
+    <string name="Confirmnewpasswd">Confirmar Nueva Contraseña</string>
     //initialSearch
     <string name="Search">Search</string>
 </resources>

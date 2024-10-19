@@ -13,6 +13,28 @@
     //Third Onboarding View
     <string name="CreLists">Create Lists</string>
     <string name="ThirdOnboardingDescription">Save your favorite recipes\nand create your own lists to\naccommodate each recipe for\nthe right occasion.</string>
+    //Signup View
+    <string name="Signup">Sign Up</string>
+    <string name="Username">Username</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="ConfirmPassword">Confirm Password</string>
+    <string name="Address">Address</string>
+    <string name="Birthdate">Birthdate</string>
+    <string name="Gender">Gender</string>
+    <string name="GenderOp1">Male</string>
+    <string name="GenderOp2">Female</string>
+    <string name="GenderOp3">Other</string>
+    //Login View
+    <string name="Login">Login</string>
+    <string name="Forgotpasswd">Forgot your password?</string>
+    <string name="Verificationcode">Verification code</string>
+    <string name="Sendverificationcode">Send Verification Code</string>
+    <string name="Verificationcodetext">A verification code has been sent to\nthe email linked to your account.</string>
+    <string name="Verifybtn">Verify</string>
+    <string name="Changepasswd">Change Password</string>
+    <string name="Newpasswd">New Password</string>
+    <string name="Confirmnewpasswd">Confirm New Password</string>
     //initialSearch
     <string name="Search">Search</string>
 </resources>

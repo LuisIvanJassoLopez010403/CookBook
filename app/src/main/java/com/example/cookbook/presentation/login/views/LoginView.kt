@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
@@ -47,7 +48,7 @@ fun LoginView(navController: NavController) {
     ) {
         TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
             Text(
-                text = "< Back",
+                text = "< " + stringResource(id = R.string.Back),
                 fontSize = 18.sp,
                 color = Color(0xFFFFA500),
                 modifier = Modifier,
@@ -67,7 +68,7 @@ fun LoginView(navController: NavController) {
 
         //Image Logo
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo3),
+            painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
                 .size(250.dp)
@@ -79,7 +80,7 @@ fun LoginView(navController: NavController) {
 
         // Titulo de Vista
         Text(
-            text = "Login",
+            text = stringResource(id = R.string.Login),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -90,7 +91,7 @@ fun LoginView(navController: NavController) {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text(text = "Username") },
+            label = { Text(text = stringResource(id = R.string.Username)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier.fillMaxWidth()
         )
@@ -101,7 +102,7 @@ fun LoginView(navController: NavController) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(text = stringResource(id = R.string.Password)) },
             singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -124,7 +125,7 @@ fun LoginView(navController: NavController) {
         // TextButton para iniciar proceso de recuperacion de contrasena
         TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
             Text(
-                text = "Forgot your password?",
+                text = stringResource(id = R.string.Forgotpasswd),
                 fontSize = 18.sp,
                 color = Color(0xFFFFA500),
                 modifier = Modifier,
@@ -147,7 +148,7 @@ fun LoginView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = stringResource(id = R.string.Login), fontSize = 18.sp, color = Color(0xFFFFA500))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
