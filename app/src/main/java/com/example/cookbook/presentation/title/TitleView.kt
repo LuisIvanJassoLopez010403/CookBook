@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +43,7 @@ fun TitleView(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo3),
+            painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
                 .size(350.dp)
@@ -62,7 +63,7 @@ fun TitleView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Sign Up", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = stringResource(id = R.string.Signup), fontSize = 18.sp, color = Color(0xFFFFA500))
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -77,7 +78,7 @@ fun TitleView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFA500))
         ) {
-            Text(text = "Login", fontSize = 18.sp, color = Color(0xFFFFFFFF))
+            Text(text = stringResource(id = R.string.Login), fontSize = 18.sp, color = Color(0xFFFFFFFF))
         }
     }
 }

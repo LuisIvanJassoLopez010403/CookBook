@@ -41,7 +41,7 @@ fun VerificationCodeView(navController: NavController) {
     ) {
         TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
             Text(
-                text = "< Back",
+                text = "< " + stringResource(id = R.string.Back),
                 fontSize = 18.sp,
                 color = Color(0xFFFFA500),
                 modifier = Modifier,
@@ -61,7 +61,7 @@ fun VerificationCodeView(navController: NavController) {
 
         //Image Logo
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo3),
+            painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
                 .size(250.dp)
@@ -73,7 +73,7 @@ fun VerificationCodeView(navController: NavController) {
 
         // Titulo de Vista
         Text(
-            text = "Forgot your Password?",
+            text = stringResource(id = R.string.Forgotpasswd),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -82,7 +82,7 @@ fun VerificationCodeView(navController: NavController) {
 
         // Instrucciones
         Text(
-            text = "A verification code has been sent to\nthe email linked to your account.",
+            text = stringResource(id = R.string.Verificationcodetext),
             fontSize = 20.sp,
             color = Color.Black,
             textAlign = TextAlign.Center
@@ -94,7 +94,7 @@ fun VerificationCodeView(navController: NavController) {
         OutlinedTextField(
             value = verificationcode,
             onValueChange = { verificationcode = it },
-            label = { Text(text = "Verification Code") },
+            label = { Text(text = stringResource(id = R.string.Verificationcode)) },
             placeholder = { Text(text = "XXXXXX",color = Color.Gray)},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
@@ -115,7 +115,7 @@ fun VerificationCodeView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Verify", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = stringResource(id = R.string.Verifybtn), fontSize = 18.sp, color = Color(0xFFFFA500))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +42,7 @@ fun ForgotPasswordView(navController: NavController) {
     ) {
         TextButton(onClick = { navController.navigate(Routes.LoginView) }) {
             Text(
-                text = "< Back",
+                text = "< " + stringResource(id = R.string.Back),
                 fontSize = 18.sp,
                 color = Color(0xFFFFA500),
                 modifier = Modifier,
@@ -61,7 +62,7 @@ fun ForgotPasswordView(navController: NavController) {
 
         //Image Logo
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo3),
+            painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
             modifier = Modifier
                 .size(250.dp)
@@ -73,7 +74,7 @@ fun ForgotPasswordView(navController: NavController) {
 
         // Titulo de Vista
         Text(
-            text = "Forgot your Password?",
+            text = stringResource(id = R.string.Forgotpasswd),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -84,7 +85,7 @@ fun ForgotPasswordView(navController: NavController) {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text(text = "Email") },
+            label = { Text(text = stringResource(id = R.string.Email)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier.fillMaxWidth()
         )
@@ -95,7 +96,7 @@ fun ForgotPasswordView(navController: NavController) {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text(text = "Username") },
+            label = { Text(text = stringResource(id = R.string.Username)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier.fillMaxWidth()
         )
@@ -115,7 +116,7 @@ fun ForgotPasswordView(navController: NavController) {
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = "Send Verification Code", fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(text = stringResource(id = R.string.Sendverificationcode), fontSize = 18.sp, color = Color(0xFFFFA500))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
