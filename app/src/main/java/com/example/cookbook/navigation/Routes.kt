@@ -12,7 +12,7 @@ object Routes {
     var OnboardingView = "OnboardingView"
 
     //Inicio de sesion
-    var TitleView = "TitleView"     //Sib modificar mayusculas
+    var TitleView = "TitleView"     //Sin modificar mayusculas
     var LoginView = "LoginView"     //Sin modificar mayusculas
     var UserView = "UserView"
     var BuscadorinicialView = "BuscadorinicialView"
