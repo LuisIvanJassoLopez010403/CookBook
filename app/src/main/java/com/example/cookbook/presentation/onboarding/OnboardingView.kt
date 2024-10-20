@@ -10,6 +10,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -23,16 +25,23 @@ import androidx.compose.ui.unit.sp
 import com.example.cookbook.R
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cookbook.navigation.Routes
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingView(navController: NavController) {
-
+fun OnboardingView(navController: NavController,onboardingViewModel: OnboardingViewModel = viewModel()) {
     val pager = 3
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
+    val isOnboardingCompleted by onboardingViewModel.isOnboardingCompleted.collectAsState()
+
+    LaunchedEffect(isOnboardingCompleted) {
+        if (isOnboardingCompleted) {
+            navController.navigate(Routes.TitleView)
+        }
+    }
 
     HorizontalPager(
         state = pagerState
@@ -135,7 +144,9 @@ fun OnboardingView(navController: NavController) {
                 .padding(start = 25.dp, end = 25.dp)
         ){
             Button(
-                onClick = { navController.navigate(Routes.TitleView) },
+                onClick = {
+                    navController.navigate(Routes.TitleView)
+                    onboardingViewModel.completeOnboarding()},
                 colors = ButtonDefaults.buttonColors(Color.White),
                 modifier = Modifier
                     .fillMaxWidth()
