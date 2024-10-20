@@ -261,7 +261,7 @@ fun SignupView(navController: NavController) {
 
                 // Boton de SignUp
                 Button(
-                    onClick = { navController.navigate(Routes.TitleView) },
+                    onClick = { navController.navigate(Routes.HomeView) },
                     modifier = Modifier
                         .widthIn(min = 200.dp, max = 300.dp)
                         .align(Alignment.CenterHorizontally)
