@@ -44,7 +44,7 @@ fun MyRecipeView(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
+                TextButton(onClick = { navController.navigate(Routes.HomeView) }) {
                     Text(
                         text = "< Back",
                         fontSize = 18.sp,

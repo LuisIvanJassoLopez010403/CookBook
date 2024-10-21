@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.presentation.Finder.InitialFinderView
+import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
 import com.example.cookbook.presentation.home.view.HomeView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
@@ -72,6 +73,9 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.HomeView) {
                 HomeView(navController)
+            }
+            composable(Routes.AddRecipeView) {
+                AddRecipeView(navController)
             }
         }
     }
