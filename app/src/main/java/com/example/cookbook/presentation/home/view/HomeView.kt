@@ -262,8 +262,7 @@ fun HomeView(navController: NavController) {
                                 modifier = Modifier
                                     .width(211.dp)
                                     .height(357.dp)
-                                    .padding(15.dp)
-                                    .shadow(elevation = 10.dp, shape = RoundedCornerShape(23.dp))
+                                    .padding(10.dp)
                                     .clip(RoundedCornerShape(23.dp))
                                     //Se utiliza este painter para poner la imagen como fondo del box
                                     .paint(painterResource(id = PopularImages[index])) //Se importa la variable de popularImages
@@ -405,7 +404,7 @@ fun HomeView(navController: NavController) {
                                 modifier = Modifier
                                     .width(211.dp)
                                     .height(357.dp)
-                                    .padding(15.dp)
+                                    .padding(10.dp)
                                     .clip(RoundedCornerShape(23.dp))
                                     .paint(painterResource(id = MexicanImages[index]))
                                     .clickable(onClick = {
@@ -542,7 +541,7 @@ fun HomeView(navController: NavController) {
                                 modifier = Modifier
                                     .width(211.dp)
                                     .height(357.dp)
-                                    .padding(15.dp)
+                                    .padding(10.dp)
                                     .clip(RoundedCornerShape(23.dp))
                                     .paint(painterResource(id = DessertsImages[index]))
                                     .clickable(onClick = {
