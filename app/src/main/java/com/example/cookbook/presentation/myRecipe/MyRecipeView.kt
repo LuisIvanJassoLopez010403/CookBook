@@ -189,7 +189,7 @@ fun MyRecipeView(navController: NavController) {
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                 append("2 ")
                             }
-                            append("limones\n")
+                            append("limones.\n\n")
 
                             append("Jugo de ")
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -225,7 +225,7 @@ fun MyRecipeView(navController: NavController) {
 
 
 
-// Apartado de Instrucciones
+                            // Apartado de Instrucciones
                             withStyle(style = SpanStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)) {
                                 append("Instrucciones:\n\n")
                             }
@@ -233,8 +233,7 @@ fun MyRecipeView(navController: NavController) {
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                 append("1.- ")
                             }
-                            append("En una olla grande y pesada, agrega la carne de cerdo y sazona con 1 cucharadita de sal, ajo en polvo y 1 cucharadita de pimienta. Agrega 1 taza de agua. Tapar la olla dejándola ligeramente abierta por un lado. Lleva a ebullición a fuego medio-alto; deja que reduzca un poco el fuego y hierve durante unos 20 minutos o hasta que se haya evaporado toda el agua. (No revuelvas la carne mientras se está cociendo al vapor).\n" +
-                                    "\n\n\n")
+                            append("En una olla grande y pesada, agrega la carne de cerdo y sazona con 1 cucharadita de sal, ajo en polvo y 1 cucharadita de pimienta. Agrega 1 taza de agua. Tapar la olla dejándola ligeramente abierta por un lado. Lleva a ebullición a fuego medio-alto; deja que reduzca un poco el fuego y hierve durante unos 20 minutos o hasta que se haya evaporado toda el agua. (No revuelvas la carne mientras se está cociendo al vapor).\n\n")
 
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                 append("2.- ")
