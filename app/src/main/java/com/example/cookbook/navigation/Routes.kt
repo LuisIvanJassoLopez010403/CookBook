@@ -22,8 +22,8 @@ object Routes {
 
 
     //App views
-    var BuscadorinicialView = "BuscadorinicialView"
     var MyRecipeView = "MyRecipeView"
+    var AddRecipeView = "AddRecipeView"
 
 
 

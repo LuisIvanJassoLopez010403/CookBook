@@ -35,6 +35,111 @@
     <string name="Changepasswd">Change Password</string>
     <string name="Newpasswd">New Password</string>
     <string name="Confirmnewpasswd">Confirm New Password</string>
+    //HomeView
+    //HomeView-CategoriaPopular-Titulos
+    <string name="Pizza">Picza:</string>
+    <string name="Tacos">Tacos:</string>
+    <string name="Hamburger">Hamburger:</string>
+    <string name="HotDog">Hot Dog:</string>
+    <string name="Sushi">Sushi:</string>
+    //HomeView-CategoriaPopular-Ingredients
+    //Picza
+    <string name="Sourdough">Sourdough</string>
+    <string name="Flour">Flour</string>
+    <string name="Salt">Salt</string>
+    <string name="Water">Water</string>
+    <string name="olivoil">Olive oil</string>
+    <string name="Tomato">Tomato</string>
+    <string name="Cheese">Cheese</string>
+    <string name="Pepperoni">Pepperoni</string>
+    //Tacos
+    <string name="Tortilla">Tortilla</string>
+    <string name="Meat">Meat</string>
+    <string name="Onion">Onion</string>
+    <string name="Cilantro">Cilantro</string>
+    <string name="Lime">Lime</string>
+    <string name="Sauce">Sauce</string>
+    <string name="Avocado">Avocado</string>
+    //Hamburger
+    <string name="Bread">Bread</string>
+    <string name="Lettuce">Lettuce</string>
+    <string name="Ketchup">Ketchup</string>
+    <string name="Mustard">Mostaza</string>
+    <string name="Pickles">Pickles</string>
+    //Hot Dog
+    <string name="Sausage">Salchicha</string>
+    <string name="ChiliPeper">Chili Peper</string>
+    //Sushi
+    <string name="Rice">Rice</string>
+    <string name="Seaweed">Seaweed</string>
+    <string name="Salmon">Salmon</string>
+    <string name="Cucumber">Cucumber</string>
+    <string name="Soysauce">Soy Sauce</string>
+    <string name="Wasabi">Wasabi</string>
+    <string name="Ginger">Ginger</string>
+    //HomeView-CategoriaPopular-Descriptions
+    <string name="PiczaDescription">A delicious pizza that can feed up to 4 people, and it\'s very easy to make.</string>
+    <string name="TacosDescription">Homemade tacos al pastor, easy to make and identical to the street food version.</string>
+    <string name="HamburgerDescription">Homemade burger that lets you enjoy a quick and delicious meal.</string>
+    <string name="HotDogDescription">Hot dog that lets you enjoy a quick and delicious homemade meal.</string>
+    <string name="SushiDescription">Homemade sushi that can serve up to 5 people for a delicious dinner.</string>
+    //HomeView-MexicanCategory-Titulos
+    <string name="Chilaquiles">Chilaquiles</string>
+    <string name="Pozole">Pozole</string>
+    <string name="Sopes">Sopes</string>
+    <string name="Molletes">Molletes</string>
+    <string name="Burritos">Burritos</string>
+    //HomeView-MexicanCategory-Ingredients
+    //Chilaquiles
+    <string name="Cream">Cream</string>
+    <string name="Chicken">Chicken</string>
+    //Pozole
+    <string name="Corn">Corn</string>
+    <string name="Radishes">Radishes</string>
+    //Sopes
+    <string name="Dough">Dough</string>
+    <string name="Beans">Beans</string>
+    //Molletes
+    <string name="Chorizo">Chorizo</string>
+    //Burritos
+    //HomeView-MexicanCategory-Descriptions
+    <string name="ChilaquilesDescription">Homemade chilaquiles that let you enjoy a delicious and quick breakfast.</string>
+    <string name="PozoleDescription">Homemade pozole that lets you enjoy a delicious and traditional meal.</string>
+    <string name="SopesDescription">Homemade sopes that let you enjoy a delicious and quick meal.</string>
+    <string name="MolletesDescription">Homemade molletes that let you enjoy a delicious and quick meal.</string>
+    <string name="BurritosDescription">Homemade burritos that let you enjoy a delicious and quick meal.</string>
+    //HomeView-DressesCategory-Titulos
+    <string name="Flan">Flan</string>
+    <string name="Tiramisu">Tiramisu</string>
+    <string name="Brownie">Brownie</string>
+    <string name="Cheesecake">Cheesecake</string>
+    <string name="Cornbread">Cornbread</string>
+    //HomeView-DressesCategory-Ingredients
+    //Flan
+    <string name="Milk">Milk</string>
+    <string name="Eggs">Eggs</string>
+    <string name="Sugar">Sugar</string>
+    <string name="Vanilla">Vanilla</string>
+    <string name="Caramel">Caramel</string>
+    <string name="Gelatin">Gelatina</string>
+    //Tiramisu
+    <string name="Coffee">Coffee</string>
+    <string name="Cocoa">Cocoa</string>
+    //Brownie
+    <string name="Chocolate">Chocolate</string>
+    <string name="Butter">Butter</string>
+    //HomeView-DressesCategory-Descriptions
+    <string name="FlanDescription">Homemade flan that lets you enjoy a delicious and quick dessert.</string>
+    <string name="TiramisuDescription">Homemade tiramisu that lets you enjoy a delicious and quick dessert.</string>
+    <string name="BrownieDescription">Homemade brownie that lets you enjoy a delicious and quick dessert.</string>
+    <string name="CheesecakeDescription">Homemade cheesecake that lets you enjoy a delicious and quick dessert.</string>
+    <string name="CornBreadDescription">Homemade Corn Bread that lets you enjoy a delicious and quick dessert.</string>
+    //HomeView-CategoryTitles
+    <string name="Popular">Popular</string>
+    <string name="Mexican">Mexican</string>
+    <string name="Desserts">Postres</string>
+    <string name="Ingredients">Ingredients:</string>
+    <string name="Description">Description:</string>
     //initialSearch
     <string name="Search">Search</string>
 </resources>

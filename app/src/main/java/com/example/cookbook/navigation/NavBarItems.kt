@@ -20,7 +20,7 @@ val NavBarItems = listOf(
     BarItem(
         title = "Add",
         image = Icons.Filled.Add,
-        route = Routes.LoginView
+        route = Routes.AddRecipeView
     ),
     BarItem(
         title = "User",
