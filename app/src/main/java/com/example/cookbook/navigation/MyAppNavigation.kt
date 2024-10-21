@@ -34,7 +34,7 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
 
     // Decidir cuál será el destino inicial
     if (isOnboardingCompleted == null) {
-        // Mientras se determina el estado, mostrar una pantalla de carga
+    // Mientras se determina el estado, mostrar una pantalla de carga
         LoadingScreen()
     } else {
         val startDestination = if (isOnboardingCompleted == true) Routes.TitleView else Routes.OnboardingView
