@@ -10,8 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.navigation.MyAppNavigationView
+import com.example.cookbook.presentation.home.view.HomeView
 import com.example.cookbook.ui.theme.CookBookTheme
+
 //Clase principal
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
