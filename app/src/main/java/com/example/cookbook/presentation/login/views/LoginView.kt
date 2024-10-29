@@ -31,14 +31,21 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.presentation.login.viewmodels.LoginViewModel
+import com.example.cookbook.presentation.login.viewmodels.LoginViewModelFactory
+import com.google.android.gms.common.config.GservicesValue.value
 
 @Composable
 fun LoginView(navController: NavController) {
+
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
+
     //Variables de TextFields
-    var username by remember { mutableStateOf(TextFieldValue("")) }
+    var username by remember { mutableStateOf(TextFieldValue(""))}
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -137,7 +144,7 @@ fun LoginView(navController: NavController) {
 
         // Boton de Login
         Button(
-            onClick = { navController.navigate(Routes.HomeView) },
+            onClick = { loginViewModel.doLogin(username.text, password.text) },
             modifier = Modifier
                 .shadow(10.dp, RoundedCornerShape(25.dp))
                 .widthIn(min = 200.dp, max = 300.dp)
