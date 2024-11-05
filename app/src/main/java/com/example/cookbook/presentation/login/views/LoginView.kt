@@ -1,5 +1,7 @@
 package com.example.cookbook.presentation.login.views
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -44,10 +47,27 @@ fun LoginView(navController: NavController) {
 
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
 
+    val context = LocalContext.current
+
+    loginViewModel.loginResponse.message
     //Variables de TextFields
     var username by remember { mutableStateOf(TextFieldValue(""))}
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
+
+
+    if(loginViewModel.state != 0) {
+        if (loginViewModel.loginResponse.isSuccess) {
+            //Toast.makeText(context,"Login exitoso",Toast.LENGTH_SHORT).show()
+            navController.navigate(Routes.HomeView)
+            loginViewModel.state = 0
+        } else {
+            Toast.makeText(context,"Contrasena incorrecta",Toast.LENGTH_SHORT).show()
+            loginViewModel.state = 0
+        }
+    }
+
+
 
     // TextButton para regresar a pantalla de inicio
     Row(
@@ -84,6 +104,10 @@ fun LoginView(navController: NavController) {
         )
 
         Spacer(modifier = Modifier.height(20.dp))
+
+        if(loginViewModel.isLoading) {
+            CircularProgressIndicator(color = Color.Blue)
+        }
 
         // Titulo de Vista
         Text(
