@@ -12,22 +12,24 @@ import com.example.cookbook.UserRepository
 import kotlinx.coroutines.launch
 
 class LoginViewModel (val userRepository: UserRepository) : ViewModel() {
-    var loginResponse: LoginResponse by mutableStateOf(LoginResponse("", ""))
+    var loginResponse: LoginResponse by mutableStateOf(LoginResponse("", "",false))
     var isLoading: Boolean by mutableStateOf(false)
     var state: Int by mutableStateOf(0)
 
     fun doLogin(username: String, password: String){
+        isLoading = true
         viewModelScope.launch {
             try {
                 loginResponse = userRepository.doLogin(User(username, password))
                 state = 1
                 loginResponse.message = "Login exitoso"
+                loginResponse.isSuccess = true
                 isLoading = false
             }
             catch (exception: Exception){
                 state = 1
                 loginResponse.message = "Error en el login"
-                loginResponse.message = "ocurrio error"
+                loginResponse.isSuccess = false
                 isLoading = false
             }
         }
