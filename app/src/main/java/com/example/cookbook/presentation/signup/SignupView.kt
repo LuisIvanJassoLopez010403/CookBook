@@ -54,11 +54,11 @@ fun SignupView(navController: NavController) {
     var birthDate by remember { mutableStateOf("") }
 
     //Calendario para fecha de nacimiento
-    val calendar = Calendar.getInstance()
-    val datePickerDialog = DatePickerDialog(
+    val calendar = Calendar.getInstance() //CAlendar para obtener la fecha actual del sistema, inicializa el DatePickerDialog
+    val datePickerDialog = DatePickerDialog(      //Se utiliza DatePickerDialog, interfaz que permite a los usuarios seleccionar dia, mes y año
         navController.context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            birthDate = "$dayOfMonth/${month + 1}/$year"
+            birthDate = "$dayOfMonth/${month + 1}/$year"               //Agrupa los valores seleccionados, el mes se maneja de 0 a 11 por eso el +1
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
     )
 
@@ -84,6 +84,7 @@ fun SignupView(navController: NavController) {
             )
         }
     }
+            //Diseño de la pantalla
 
     Column(
         modifier = Modifier
@@ -149,13 +150,13 @@ fun SignupView(navController: NavController) {
                 //TextField de Password
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = { password = it }, //Por cada caracter ingresado el lambda se ejecuta
                     label = { Text(text = stringResource(id = R.string.Password)) },
-                    singleLine = true,
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    singleLine = true,          //Para que tod0 se ejecute en una misma linea, mostrarselo a Jimenez para el apartado de ingredientes
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(), //Para que se vea o no la contraseña con puntitos, si es true utiliza el "VisualTransformation.None" que muestra la contraseña, si es false la oculta con "PasswordVisualTransformation"
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier.fillMaxWidth(),
-                    trailingIcon = {
+                    trailingIcon = {                            //Icono de la derecha para mostrar la contraseña
                         val image = if (passwordVisible)
                             Icons.Filled.Visibility
                         else Icons.Filled.VisibilityOff
