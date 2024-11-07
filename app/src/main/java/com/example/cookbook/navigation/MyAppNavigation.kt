@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.presentation.Finder.InitialFinderView
+import com.example.cookbook.presentation.finder.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
 import com.example.cookbook.presentation.home.view.HomeView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
