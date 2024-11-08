@@ -1,10 +1,10 @@
 package com.example.cookbook
 
-object UserRepository {
+object LoginBodyRepository {
 
     val apiService = RetrofitClientInstance.apiService
 
-    suspend fun doLogin(user: User): LoginResponse {
+    suspend fun doLogin(user: LoginBody): LoginResponse {
         return apiService.login(user)
     }
 }

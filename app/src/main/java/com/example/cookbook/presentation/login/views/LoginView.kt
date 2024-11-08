@@ -44,21 +44,21 @@ import com.google.android.gms.common.config.GservicesValue.value
 
 @Composable
 fun LoginView(navController: NavController) {
-
+    //Variables de ViewModel
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
-
-    val context = LocalContext.current
-
     loginViewModel.loginResponse.message
+
     //Variables de TextFields
     var username by remember { mutableStateOf(TextFieldValue(""))}
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
 
+    //Variable de Toast
+    val context = LocalContext.current
 
+    // ViewModel Logica
     if(loginViewModel.state != 0) {
         if (loginViewModel.loginResponse.isSuccess) {
-            //Toast.makeText(context,"Login exitoso",Toast.LENGTH_SHORT).show()
             navController.navigate(Routes.HomeView)
             loginViewModel.state = 0
         } else {
@@ -66,8 +66,6 @@ fun LoginView(navController: NavController) {
             loginViewModel.state = 0
         }
     }
-
-
 
     // TextButton para regresar a pantalla de inicio
     Row(
