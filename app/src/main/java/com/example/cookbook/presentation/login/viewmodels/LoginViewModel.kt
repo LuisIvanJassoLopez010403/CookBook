@@ -6,12 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.LoginBody
+import com.example.cookbook.LoginBodyRepository
 import com.example.cookbook.LoginResponse
-import com.example.cookbook.User
-import com.example.cookbook.UserRepository
 import kotlinx.coroutines.launch
 
-class LoginViewModel (val userRepository: UserRepository) : ViewModel() {
+class LoginViewModel (val loginbodyRepository: LoginBodyRepository) : ViewModel() {
     var loginResponse: LoginResponse by mutableStateOf(LoginResponse("", "",false))
     var isLoading: Boolean by mutableStateOf(false)
     var state: Int by mutableStateOf(0)
@@ -20,7 +20,7 @@ class LoginViewModel (val userRepository: UserRepository) : ViewModel() {
         isLoading = true
         viewModelScope.launch {
             try {
-                loginResponse = userRepository.doLogin(User(username, password))
+                loginResponse = loginbodyRepository.doLogin(LoginBody(username, password))
                 state = 1
                 loginResponse.message = "Login exitoso"
                 loginResponse.isSuccess = true
@@ -40,7 +40,7 @@ class LoginViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(UserRepository) as T
+            return LoginViewModel(LoginBodyRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
