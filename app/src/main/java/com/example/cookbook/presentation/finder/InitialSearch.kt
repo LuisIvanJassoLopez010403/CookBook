@@ -1,4 +1,4 @@
-package com.example.cookbook.presentation.Finder
+package com.example.cookbook.presentation.finder
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
