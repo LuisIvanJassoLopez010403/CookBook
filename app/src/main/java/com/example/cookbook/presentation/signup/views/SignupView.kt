@@ -1,7 +1,8 @@
-package com.example.cookbook.presentation.signup
+package com.example.cookbook.presentation.signup.views
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -31,27 +32,37 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.presentation.signup.viewmodels.SignupViewModel
+import com.example.cookbook.presentation.signup.viewmodels.SignupViewModelFactory
 import java.util.*
 
 @Composable
 fun SignupView(navController: NavController) {
+    //Variables de ViewModel
+    val signupViewModel: SignupViewModel = viewModel(factory = SignupViewModelFactory())
+    signupViewModel.signupResponse.message
+
     //Variables de TextFields
-    var username by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
+    var username by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
-    var address by remember { mutableStateOf(TextFieldValue("")) }
     var birthDate by remember { mutableStateOf("") }
+
+    //Variable de Toast
+    val context = LocalContext.current
 
     //Calendario para fecha de nacimiento
     val calendar = Calendar.getInstance() //CAlendar para obtener la fecha actual del sistema, inicializa el DatePickerDialog
@@ -69,6 +80,17 @@ fun SignupView(navController: NavController) {
     val genderOption2 = stringResource(id = R.string.GenderOp2)
     val genderOption3 = stringResource(id = R.string.GenderOp3)
     val genderOptions = listOf(genderOption1,genderOption2,genderOption3)
+
+    // ViewModel Logica
+    if(signupViewModel.state != 0) {
+        if (signupViewModel.signupResponse.isSuccess) {
+            navController.navigate(Routes.LoginView)
+            signupViewModel.state = 0
+        } else {
+            Toast.makeText(context,"Este usuario ya existe", Toast.LENGTH_SHORT).show()
+            signupViewModel.state = 0
+        }
+    }
 
     // TextButton para regresar a pantalla de inicio
     Row(
@@ -125,23 +147,23 @@ fun SignupView(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                //TextField de username
-                OutlinedTextField(
-                    value = username,
-                    onValueChange = { username = it },
-                    label = { Text(text = stringResource(id = R.string.Username)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
                 //TextField de Email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
                     label = { Text(text = stringResource(id = R.string.Email)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                //TextField de username
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text(text = stringResource(id = R.string.Username)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -194,15 +216,6 @@ fun SignupView(navController: NavController) {
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
-
-                // TextField de Address
-                OutlinedTextField(
-                    value = address,
-                    onValueChange = { address = it },
-                    label = { Text(text = stringResource(id = R.string.Address)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier.fillMaxWidth()
-                )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -262,7 +275,13 @@ fun SignupView(navController: NavController) {
 
                 // Boton de SignUp
                 Button(
-                    onClick = { navController.navigate(Routes.HomeView) },
+                    onClick = {
+                        if (password.text == confirmPassword.text) {
+                            signupViewModel.doSignup(email.text, username.text, password.text, birthDate, selectedGender)
+                        } else {
+                            Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     modifier = Modifier
                         .widthIn(min = 200.dp, max = 300.dp)
                         .align(Alignment.CenterHorizontally)
