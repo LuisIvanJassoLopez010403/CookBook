@@ -41,25 +41,37 @@ fun ThirdOnboardingView() {
                     .size(300.dp),
                 contentScale = ContentScale.FillBounds
             )
+        }
 
-            Spacer(modifier = Modifier.height(95.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(y = 100.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(Color(0xFFF6F6F6)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                Text(
+                    text = stringResource(id = R.string.CreLists),
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF9800),
+                    textAlign = TextAlign.Center
+                )
 
-            Text(
-                text = stringResource(id = R.string.CreLists),
-                fontSize = 35.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFFFF9800),
-                textAlign = TextAlign.Center
-            )
+                Spacer(modifier = Modifier.height(35.dp))
 
-            Spacer(modifier = Modifier.height(35.dp))
-
-            Text(
-                text = stringResource(id = R.string.secdescription),
-                fontSize = 20.sp,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            )
+                Text(
+                    text = stringResource(id = R.string.secdescription),
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -101,13 +103,14 @@ fun InitialFinderView(navController: NavController) {
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxHeight(0.83f)
+                    .align(Alignment.BottomCenter),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Column(
                     modifier = Modifier
                         .width(364.dp)
-                        .height(550.dp)
+                        .fillMaxHeight()
                         .border(
                             1.5.dp, Color(0xFFFFA500),
                             RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
@@ -148,7 +151,14 @@ fun InitialFinderView(navController: NavController) {
                                                 .background(Color.Transparent, CircleShape)
                                                 .align(Alignment.TopCenter)
                                         ){
-
+                                            Icon(
+                                                imageVector = Icons.Filled.Home,
+                                                contentDescription = "Category",
+                                                tint = Color(0xFF000000),
+                                                modifier = Modifier
+                                                    .size(50.dp)
+                                                    .align(Alignment.Center)
+                                            )
                                         }
 
                                         Box(
