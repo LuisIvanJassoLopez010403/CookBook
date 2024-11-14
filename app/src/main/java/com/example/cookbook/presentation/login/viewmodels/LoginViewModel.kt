@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cookbook.LoginBody
-import com.example.cookbook.LoginBodyRepository
-import com.example.cookbook.LoginResponse
+import com.example.cookbook.presentation.login.models.LoginBody
+import com.example.cookbook.presentation.login.network.LoginBodyRepository
+import com.example.cookbook.presentation.login.models.LoginResponse
 import kotlinx.coroutines.launch
 
 class LoginViewModel (val loginbodyRepository: LoginBodyRepository) : ViewModel() {

@@ -1,4 +1,4 @@
-package com.example.cookbook
+package com.example.cookbook.presentation.login.models
 
 data class LoginResponse(
     var message: String,

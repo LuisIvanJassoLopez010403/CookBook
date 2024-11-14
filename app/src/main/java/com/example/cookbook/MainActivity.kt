@@ -14,11 +14,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.navigation.MyAppNavigationView
 import com.example.cookbook.presentation.home.view.HomeView
 import com.example.cookbook.ui.theme.CookBookTheme
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 
 //Clase principal
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Firebase.messaging.isAutoInitEnabled = true
         setContent {
             CookBookTheme {
                 Surface(

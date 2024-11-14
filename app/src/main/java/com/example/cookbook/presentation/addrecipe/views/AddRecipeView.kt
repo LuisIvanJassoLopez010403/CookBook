@@ -73,6 +73,10 @@ fun AddRecipeView(navController: NavController) {
     val ingredientOption3 = "Basil"
     val ingredientOptions = listOf(ingredientOption1, ingredientOption2, ingredientOption3)
 
+    val unitOptions = listOf("Gramos", "Litros", "Onzas", "Cucharadas")
+    var ingredientUnits by remember { mutableStateOf(mutableMapOf<String, String>()) }
+    var ingredientQuantities by remember { mutableStateOf(mutableMapOf<String, String>()) }
+
     // Variables de Dropdown Menu de Categoria
     var expandedCategories by remember { mutableStateOf(false) }
     var selectedCategory by remember { mutableStateOf("") }
@@ -207,9 +211,8 @@ fun AddRecipeView(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Dropdown Menu
+                // Modificación de la sección de ingredientes
                 Box {
-                    //TextField de Dropdown Menu
                     OutlinedTextField(
                         value = selectedIngredients.joinToString(", "),
                         onValueChange = {},
@@ -226,7 +229,6 @@ fun AddRecipeView(navController: NavController) {
                         }
                     )
 
-                    // Opciones de Dropdown Menu
                     DropdownMenu(
                         expanded = expandedIngredients,
                         onDismissRequest = { expandedIngredients = false },
@@ -238,11 +240,69 @@ fun AddRecipeView(navController: NavController) {
                                 onClick = {
                                     if (selectedIngredients.contains(ingredient)) {
                                         selectedIngredients = selectedIngredients - ingredient
+                                        ingredientUnits.remove(ingredient)
+                                        ingredientQuantities.remove(ingredient)
                                     } else {
                                         selectedIngredients = selectedIngredients + ingredient
+                                        ingredientUnits[ingredient] = ""
+                                        ingredientQuantities[ingredient] = ""
                                     }
                                 }
                             )
+                        }
+                    }
+                }
+
+                //
+                selectedIngredients.forEach { ingredient ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = ingredient, modifier = Modifier.weight(1f))
+
+                        // TextField de cantidad
+                        OutlinedTextField(
+                            value = ingredientQuantities[ingredient] ?: "",
+                            onValueChange = { quantity -> ingredientQuantities[ingredient] = quantity },
+                            label = { Text("Cantidad") },
+                            shape = RoundedCornerShape(15.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.width(120.dp)
+                        )
+
+                        // Dropdown de unidades
+                        var expandedUnit by remember { mutableStateOf(false) }
+                        Box {
+                            OutlinedTextField(
+                                value = ingredientUnits[ingredient] ?: "",
+                                onValueChange = {},
+                                label = { Text("Unidad") },
+                                shape = RoundedCornerShape(15.dp),
+                                modifier = Modifier
+                                    .width(120.dp)
+                                    .clickable { expandedUnit = true },
+                                readOnly = true,
+                                trailingIcon = {
+                                    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                                }
+                            )
+
+                            DropdownMenu(
+                                expanded = expandedUnit,
+                                onDismissRequest = { expandedUnit = false }
+                            ) {
+                                unitOptions.forEach { unit ->
+                                    DropdownMenuItem(
+                                        text = { Text(unit) },
+                                        onClick = {
+                                            ingredientUnits[ingredient] = unit
+                                            expandedUnit = false
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
