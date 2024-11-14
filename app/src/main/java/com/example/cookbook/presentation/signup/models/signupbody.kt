@@ -5,4 +5,5 @@ data class SignupBody(
     val username: String,
     val password: String,
     val birthdate: String,
-    val gender: String)
+    val gender: String
+)
