@@ -5,3 +5,5 @@ data class LoginResponse(
     var token: String,
     var isSuccess: Boolean
 )
+
+

@@ -54,7 +54,7 @@ fun MyRecipeView(navController: NavController) {
                     )
                 }
 
-                // Botón "Edit"
+                // Botón "Edit"    Navegar hasta una pantalla nueva de edicion
                 Button(
                     onClick = { /* Acción de edición */ }, // Navega hasta la pantalla de edición del usuario.
                     colors = ButtonDefaults.buttonColors(Color(0xFFFF9800)),
