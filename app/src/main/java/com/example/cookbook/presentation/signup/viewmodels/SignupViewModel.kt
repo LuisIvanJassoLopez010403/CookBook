@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cookbook.SignupBody
-import com.example.cookbook.SignupBodyRepository
-import com.example.cookbook.SignupResponse
+import com.example.cookbook.presentation.signup.models.SignupBody
+import com.example.cookbook.presentation.signup.network.SignupBodyRepository
+import com.example.cookbook.presentation.signup.models.SignupResponse
 import kotlinx.coroutines.launch
 
 class SignupViewModel (val signupBodyRepository: SignupBodyRepository) : ViewModel() {

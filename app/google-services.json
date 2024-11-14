@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1075701631325",
+    "project_id": "cookbook-68898",
+    "storage_bucket": "cookbook-68898.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075701631325:android:1af40cb5d8f1fcd962c0b4",
+        "android_client_info": {
+          "package_name": "com.example.cookbook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4jkQNrhqrg2Dnmt-DXOB5om0WMD3xkxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
