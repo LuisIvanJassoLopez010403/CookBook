@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -104,12 +106,13 @@ fun InitialFinderView(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight(0.83f)
+                    .fillMaxWidth(0.91f)
                     .align(Alignment.BottomCenter),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Column(
                     modifier = Modifier
-                        .width(364.dp)
+                        .fillMaxWidth()
                         .fillMaxHeight()
                         .border(
                             1.5.dp, Color(0xFFFFA500),
@@ -187,6 +190,37 @@ fun InitialFinderView(navController: NavController) {
                                 }
                             }
                         }
+                    }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight(0.15f)
+                    .fillMaxWidth(0.91f)
+                    .background(Color.Black.copy(alpha = 0.20f))
+                    .align(Alignment.BottomCenter),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(start = 25.dp, end = 25.dp)
+                ){
+                    Button(
+                        onClick = {},
+                        colors = ButtonDefaults.buttonColors(Color.White),
+                        modifier = Modifier
+                            .fillMaxWidth(0.45f)
+                            .fillMaxHeight(0.45f)
+                            .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
+                            .shadow(10.dp, RoundedCornerShape(25.dp))
+                    ) {
+                        Text(
+                            text = "Search",
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFFA500),
+                            fontSize = 23.sp,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
