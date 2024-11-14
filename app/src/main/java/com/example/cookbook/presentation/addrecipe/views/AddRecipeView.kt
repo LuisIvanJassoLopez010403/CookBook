@@ -1,8 +1,6 @@
 package com.example.cookbook.presentation.addrecipe.views
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,13 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -33,7 +31,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -64,6 +60,7 @@ fun AddRecipeView(navController: NavController) {
     var preptime by remember { mutableIntStateOf(0) }
     var description by remember { mutableStateOf(TextFieldValue("")) }
     var steps by remember { mutableStateOf(TextFieldValue("")) }
+    var ingredientQuantities by remember { mutableStateOf(mutableMapOf<String, String>()) }
 
     // Variables de Dropdown Menu de Ingredientes
     var expandedIngredients by remember { mutableStateOf(false) }
@@ -73,9 +70,9 @@ fun AddRecipeView(navController: NavController) {
     val ingredientOption3 = "Basil"
     val ingredientOptions = listOf(ingredientOption1, ingredientOption2, ingredientOption3)
 
-    val unitOptions = listOf("Gramos", "Litros", "Onzas", "Cucharadas")
+    // Variables de Dropdown Menu de Unidades
     var ingredientUnits by remember { mutableStateOf(mutableMapOf<String, String>()) }
-    var ingredientQuantities by remember { mutableStateOf(mutableMapOf<String, String>()) }
+    val unitOptions = listOf("Gramos", "Litros", "Onzas", "Cucharadas")
 
     // Variables de Dropdown Menu de Categoria
     var expandedCategories by remember { mutableStateOf(false) }
@@ -89,18 +86,16 @@ fun AddRecipeView(navController: NavController) {
         content = { innerPadding ->
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
                     .fillMaxWidth()
-                    .padding(innerPadding)
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(innerPadding),
             ) {
                 Row(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 10.dp, end = 10.dp)
+                        .padding(end = 15.dp, top = 10.dp)
                 ) {
                     Text(
                         text = "CookBook",
@@ -112,231 +107,250 @@ fun AddRecipeView(navController: NavController) {
                     )
                 }
 
-                //TextField de recipeName
-                OutlinedTextField(
-                    value = recipeName,
-                    onValueChange = { recipeName = it },
-                    label = { Text(text = "Recipe Name") },
-                    shape = RoundedCornerShape(15.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                //Textfield de descripcion
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { description = it },
-                    label = { Text(text = "Description") },
-                    shape = RoundedCornerShape(15.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                //Dropdown Menu
-                Box {
-                    //TextField de Dropdown Menu
-                    OutlinedTextField(
-                        value = selectedCategory,
-                        onValueChange = {},
-                        label = { Text(text = "Category") },
-                        shape = RoundedCornerShape(15.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { expandedCategories = true },
-                        readOnly = true,
-                        trailingIcon = {
-                            IconButton(onClick = { expandedCategories = !expandedCategories }) {
-                                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-                            }
-                        }
-                    )
-
-                    // Opciones de Dropdown Menu
-                    DropdownMenu(
-                        expanded = expandedCategories,
-                        onDismissRequest = { expandedCategories = false },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        categoryOptions.forEach { category ->
-                            DropdownMenuItem(
-                                text = { Text(text = category) },
-                                onClick = {
-                                    selectedCategory = category
-                                    expandedCategories = false
-                                }
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Preparation Time (min)",
-                        fontSize = 16.sp,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    IconButton(onClick = {
-                        if (preptime > 0) preptime -= 5
-                    }) {
-                        Icon(imageVector = Icons.Default.Remove, contentDescription = "Decrease Time")
-                    }
-
-                    OutlinedTextField(
-                        value = preptime.toString(),
-                        onValueChange = {},
-                        readOnly = true,
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                        shape = RoundedCornerShape(15.dp),
-                        modifier = Modifier.width(100.dp),
-                    )
-
-                    IconButton(onClick = {
-                        preptime += 5
-                    }) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = "Increase Time")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Modificación de la sección de ingredientes
-                Box {
-                    OutlinedTextField(
-                        value = selectedIngredients.joinToString(", "),
-                        onValueChange = {},
-                        label = { Text(text = "Ingredients") },
-                        shape = RoundedCornerShape(15.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { expandedIngredients = true },
-                        readOnly = true,
-                        trailingIcon = {
-                            IconButton(onClick = { expandedIngredients = !expandedIngredients }) {
-                                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-                            }
-                        }
-                    )
-
-                    DropdownMenu(
-                        expanded = expandedIngredients,
-                        onDismissRequest = { expandedIngredients = false },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        ingredientOptions.forEach { ingredient ->
-                            DropdownMenuItem(
-                                text = { Text(text = ingredient) },
-                                onClick = {
-                                    if (selectedIngredients.contains(ingredient)) {
-                                        selectedIngredients = selectedIngredients - ingredient
-                                        ingredientUnits.remove(ingredient)
-                                        ingredientQuantities.remove(ingredient)
-                                    } else {
-                                        selectedIngredients = selectedIngredients + ingredient
-                                        ingredientUnits[ingredient] = ""
-                                        ingredientQuantities[ingredient] = ""
-                                    }
-                                }
-                            )
-                        }
-                    }
-                }
-
-                //
-                selectedIngredients.forEach { ingredient ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = ingredient, modifier = Modifier.weight(1f))
-
-                        // TextField de cantidad
-                        OutlinedTextField(
-                            value = ingredientQuantities[ingredient] ?: "",
-                            onValueChange = { quantity -> ingredientQuantities[ingredient] = quantity },
-                            label = { Text("Cantidad") },
-                            shape = RoundedCornerShape(15.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            modifier = Modifier.width(120.dp)
-                        )
-
-                        // Dropdown de unidades
-                        var expandedUnit by remember { mutableStateOf(false) }
-                        Box {
-                            OutlinedTextField(
-                                value = ingredientUnits[ingredient] ?: "",
-                                onValueChange = {},
-                                label = { Text("Unidad") },
-                                shape = RoundedCornerShape(15.dp),
-                                modifier = Modifier
-                                    .width(120.dp)
-                                    .clickable { expandedUnit = true },
-                                readOnly = true,
-                                trailingIcon = {
-                                    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-                                }
-                            )
-
-                            DropdownMenu(
-                                expanded = expandedUnit,
-                                onDismissRequest = { expandedUnit = false }
-                            ) {
-                                unitOptions.forEach { unit ->
-                                    DropdownMenuItem(
-                                        text = { Text(unit) },
-                                        onClick = {
-                                            ingredientUnits[ingredient] = unit
-                                            expandedUnit = false
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                //TextField de pasos
-                OutlinedTextField(
-                    value = steps,
-                    onValueChange = { steps = it },
-                    label = { Text(text = "Steps") },
-                    shape = RoundedCornerShape(15.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                )
-
-                Spacer(modifier = Modifier.height(30.dp))
-
-                //Boton de Agregar Receta
-                Button(
-                    onClick = { },
-                    modifier = Modifier
-                        .widthIn(min = 200.dp, max = 300.dp)
                         .align(Alignment.CenterHorizontally)
-                        .height(50.dp)
-                        .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
-                        .shadow(10.dp, RoundedCornerShape(25.dp)),
-                    border = BorderStroke(1.dp,Color.White),
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
-                ) {
-                    Text(text = "Add Recipe", fontSize = 18.sp, color = Color(0xFFFFA500))
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                ){
+                 item {
+                     //TextField de recipeName
+                     OutlinedTextField(
+                         value = recipeName,
+                         onValueChange = { recipeName = it },
+                         label = { Text(text = "Recipe Name") },
+                         shape = RoundedCornerShape(15.dp),
+                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                         modifier = Modifier.fillMaxWidth()
+                     )
+
+                     Spacer(modifier = Modifier.height(10.dp))
+
+                     //Textfield de descripcion
+                     OutlinedTextField(
+                         value = description,
+                         onValueChange = { description = it },
+                         label = { Text(text = "Description") },
+                         shape = RoundedCornerShape(15.dp),
+                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                         modifier = Modifier
+                             .fillMaxWidth()
+                             .height(150.dp)
+                     )
+
+                     Spacer(modifier = Modifier.height(10.dp))
+
+                     //Dropdown Menu de categorias
+                     Box {
+                         //TextField de categorias
+                         OutlinedTextField(
+                             value = selectedCategory,
+                             onValueChange = {},
+                             label = { Text(text = "Category") },
+                             shape = RoundedCornerShape(15.dp),
+                             modifier = Modifier
+                                 .fillMaxWidth()
+                                 .clickable { expandedCategories = true },
+                             readOnly = true,
+                             trailingIcon = {
+                                 IconButton(onClick = { expandedCategories = !expandedCategories }) {
+                                     Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                                 }
+                             }
+                         )
+
+                         // Opciones de categorias
+                         DropdownMenu(
+                             expanded = expandedCategories,
+                             onDismissRequest = { expandedCategories = false },
+                             modifier = Modifier.fillMaxWidth()
+                         ) {
+                             categoryOptions.forEach { category ->
+                                 DropdownMenuItem(
+                                     text = { Text(text = category) },
+                                     onClick = {
+                                         selectedCategory = category
+                                         expandedCategories = false
+                                     }
+                                 )
+                             }
+                         }
+                     }
+
+                     Spacer(modifier = Modifier.height(10.dp))
+
+                     // Tiempo de preparacion
+                     Row(
+                         verticalAlignment = Alignment.CenterVertically,
+                         modifier = Modifier.fillMaxWidth()
+                     ) {
+                         Text(
+                             text = "Preparation Time (min)",
+                             fontSize = 16.sp,
+                             modifier = Modifier.weight(1f)
+                         )
+
+                         IconButton(onClick = {
+                             if (preptime > 0) preptime -= 5
+                         }) {
+                             Icon(imageVector = Icons.Default.Remove, contentDescription = "Decrease Time")
+                         }
+
+                         OutlinedTextField(
+                             value = preptime.toString(),
+                             onValueChange = {},
+                             readOnly = true,
+                             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                             shape = RoundedCornerShape(15.dp),
+                             modifier = Modifier.width(100.dp),
+                         )
+
+                         IconButton(onClick = {
+                             preptime += 5
+                         }) {
+                             Icon(imageVector = Icons.Default.Add, contentDescription = "Increase Time")
+                         }
+                     }
+
+                     Spacer(modifier = Modifier.height(10.dp))
+
+                     // TextField principal para seleccionar ingredientes
+                     Box {
+                         OutlinedTextField(
+                             value = selectedIngredients.joinToString(", "),
+                             onValueChange = {},
+                             label = { Text(text = "Ingredients") },
+                             shape = RoundedCornerShape(15.dp),
+                             modifier = Modifier
+                                 .fillMaxWidth()
+                                 .clickable { expandedIngredients = true },
+                             readOnly = true,
+                             trailingIcon = {
+                                 IconButton(onClick = { expandedIngredients = !expandedIngredients }) {
+                                     Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                                 }
+                             }
+                         )
+
+                         DropdownMenu(
+                             expanded = expandedIngredients,
+                             onDismissRequest = { expandedIngredients = false },
+                             modifier = Modifier.fillMaxWidth()
+                         ) {
+                             ingredientOptions.forEach { ingredient ->
+                                 DropdownMenuItem(
+                                     text = { Text(text = ingredient) },
+                                     onClick = {
+                                         if (selectedIngredients.contains(ingredient)) {
+                                             selectedIngredients = selectedIngredients - ingredient
+                                             ingredientUnits.remove(ingredient)
+                                             ingredientQuantities.remove(ingredient)
+                                         } else {
+                                             selectedIngredients = selectedIngredients + ingredient
+                                             ingredientUnits[ingredient] = ""
+                                             ingredientQuantities[ingredient] = ""
+                                         }
+                                         expandedIngredients = false
+                                     }
+                                 )
+                             }
+                         }
+                     }
+
+                     selectedIngredients.forEach { ingredient ->
+                         var expandedUnit by remember { mutableStateOf(false) }
+
+                         Row(
+                             modifier = Modifier
+                                 .fillMaxWidth()
+                                 .padding(vertical = 4.dp),
+                             horizontalArrangement = Arrangement.SpaceBetween,
+                             verticalAlignment = Alignment.CenterVertically
+                         ) {
+                             Text(text = ingredient, modifier = Modifier.weight(1f))
+
+                             OutlinedTextField(
+                                 value = ingredientQuantities[ingredient] ?: "",  // Proveer un valor inicial vacío si es null
+                                 onValueChange = { quantity ->
+                                     // Actualizar el mapa `ingredientQuantities` con la cantidad ingresada
+                                     ingredientQuantities = ingredientQuantities.toMutableMap().apply {
+                                         this[ingredient] = quantity
+                                     }
+                                 },
+                                 label = { Text("Cantidad") },
+                                 shape = RoundedCornerShape(15.dp),
+                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                 modifier = Modifier.width(140.dp)
+                             )
+
+                             // Dropdown de unidades para cada ingrediente
+                             Box {
+                                 OutlinedTextField(
+                                     value = ingredientUnits[ingredient] ?: "",
+                                     onValueChange = {},
+                                     label = { Text("Unidad") },
+                                     shape = RoundedCornerShape(15.dp),
+                                     modifier = Modifier.width(140.dp),
+                                     readOnly = true,
+                                     trailingIcon = {
+                                         IconButton(onClick = { expandedUnit = !expandedUnit }) {
+                                             Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                                         }
+                                     }
+                                 )
+
+                                 DropdownMenu(
+                                     expanded = expandedUnit,
+                                     onDismissRequest = { expandedUnit = false }
+                                 ) {
+                                     unitOptions.forEach { unit ->
+                                         DropdownMenuItem(
+                                             text = { Text(unit) },
+                                             onClick = {
+                                                 ingredientUnits[ingredient] = unit
+                                                 expandedUnit = false
+                                             }
+                                         )
+                                     }
+                                 }
+                             }
+                         }
+                     }
+
+                     Spacer(modifier = Modifier.height(10.dp))
+
+                     //TextField de pasos
+                     OutlinedTextField(
+                         value = steps,
+                         onValueChange = { steps = it },
+                         label = { Text(text = "Steps") },
+                         shape = RoundedCornerShape(15.dp),
+                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                         modifier = Modifier
+                             .fillMaxWidth()
+                             .height(150.dp)
+                     )
+
+                     Spacer(modifier = Modifier.height(30.dp))
+
+                     //Boton de Agregar Receta
+                     Button(
+                         onClick = { },
+                         modifier = Modifier
+                             .widthIn(min = 200.dp, max = 300.dp)
+                             .align(Alignment.CenterHorizontally)
+                             .height(50.dp)
+                             .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
+                             .shadow(10.dp, RoundedCornerShape(25.dp)),
+                         border = BorderStroke(1.dp,Color.White),
+                         shape = RoundedCornerShape(30.dp),
+                         colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
+                     ) {
+                         Text(text = "Add Recipe", fontSize = 18.sp, color = Color(0xFFFFA500))
+                     }
+
+                     Spacer(modifier = Modifier.height(10.dp))
+                 }
                 }
             }
         },
