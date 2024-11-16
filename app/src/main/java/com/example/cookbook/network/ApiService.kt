@@ -1,6 +1,7 @@
-package com.example.cookbook
+package com.example.cookbook.network
 
-
+import com.example.cookbook.presentation.addrecipe.models.RecipeBody
+import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
 import com.example.cookbook.presentation.signup.models.SignupBody

@@ -1,4 +1,4 @@
-package com.example.cookbook
+package com.example.cookbook.presentation.addrecipe.models
 
 import com.example.cookbook.Ingredient
 import java.util.Date

@@ -50,12 +50,18 @@ import androidx.navigation.NavController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
+import com.example.cookbook.presentation.addrecipe.viewmodels.AddRecipeViewModel
+import com.example.cookbook.presentation.addrecipe.viewmodels.AddRecipeViewModelFactory
 
 @Composable
 fun AddRecipeView(navController: NavController) {
+    val addRecipeViewModel: AddRecipeViewModel = viewModel(factory = AddRecipeViewModelFactory())
+    addRecipeViewModel.recipeResponse.message
+
     var recipeName by remember { mutableStateOf(TextFieldValue("")) }
     var preptime by remember { mutableIntStateOf(0) }
     var description by remember { mutableStateOf(TextFieldValue("")) }
@@ -84,6 +90,7 @@ fun AddRecipeView(navController: NavController) {
 
     Scaffold(
         content = { innerPadding ->
+            // Logo de app
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -107,11 +114,12 @@ fun AddRecipeView(navController: NavController) {
                     )
                 }
 
+                // Elementos de la vista
                 LazyColumn(
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
                         .fillMaxWidth()
                         .padding(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ){
                  item {
                      //TextField de recipeName
@@ -214,7 +222,7 @@ fun AddRecipeView(navController: NavController) {
 
                      Spacer(modifier = Modifier.height(10.dp))
 
-                     // TextField principal para seleccionar ingredientes
+                     // Dropdown Menu de ingredientes
                      Box {
                          OutlinedTextField(
                              value = selectedIngredients.joinToString(", "),
@@ -232,11 +240,13 @@ fun AddRecipeView(navController: NavController) {
                              }
                          )
 
+                         // Opciones de ingredientes
                          DropdownMenu(
                              expanded = expandedIngredients,
                              onDismissRequest = { expandedIngredients = false },
                              modifier = Modifier.fillMaxWidth()
                          ) {
+                             // Validacion de campos secundarios
                              ingredientOptions.forEach { ingredient ->
                                  DropdownMenuItem(
                                      text = { Text(text = ingredient) },
@@ -260,6 +270,7 @@ fun AddRecipeView(navController: NavController) {
                      selectedIngredients.forEach { ingredient ->
                          var expandedUnit by remember { mutableStateOf(false) }
 
+
                          Row(
                              modifier = Modifier
                                  .fillMaxWidth()
@@ -270,9 +281,8 @@ fun AddRecipeView(navController: NavController) {
                              Text(text = ingredient, modifier = Modifier.weight(1f))
 
                              OutlinedTextField(
-                                 value = ingredientQuantities[ingredient] ?: "",  // Proveer un valor inicial vacío si es null
+                                 value = ingredientQuantities[ingredient] ?: "",
                                  onValueChange = { quantity ->
-                                     // Actualizar el mapa `ingredientQuantities` con la cantidad ingresada
                                      ingredientQuantities = ingredientQuantities.toMutableMap().apply {
                                          this[ingredient] = quantity
                                      }
@@ -282,6 +292,8 @@ fun AddRecipeView(navController: NavController) {
                                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                  modifier = Modifier.width(140.dp)
                              )
+
+                             Spacer(modifier = Modifier.width(5.dp))
 
                              // Dropdown de unidades para cada ingrediente
                              Box {
@@ -328,7 +340,7 @@ fun AddRecipeView(navController: NavController) {
                          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                          modifier = Modifier
                              .fillMaxWidth()
-                             .height(150.dp)
+                             .height(200.dp)
                      )
 
                      Spacer(modifier = Modifier.height(30.dp))
