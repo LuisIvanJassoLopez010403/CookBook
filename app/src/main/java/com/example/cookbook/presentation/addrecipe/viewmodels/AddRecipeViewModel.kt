@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
@@ -18,6 +19,13 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
     var recipeResponse by mutableStateOf(RecipeResponse("",false))
     var state by mutableStateOf(0)
 
+    var categories by mutableStateOf(emptyList<Pair<String, String>>())
+    var selectedCategoryId by mutableStateOf("")
+
+    init {
+        loadCategories()
+    }
+
     // Campos para crear una receta
     var recipeName by mutableStateOf("")
     var description by mutableStateOf("")
@@ -29,9 +37,23 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
     var video by mutableStateOf("")
     var calificacion by mutableStateOf(0.0)
 
+    private fun loadCategories() {
+        viewModelScope.launch {
+            try {
+                categories = CategoryRepository.getCategories()
+            } catch (exception: Exception) {
+                // Manejar errores (opcional)
+                categories = emptyList()
+            }
+        }
+    }
+
     fun addIngredient(id: String, unit: String, amount: Double) {
         ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
     }
+
+
+
 
     fun removeIngredient(index: Int) {
         if (index in ingredients.indices) {
