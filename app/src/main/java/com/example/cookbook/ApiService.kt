@@ -1,6 +1,8 @@
 package com.example.cookbook
 
 
+import com.example.cookbook.presentation.finder.models.SearchBody
+import com.example.cookbook.presentation.finder.models.SearchResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
 import com.example.cookbook.presentation.signup.models.SignupBody
@@ -11,6 +13,7 @@ import retrofit2.http.POST
 private const val END_URL_LOGIN = "cookbook/login"
 private const val END_URL_SIGNUP = "cookbook/signup"
 private const val END_URL_CREATE_RECIPE = "cookbook/create-recipe"
+private const val END_URL_SEARCH_RECIPE = "cookbook/search-recipe"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -21,4 +24,7 @@ interface ApiService {
 
     @POST(END_URL_CREATE_RECIPE)
     suspend fun createRecipe(@Body recipe: RecipeBody): RecipeResponse
+
+    @POST(END_URL_SEARCH_RECIPE)
+    suspend fun searchRecipe(@Body recipe: SearchBody): SearchResponse
 }

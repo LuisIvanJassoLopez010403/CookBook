@@ -1,4 +1,4 @@
-package com.example.cookbook.presentation.finder
+package com.example.cookbook.presentation.finder.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,8 +13,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,12 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -41,11 +37,12 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
-import com.example.cookbook.navigation.Routes
+import com.example.cookbook.presentation.finder.network.FinderBodyRepository
+import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
 
 @Composable
-fun InitialFinderView(navController: NavController) {
-    var text by remember { mutableStateOf("") }
+fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) {
+    var text by remember { viewModel.searchQuery }
     var isClicked by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -93,7 +90,7 @@ fun InitialFinderView(navController: NavController) {
                         value = text,
                         onValueChange = { text = it },
                         modifier = Modifier
-                            .width(365.dp),
+                            .fillMaxWidth(1f),
                         placeholder = {
                             Text(
                                 text = stringResource(id = R.string.Search),
@@ -206,7 +203,10 @@ fun InitialFinderView(navController: NavController) {
                         .padding(start = 25.dp, end = 25.dp)
                 ){
                     Button(
-                        onClick = {},
+                        onClick = {
+                            viewModel.searchRecipes(text)
+                            navController.navigate("SearchView")
+                        },
                         colors = ButtonDefaults.buttonColors(Color.White),
                         modifier = Modifier
                             .fillMaxWidth(0.45f)
@@ -246,8 +246,10 @@ fun LazyColumnHome ( Category: String){
         )
     }
 }
+
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewBuscadorinicialView() {
-    InitialFinderView(rememberNavController())
+    InitialFinderView(rememberNavController(), FinderViewModel(FinderBodyRepository = FinderBodyRepository))
 }
