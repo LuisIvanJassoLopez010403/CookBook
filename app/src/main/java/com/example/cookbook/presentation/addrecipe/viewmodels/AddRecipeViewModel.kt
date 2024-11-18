@@ -1,63 +1,102 @@
 package com.example.cookbook.presentation.addrecipe.viewmodels
+
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
-import com.example.cookbook.RecipeBody
-import com.example.cookbook.RecipeBodyRepository
+import com.example.cookbook.IngredientDetails
+import com.example.cookbook.presentation.addrecipe.models.RecipeBody
+import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
+import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class RecipeViewModel(private val repository: RecipeBodyRepository) : ViewModel() {
+// ViewModel
+class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository) : ViewModel() {
+    var recipeResponse by mutableStateOf(RecipeResponse("",false))
+    var state by mutableStateOf(0)
 
-    // Variables para almacenar los datos de la receta
-    var nameRecipe = mutableStateOf("")
-    var preptime = mutableStateOf("")
-    var ingredients = mutableStateOf(listOf<Ingredient>())
-    var steps = mutableStateOf(listOf<String>())
-    var image = mutableStateOf("")
-    var video = mutableStateOf("")
-    var category = mutableStateOf("")
-    var autor = mutableStateOf("")
-    var calificacion = mutableStateOf(0.0)
-    var fecha = mutableStateOf(Date())
+    var categories by mutableStateOf(emptyList<Pair<String, String>>())
+    var selectedCategoryId by mutableStateOf("")
 
-    // Estado de la respuesta de creación
-    var isRecipeCreated = mutableStateOf(false)
-    var errorMessage = mutableStateOf("")
-
-    // Función para agregar un ingrediente
-    fun addIngredient(ingredient: Ingredient) {
-        ingredients.value = ingredients.value + ingredient
+    init {
+        loadCategories()
     }
 
-    // Función para agregar un paso
-    fun addStep(step: String) {
-        steps.value = steps.value + step
+    // Campos para crear una receta
+    var recipeName by mutableStateOf("")
+    var description by mutableStateOf("")
+    var preptime by mutableStateOf(0)
+    var steps by mutableStateOf("")
+    var selectedCategory by mutableStateOf("")
+    var ingredients by mutableStateOf(mutableListOf<Ingredient>())
+    var image by mutableStateOf("")
+    var video by mutableStateOf("")
+    var calificacion by mutableStateOf(0.0)
+
+    private fun loadCategories() {
+        viewModelScope.launch {
+            try {
+                categories = CategoryRepository.getCategories()
+            } catch (exception: Exception) {
+                // Manejar errores (opcional)
+                categories = emptyList()
+            }
+        }
     }
 
-    // Función para crear la receta
+    fun addIngredient(id: String, unit: String, amount: Double) {
+        ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+    }
+
+
+
+
+    fun removeIngredient(index: Int) {
+        if (index in ingredients.indices) {
+            ingredients.removeAt(index)
+        }
+    }
+
     fun createRecipe() {
-        val newRecipe = RecipeBody(
-            nameRecipe = nameRecipe.value,
-            preptime = preptime.value,
-            ingredients = ingredients.value,
-            steps = steps.value,
-            image = image.value,
-            video = video.value,
-            category = category.value,
-            autor = autor.value,
-            calificacion = calificacion.value,
-            fecha = fecha.value
+        val recipeBody = RecipeBody(
+            nameRecipe = recipeName,
+            preptime = "$preptime minutos",
+            ingredients = ingredients,
+            steps = steps.split("\n"),
+            image = image,
+            video = video,
+            category = selectedCategory,
+            autor = "60d21b4967d0d8992e610c8a",
+            calificacion = calificacion,
+            fecha = Date()
         )
 
         viewModelScope.launch {
-            val success = repository.createRecipe(newRecipe).isSuccess
-            if (success) {
-                isRecipeCreated.value = true
-            } else {
-                errorMessage.value = "Error al crear la receta"
+            try {
+                recipeResponse = recipeBodyRepository.createRecipe(recipeBody)
+                state = 1
+            } catch (exception: Exception) {
+                state = 1
+                recipeResponse = RecipeResponse(
+                    message = "Error creating recipe: ${exception.localizedMessage}",
+                    isSuccess = false
+                )
             }
         }
+    }
+}
+
+class AddRecipeViewModelFactory : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(AddRecipeViewModel::class.java)) {
+            return AddRecipeViewModel(RecipeBodyRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

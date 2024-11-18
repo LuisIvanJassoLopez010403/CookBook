@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cookbook.RecipeBody
+import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.finder.models.SearchBody
 import com.example.cookbook.presentation.finder.network.FinderBodyRepository
 import kotlinx.coroutines.launch

@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
-import com.example.cookbook.RecipeBody
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
 import androidx.compose.foundation.lazy.items
@@ -40,6 +39,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.zIndex
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.finder.network.FinderBodyRepository
 import kotlinx.serialization.json.Json.Default.configuration
 

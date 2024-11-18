@@ -1,5 +1,5 @@
 package com.example.cookbook
 
-data class Category(
+data class category(
     val id_category: String,
 )
