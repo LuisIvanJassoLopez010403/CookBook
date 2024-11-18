@@ -12,8 +12,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.presentation.finder.InitialFinderView
+import com.example.cookbook.presentation.finder.views.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
+import com.example.cookbook.presentation.finder.network.FinderBodyRepository
+import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.views.SearchView
 import com.example.cookbook.presentation.home.view.HomeView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
@@ -66,7 +69,7 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 UserView(navController)
             }
             composable(Routes.InitialFinderView) {
-                InitialFinderView(navController)
+                InitialFinderView(navController, FinderViewModel(FinderBodyRepository = FinderBodyRepository))
             }
             composable(Routes.MyRecipeView) {
                 MyRecipeView(navController)
@@ -76,6 +79,9 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.AddRecipeView) {
                 AddRecipeView(navController)
+            }
+            composable(Routes.SearchView) {
+                SearchView(navController, FinderViewModel(FinderBodyRepository = FinderBodyRepository))
             }
         }
     }

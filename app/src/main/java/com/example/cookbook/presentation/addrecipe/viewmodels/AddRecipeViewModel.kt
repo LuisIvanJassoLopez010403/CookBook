@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
+import com.example.cookbook.IngredientDetails
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
