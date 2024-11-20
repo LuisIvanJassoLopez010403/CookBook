@@ -50,7 +50,7 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
     }
 
     fun addIngredient(id: String, unit: String, amount: Double) {
-        ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+        //ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
     }
 
 

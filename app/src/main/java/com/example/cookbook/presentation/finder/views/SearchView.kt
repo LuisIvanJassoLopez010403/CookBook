@@ -255,8 +255,8 @@ fun RecipeItem(recipe: RecipeBody) {
             .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(23.dp))
             .clip(RoundedCornerShape(23.dp))
             .paint(
-                painterResource(id = R.drawable.firstonboardingview), // Reemplaza con tu recurso
-                contentScale = ContentScale.FillBounds // Ajusta cómo se escala la imagen
+                painterResource(id = R.drawable.firstonboardingview),
+                contentScale = ContentScale.FillBounds
             ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -271,12 +271,12 @@ fun RecipeItem(recipe: RecipeBody) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0x80000000)) //se agrega un background con transparencia
+                    .background(Color(0x80000000))
                     .padding(start = 7.dp, end = 7.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = recipe.nameRecipe, //Se llama al listado de variables para los titulos
+                    text = recipe.nameRecipe,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFFFFFFFF),
@@ -300,7 +300,7 @@ fun RecipeItem(recipe: RecipeBody) {
                         )
                     }
                     Text(
-                        text = "4.5",
+                        text = recipe.calificacion.toString(),
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFFFFFFF),
@@ -335,7 +335,7 @@ fun RecipeItem(recipe: RecipeBody) {
                         )
                     }
                     Text(
-                        text = "Pedro Perez",
+                        text = recipe.autor,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFFFFFFF),
@@ -360,7 +360,7 @@ fun RecipeItem(recipe: RecipeBody) {
                         )
                     }
                     Text(
-                        text = "15 - min",
+                        text = recipe.preptime,
                         fontSize = 18.sp,
                         color = Color(0xFFFFFFFF),
                         textAlign = TextAlign.Left
