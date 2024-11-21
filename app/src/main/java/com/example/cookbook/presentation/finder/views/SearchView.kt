@@ -33,6 +33,7 @@ import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
@@ -62,12 +63,23 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
         ) {
 
             Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp, end = 10.dp)
+                    .padding(top = 5.dp, end = 10.dp)
             ) {
+                TextButton(onClick = { navController.navigate(Routes.InitialFinderView) }) {
+                    Text(
+                        text = "< " + stringResource(id = R.string.Back),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFFA500),
+                        modifier = Modifier,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Text(
                     text = "CookBook",
                     fontStyle = FontStyle.Italic,
