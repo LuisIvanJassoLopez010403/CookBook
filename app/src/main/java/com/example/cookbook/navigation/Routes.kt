@@ -15,6 +15,8 @@ object Routes {
 
     //Finder
     var InitialFinderView = "InitialFinderView"
+    var SearchView = "SearchView"
+
     var SignupView = "SignupView"
     var ForgotPasswordView = "ForgotPasswordView"
     var VerificationCodeView = "VerificationCodeView"
