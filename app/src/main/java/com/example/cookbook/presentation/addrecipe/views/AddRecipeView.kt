@@ -260,7 +260,7 @@ fun AddRecipeView(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        // Dropdown Menu de ingredientes
+                        /*// Dropdown Menu de ingredientes
                         Box {
                             OutlinedTextField(
                                 value = selectedIngredients.joinToString(", "),
@@ -367,7 +367,7 @@ fun AddRecipeView(navController: NavController) {
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(10.dp))*/
 
                         //TextField de pasos
                         OutlinedTextField(

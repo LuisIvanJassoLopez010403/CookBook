@@ -18,7 +18,7 @@ import java.util.Date
 
 // ViewModel
 class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository) : ViewModel() {
-    var recipeResponse by mutableStateOf(RecipeResponse("",false))
+    var recipeResponse by mutableStateOf(RecipeResponse("", false))
     var state by mutableStateOf(0)
 
     var categories by mutableStateOf(emptyList<Pair<String, String>>())
@@ -38,6 +38,7 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
     var preptime by mutableStateOf(0)
     var steps by mutableStateOf("")
     var selectedCategory by mutableStateOf("")
+
     //var ingredients by mutableStateOf(mutableListOf<Ingredient>())
     var image by mutableStateOf("")
     var video by mutableStateOf("")
@@ -62,23 +63,29 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
                 // Manejar errores (opcional)
                 ingredients = emptyList()
             }
-        }
-    }
-
-    //fun addIngredient(id: String, unit: String, amount: Double) {
-       // ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
-    //}
+            fun addIngredient(id: String, unit: String, amount: Double) {
+                //ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+            }
 
 
+            /*fun removeIngredient(index: Int) {
+                if (index in ingredients.indices) {
+                    ingredients.removeAt(index)
+                }
+            }*/
+
+            //fun addIngredient(id: String, unit: String, amount: Double) {
+            // ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+            //}
 
 
-    //fun removeIngredient(index: Int) {
-        //if (index in ingredients.indices) {
+            //fun removeIngredient(index: Int) {
+            //if (index in ingredients.indices) {
             //ingredients.removeAt(index)
-        //}
-   // }
+            //}
+            // }
 
-   /* fun createRecipe() {
+            /* fun createRecipe() {
         val recipeBody = RecipeBody(
             nameRecipe = recipeName,
             preptime = "$preptime minutos",
@@ -105,6 +112,8 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
             }
         }
     }*/
+        }
+    }
 }
 
 class AddRecipeViewModelFactory : ViewModelProvider.Factory {
