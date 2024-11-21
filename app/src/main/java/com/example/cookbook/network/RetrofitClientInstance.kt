@@ -1,7 +1,6 @@
 package com.example.cookbook.network
 
 import android.content.Context
-import com.example.cookbook.ApiService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

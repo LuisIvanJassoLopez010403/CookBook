@@ -1,19 +1,25 @@
 package com.example.cookbook.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cookbook.presentation.finder.InitialFinderView
+import com.example.cookbook.presentation.finder.views.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
+import com.example.cookbook.presentation.finder.network.FinderBodyRepository
+import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.viewmodels.FinderViewModelFactory
+import com.example.cookbook.presentation.finder.views.SearchView
 import com.example.cookbook.presentation.home.view.HomeView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
@@ -27,6 +33,7 @@ import com.example.cookbook.presentation.title.TitleView
 import com.example.cookbook.presentation.user.UserView
 
 // Prueba
+@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) {
     val navController = rememberNavController()
@@ -66,7 +73,9 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 UserView(navController)
             }
             composable(Routes.InitialFinderView) {
-                InitialFinderView(navController)
+                val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
+                val finderViewModel: FinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(FinderBodyRepository))
+                InitialFinderView(navController, finderViewModel)
             }
             composable(Routes.MyRecipeView) {
                 MyRecipeView(navController)
@@ -76,6 +85,11 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.AddRecipeView) {
                 AddRecipeView(navController)
+            }
+            composable(Routes.SearchView) {
+                val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
+                val finderViewModel: FinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(FinderBodyRepository))
+                SearchView(navController, finderViewModel)
             }
         }
     }
