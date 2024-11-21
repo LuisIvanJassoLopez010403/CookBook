@@ -4,6 +4,8 @@ package com.example.cookbook.network
 import com.example.cookbook.presentation.finder.models.SearchBody
 import com.example.cookbook.presentation.finder.models.SearchResponse
 import com.example.cookbook.Category
+import com.example.cookbook.Ingredient
+import com.example.cookbook.IngredientDetails
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.login.models.LoginBody
@@ -20,6 +22,7 @@ private const val END_URL_SIGNUP = "cookbook/signup"
 private const val END_URL_CREATE_RECIPE = "cookbook/create-recipe"
 private const val END_URL_SEARCH_RECIPE = "cookbook/search-recipe"
 private const val END_URL_GET_ALL_CATEGORIES = "cookbook/get-all-categories"
+private const val END_URL_GET_ALL_INGREDIENTS = "cookbook/get-all-ingredients"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -36,4 +39,7 @@ interface ApiService {
 
     @GET(END_URL_GET_ALL_CATEGORIES)
     suspend fun getAllCategories(): List<Category>
+
+    @GET(END_URL_GET_ALL_INGREDIENTS)
+    suspend fun getAllIngredients(): List<IngredientDetails>
 }
