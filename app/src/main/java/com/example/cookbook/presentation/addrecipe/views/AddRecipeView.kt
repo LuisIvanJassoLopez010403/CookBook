@@ -187,6 +187,44 @@ fun AddRecipeView(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(10.dp))
 
+                        Box {
+                            OutlinedTextField(
+                                value = addRecipeViewModel.ingredients.find { it.first == addRecipeViewModel.SelectedIngredientId }?.second
+                                    ?: "",
+                                onValueChange = {},
+                                label = { Text(text = "Ingredients") },
+                                shape = RoundedCornerShape(15.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { expandedIngredients = true },
+                                readOnly = true,
+                                trailingIcon = {
+                                    IconButton(onClick = { expandedIngredients = !expandedIngredients }) {
+                                        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                                    }
+                                }
+                            )
+
+                            // DropdownMenu que muestra los nombres
+                            DropdownMenu(
+                                expanded = expandedIngredients,
+                                onDismissRequest = { expandedIngredients = false },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                addRecipeViewModel.ingredients.forEach { (id, name) ->
+                                    DropdownMenuItem(
+                                        text = { Text(text = name) },
+                                        onClick = {
+                                            addRecipeViewModel.SelectedIngredientId = id
+                                            expandedIngredients = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
                         // Tiempo de preparacion
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -222,7 +260,7 @@ fun AddRecipeView(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        // Dropdown Menu de ingredientes
+                        /*// Dropdown Menu de ingredientes
                         Box {
                             OutlinedTextField(
                                 value = selectedIngredients.joinToString(", "),
@@ -329,7 +367,7 @@ fun AddRecipeView(navController: NavController) {
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(10.dp))*/
 
                         //TextField de pasos
                         OutlinedTextField(
