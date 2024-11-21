@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
 import com.example.cookbook.IngredientDetails
+import com.example.cookbook.IngredientRepository
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
@@ -17,14 +18,18 @@ import java.util.Date
 
 // ViewModel
 class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository) : ViewModel() {
-    var recipeResponse by mutableStateOf(RecipeResponse("",false))
+    var recipeResponse by mutableStateOf(RecipeResponse("", false))
     var state by mutableStateOf(0)
 
     var categories by mutableStateOf(emptyList<Pair<String, String>>())
     var selectedCategoryId by mutableStateOf("")
 
+    var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
+    var SelectedIngredientId by mutableStateOf("")
+
     init {
         loadCategories()
+        loadIngredients()
     }
 
     // Campos para crear una receta
@@ -33,7 +38,8 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
     var preptime by mutableStateOf(0)
     var steps by mutableStateOf("")
     var selectedCategory by mutableStateOf("")
-    var ingredients by mutableStateOf(mutableListOf<Ingredient>())
+
+    //var ingredients by mutableStateOf(mutableListOf<Ingredient>())
     var image by mutableStateOf("")
     var video by mutableStateOf("")
     var calificacion by mutableStateOf(0.0)
@@ -49,20 +55,37 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
         }
     }
 
-    fun addIngredient(id: String, unit: String, amount: Double) {
-        //ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
-    }
+    private fun loadIngredients() {
+        viewModelScope.launch {
+            try {
+                ingredients = IngredientRepository.getIngredients()
+            } catch (exception: Exception) {
+                // Manejar errores (opcional)
+                ingredients = emptyList()
+            }
+            fun addIngredient(id: String, unit: String, amount: Double) {
+                //ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+            }
 
 
+            /*fun removeIngredient(index: Int) {
+                if (index in ingredients.indices) {
+                    ingredients.removeAt(index)
+                }
+            }*/
+
+            //fun addIngredient(id: String, unit: String, amount: Double) {
+            // ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+            //}
 
 
-    fun removeIngredient(index: Int) {
-        if (index in ingredients.indices) {
-            ingredients.removeAt(index)
-        }
-    }
+            //fun removeIngredient(index: Int) {
+            //if (index in ingredients.indices) {
+            //ingredients.removeAt(index)
+            //}
+            // }
 
-    fun createRecipe() {
+            /* fun createRecipe() {
         val recipeBody = RecipeBody(
             nameRecipe = recipeName,
             preptime = "$preptime minutos",
@@ -87,6 +110,8 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
                     isSuccess = false
                 )
             }
+        }
+    }*/
         }
     }
 }
