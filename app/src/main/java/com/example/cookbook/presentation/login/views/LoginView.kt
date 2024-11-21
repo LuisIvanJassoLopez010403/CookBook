@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +31,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +55,7 @@ fun LoginView(navController: NavController) {
     var username by remember { mutableStateOf(TextFieldValue(""))}
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
     //Variable de Toast
     val context = LocalContext.current
@@ -69,7 +73,13 @@ fun LoginView(navController: NavController) {
 
     // TextButton para regresar a pantalla de inicio
     Row(
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    focusManager.clearFocus()
+                })
+            }
     ) {
         TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
             Text(
