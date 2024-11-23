@@ -13,8 +13,11 @@ import com.example.cookbook.IngredientRepository
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
+import com.example.cookbook.presentation.signup.models.SignupBody
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 // ViewModel
 class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository) : ViewModel() {
@@ -26,30 +29,18 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
 
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
     var SelectedIngredientId by mutableStateOf("")
+    var selectedIngredientDetails by mutableStateOf<List<Ingredient>>(emptyList())
 
     init {
         loadCategories()
         loadIngredients()
     }
 
-    // Campos para crear una receta
-    var recipeName by mutableStateOf("")
-    var description by mutableStateOf("")
-    var preptime by mutableStateOf(0)
-    var steps by mutableStateOf("")
-    var selectedCategory by mutableStateOf("")
-
-    //var ingredients by mutableStateOf(mutableListOf<Ingredient>())
-    var image by mutableStateOf("")
-    var video by mutableStateOf("")
-    var calificacion by mutableStateOf(0.0)
-
     private fun loadCategories() {
         viewModelScope.launch {
             try {
                 categories = CategoryRepository.getCategories()
             } catch (exception: Exception) {
-                // Manejar errores (opcional)
                 categories = emptyList()
             }
         }
@@ -60,58 +51,58 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
             try {
                 ingredients = IngredientRepository.getIngredients()
             } catch (exception: Exception) {
-                // Manejar errores (opcional)
                 ingredients = emptyList()
             }
-            fun addIngredient(id: String, unit: String, amount: Double) {
-                //ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
-            }
+        }
+    }
+    fun updateSelectedIngredients(selected: List<Ingredient>) {
+        selectedIngredientDetails = selected
+        SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
+    }
 
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
 
-            /*fun removeIngredient(index: Int) {
-                if (index in ingredients.indices) {
-                    ingredients.removeAt(index)
-                }
-            }*/
-
-            //fun addIngredient(id: String, unit: String, amount: Double) {
-            // ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
-            //}
-
-
-            //fun removeIngredient(index: Int) {
-            //if (index in ingredients.indices) {
-            //ingredients.removeAt(index)
-            //}
-            // }
-
-            /* fun createRecipe() {
-        val recipeBody = RecipeBody(
-            nameRecipe = recipeName,
-            preptime = "$preptime minutos",
-            ingredients = ingredients,
-            steps = steps.split("\n"),
-            image = image,
-            video = video,
-            category = selectedCategory,
-            autor = "60d21b4967d0d8992e610c8a",
-            calificacion = calificacion,
-            fecha = Date()
-        )
-
+    fun createRecipe(
+        nameRecipe: String,
+        description: String,
+        preptime: Number,
+        ingredients: List<Ingredient>,
+        steps: String,
+        category: String,
+        autor: String,
+        image: String,
+        video: String,
+        grade: Double
+    ) {
         viewModelScope.launch {
             try {
-                recipeResponse = recipeBodyRepository.createRecipe(recipeBody)
+                val createdDate = getCurrentDate() // Aquí obtenemos la fecha actual
+                recipeResponse = recipeBodyRepository.createRecipe(
+                    RecipeBody(
+                        nameRecipe,
+                        description,
+                        preptime,
+                        ingredients,
+                        steps,
+                        createdDate,
+                        category,
+                        autor,
+                        image,
+                        video,
+                        grade
+                    )
+                )
                 state = 1
+                recipeResponse.message = "Receta creada de forma exitosa"
+                recipeResponse.isSuccess = true
             } catch (exception: Exception) {
                 state = 1
-                recipeResponse = RecipeResponse(
-                    message = "Error creating recipe: ${exception.localizedMessage}",
-                    isSuccess = false
-                )
+                recipeResponse.message = "Error en la creación de la receta"
+                recipeResponse.isSuccess = false
             }
-        }
-    }*/
         }
     }
 }
