@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.addrecipe.viewmodels
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,16 +11,22 @@ import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
 import com.example.cookbook.IngredientRepository
+import com.example.cookbook.preferences.getToken
+import com.example.cookbook.preferences.getUserIdFromToken
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 // ViewModel
-class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository) : ViewModel() {
+class AddRecipeViewModel(
+    private val recipeBodyRepository: RecipeBodyRepository,
+    private val appContext: Context
+) : ViewModel() {
     var recipeResponse by mutableStateOf(RecipeResponse("", false))
     var state by mutableStateOf(0)
 
@@ -30,9 +37,12 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
     var SelectedIngredientId by mutableStateOf("")
     var selectedIngredientDetails by mutableStateOf<List<Ingredient>>(emptyList())
 
+    var userId by mutableStateOf("")
+
     init {
         loadCategories()
         loadIngredients()
+        loadUserId()
     }
 
     private fun loadCategories() {
@@ -59,6 +69,17 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
         SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
     }
 
+    private fun loadUserId() {
+        viewModelScope.launch {
+            val token = getToken(appContext).firstOrNull()
+            userId = if (!token.isNullOrEmpty()) {
+                getUserIdFromToken(token) ?: ""
+            } else {
+                ""
+            }
+        }
+    }
+
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(Date())
@@ -71,24 +92,27 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
         ingredients: List<Ingredient>,
         steps: String,
         category: String,
-        autor: String,
         image: String,
         video: String,
         grade: Double
     ) {
         viewModelScope.launch {
             try {
-                val createdDate = getCurrentDate() // Aquí obtenemos la fecha actual
+                if (userId.isEmpty()) {
+                    throw IllegalStateException("El ID del usuario no está disponible.")
+                }
+
+                val createdDate = getCurrentDate()
                 recipeResponse = recipeBodyRepository.createRecipe(
                     RecipeBody(
                         nameRecipe,
                         description,
-                        preptime as Int,
+                        preptime,
                         ingredients,
                         steps,
                         createdDate,
                         category,
-                        autor,
+                        userId,
                         image,
                         video,
                         grade
@@ -99,18 +123,19 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
                 recipeResponse.isSuccess = true
             } catch (exception: Exception) {
                 state = 1
-                recipeResponse.message = "Error en la creación de la receta"
+                recipeResponse.message = "Error en la creación de la receta: ${exception.message}"
                 recipeResponse.isSuccess = false
             }
         }
     }
+
 }
 
-class AddRecipeViewModelFactory : ViewModelProvider.Factory {
+class AddRecipeViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddRecipeViewModel::class.java)) {
-            return AddRecipeViewModel(RecipeBodyRepository) as T
+            return AddRecipeViewModel(RecipeBodyRepository, appContext) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
