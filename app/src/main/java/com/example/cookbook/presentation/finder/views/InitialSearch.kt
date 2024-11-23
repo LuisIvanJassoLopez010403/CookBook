@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.compose.rememberNavController
+import com.example.cookbook.Category
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.presentation.finder.network.FinderBodyRepository
@@ -43,7 +45,8 @@ import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
 @Composable
 fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) {
     var text by remember { viewModel.searchQuery }
-    var isClicked by remember { mutableStateOf(false) }
+    val categoryresults = viewModel.loginResponse.value
+
 
     Scaffold(
         bottomBar = {
@@ -134,56 +137,8 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                                     .padding(start = 0.dp),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                items(5) { index ->
-                                    Box(
-                                        modifier = Modifier
-                                            .width(90.dp)
-                                            .height(105.dp)
-                                            .clickable(onClick = {
-                                                isClicked = !isClicked
-                                            })
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(90.dp)
-                                                .padding(10.dp)
-                                                .border(3.dp, if (isClicked) Color(0xFF00FF18) else Color.Black , CircleShape)
-                                                .background(Color.Transparent, CircleShape)
-                                                .align(Alignment.TopCenter)
-                                        ){
-                                            Icon(
-                                                imageVector = Icons.Filled.Home,
-                                                contentDescription = "Category",
-                                                tint = Color(0xFF000000),
-                                                modifier = Modifier
-                                                    .size(50.dp)
-                                                    .align(Alignment.Center)
-                                            )
-                                        }
-
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(26.dp)
-                                                .padding(bottom = 5.dp)
-                                                .align(Alignment.BottomCenter)
-                                                .zIndex(1f)
-                                        ){
-                                            Row (
-                                                horizontalArrangement = Arrangement.Center,
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                            ){
-                                                Text(
-                                                    text = "Category",
-                                                    fontStyle = FontStyle.Italic,
-                                                    fontSize = 17.sp,
-                                                    color = if (isClicked) Color(0xFFFF9800) else Color(0xFF000000),
-                                                    textAlign = TextAlign.Center
-                                                )
-                                            }
-                                        }
-                                    }
+                                items(viewModel.getCategoryList()) { Category ->
+                                    LazyRowCategories(Category)
                                 }
                             }
                         }
@@ -244,6 +199,60 @@ fun LazyColumnHome ( Category: String){
             color = Color(0xFF000000),
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Composable
+fun LazyRowCategories (category: Category){
+    var isClicked by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(105.dp)
+            .clickable(onClick = {
+                isClicked = !isClicked
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .size(90.dp)
+                .padding(10.dp)
+                .border(3.dp, if (isClicked) Color(0xFF00FF18) else Color.Black , CircleShape)
+                .background(Color.Transparent, CircleShape)
+                .align(Alignment.TopCenter)
+        ){
+            Icon(
+                imageVector = Icons.Filled.Home,
+                contentDescription = "Category",
+                tint = Color(0xFF000000),
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(26.dp)
+                .padding(bottom = 5.dp)
+                .align(Alignment.BottomCenter)
+                .zIndex(1f)
+        ){
+            Row (
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
+                Text(
+                    text = category.name,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 17.sp,
+                    color = if (isClicked) Color(0xFFFF9800) else Color(0xFF000000),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
 

@@ -1,18 +1,18 @@
 package com.example.cookbook.presentation.addrecipe.models
 
-import com.example.cookbook.Category
 import com.example.cookbook.Ingredient
 import java.util.Date
 
 data class RecipeBody(
     val nameRecipe: String,
-    val preptime: String,
+    val description: String,
+    val preptime: Int,
     val ingredients: List<Ingredient>,
-    val steps: List<String>,
+    val steps: String,
+    val createdDate: String,
+    val category: String,
+    val autor: String,
     val image: String,
     val video: String,
-    val category: Category,
-    val autor: String,
-    val calificacion: Double,
-    val fecha: Date
+    val grade: Double,
 )
