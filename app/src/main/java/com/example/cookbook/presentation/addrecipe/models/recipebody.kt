@@ -1,7 +1,6 @@
 package com.example.cookbook.presentation.addrecipe.models
 
 import com.example.cookbook.Ingredient
-import java.util.Date
 
 data class RecipeBody(
     val nameRecipe: String,
