@@ -8,12 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
-import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
-import com.example.cookbook.presentation.signup.models.SignupBody
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -84,7 +82,7 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
                     RecipeBody(
                         nameRecipe,
                         description,
-                        preptime,
+                        preptime as Int,
                         ingredients,
                         steps,
                         createdDate,
