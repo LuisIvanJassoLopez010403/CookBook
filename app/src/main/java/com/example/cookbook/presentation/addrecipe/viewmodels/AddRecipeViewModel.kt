@@ -102,6 +102,7 @@ class AddRecipeViewModel(
                     throw IllegalStateException("El ID del usuario no está disponible.")
                 }
 
+                val token = getToken(appContext).firstOrNull() ?: throw IllegalStateException("Token no disponible")
                 val createdDate = getCurrentDate()
                 recipeResponse = recipeBodyRepository.createRecipe(
                     RecipeBody(
@@ -116,7 +117,8 @@ class AddRecipeViewModel(
                         image,
                         video,
                         grade
-                    )
+                    ),
+                    token
                 )
                 state = 1
                 recipeResponse.message = "Receta creada de forma exitosa"

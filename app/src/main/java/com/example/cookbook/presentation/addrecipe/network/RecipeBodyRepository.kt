@@ -1,13 +1,13 @@
 package com.example.cookbook.presentation.addrecipe.network
 
+import com.example.cookbook.network.ApiService
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.network.RetrofitClientInstance
 
 object RecipeBodyRepository {
-    val apiService = RetrofitClientInstance.apiService
-
-    suspend fun createRecipe(recipe: RecipeBody): RecipeResponse {
+    suspend fun createRecipe(recipe: RecipeBody, token: String): RecipeResponse {
+        val apiService = RetrofitClientInstance.getRetrofitInstance(token = token).create(ApiService::class.java)
         return apiService.createRecipe(recipe)
     }
 }

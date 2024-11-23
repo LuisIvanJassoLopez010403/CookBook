@@ -82,8 +82,7 @@ fun AddRecipeView(navController: NavController) {
     var selectedIngredients by remember { mutableStateOf<List<Ingredient>>(emptyList()) }
 
     // Variables de Dropdown Menu de Unidades
-    var expandedUnit by remember { mutableStateOf(false) }
-    val unitOptions = listOf("kg", "g", "ml", "tbsp", "tsp")
+    val unitOptions = listOf("kg", "g", "ml", "tbsp", "tsp", "pcs")
 
     //Variable de Toast
     val context = LocalContext.current
@@ -285,8 +284,10 @@ fun AddRecipeView(navController: NavController) {
                         }
 
                         selectedIngredients.forEach { ingredient ->
-                            var quantity by remember { mutableStateOf("") }
-                            var unit by remember { mutableStateOf("") }
+                            // Variables locales únicas por ingrediente
+                            var quantity by remember { mutableStateOf(ingredient.amount.toString()) }
+                            var expandedUnitDropdown by remember { mutableStateOf(false) }
+                            var selectedUnit by remember { mutableStateOf(ingredient.unit) }
 
                             Row(
                                 modifier = Modifier
@@ -295,12 +296,15 @@ fun AddRecipeView(navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = ingredient._idIngredient.nameIngredient)
+                                // Nombre del ingrediente
+                                Text(text = ingredient._idIngredient.nameIngredient, modifier = Modifier.weight(1f))
 
+                                // Campo para ingresar la cantidad
                                 OutlinedTextField(
                                     value = quantity,
                                     onValueChange = { newValue ->
                                         quantity = newValue
+                                        // Actualizar el valor en el ViewModel
                                         addRecipeViewModel.selectedIngredientDetails = addRecipeViewModel.selectedIngredientDetails.map {
                                             if (it._idIngredient._id == ingredient._idIngredient._id) {
                                                 it.copy(amount = newValue.toDoubleOrNull() ?: 0.0)
@@ -308,41 +312,44 @@ fun AddRecipeView(navController: NavController) {
                                         }
                                     },
                                     label = { Text("Cantidad") },
-                                    shape = RoundedCornerShape(15.dp),
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    modifier = Modifier.width(140.dp)
+                                    shape = RoundedCornerShape(15.dp),
+                                    modifier = Modifier.width(100.dp)
                                 )
 
+                                Spacer(modifier = Modifier.width(10.dp))
+
+                                // Dropdown para seleccionar la unidad
                                 Box {
                                     OutlinedTextField(
-                                        value = unit,
+                                        value = selectedUnit,
                                         onValueChange = {},
                                         readOnly = true,
                                         label = { Text("Unidad") },
-                                        shape = RoundedCornerShape(15.dp),
-                                        modifier = Modifier.width(140.dp),
                                         trailingIcon = {
-                                            IconButton(onClick = { expandedUnit = !expandedUnit }) {
+                                            IconButton(onClick = { expandedUnitDropdown = !expandedUnitDropdown }) {
                                                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
                                             }
-                                        }
+                                        },
+                                        shape = RoundedCornerShape(15.dp),
+                                        modifier = Modifier.width(140.dp)
                                     )
 
                                     DropdownMenu(
-                                        expanded = expandedUnit,
-                                        onDismissRequest = { expandedUnit = false }
+                                        expanded = expandedUnitDropdown,
+                                        onDismissRequest = { expandedUnitDropdown = false }
                                     ) {
-                                        unitOptions.forEach { option ->
+                                        unitOptions.forEach { unitOption ->
                                             DropdownMenuItem(
-                                                text = { Text(option) },
+                                                text = { Text(unitOption) },
                                                 onClick = {
-                                                    unit = option
+                                                    selectedUnit = unitOption
+                                                    expandedUnitDropdown = false
                                                     addRecipeViewModel.selectedIngredientDetails = addRecipeViewModel.selectedIngredientDetails.map {
                                                         if (it._idIngredient._id == ingredient._idIngredient._id) {
-                                                            it.copy(unit = option)
+                                                            it.copy(unit = unitOption)
                                                         } else it
                                                     }
-                                                    expandedUnit = false
                                                 }
                                             )
                                         }
