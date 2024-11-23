@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
 import com.example.cookbook.IngredientRepository
