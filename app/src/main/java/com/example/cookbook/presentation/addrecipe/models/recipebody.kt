@@ -6,7 +6,7 @@ import java.util.Date
 data class RecipeBody(
     val nameRecipe: String,
     val description: String,
-    val preptime: Number,
+    val preptime: Int,
     val ingredients: List<Ingredient>,
     val steps: String,
     val createdDate: String,
