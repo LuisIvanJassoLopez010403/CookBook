@@ -41,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.zIndex
 import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
+import com.example.cookbook.presentation.finder.models.SearchRecipeBody
 import com.example.cookbook.presentation.finder.network.FinderBodyRepository
 import kotlinx.serialization.json.Json.Default.configuration
 
@@ -259,7 +260,7 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
 
 
 @Composable
-fun RecipeItem(recipe: RecipeBody) {
+fun RecipeItem(recipe: SearchRecipeBody) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

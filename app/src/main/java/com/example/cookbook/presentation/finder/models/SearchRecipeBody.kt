@@ -1,16 +1,16 @@
-package com.example.cookbook.presentation.addrecipe.models
+package com.example.cookbook.presentation.finder.models
 
 import com.example.cookbook.Category
 import com.example.cookbook.Ingredient
 
-data class RecipeBody(
+data class SearchRecipeBody(
     val nameRecipe: String,
     val description: String,
     val preptime: Int,
     val ingredients: List<Ingredient>,
     val steps: String,
     val createdDate: String,
-    val category: String,
+    val category: Category,
     val autor: String,
     val image: String,
     val video: String,

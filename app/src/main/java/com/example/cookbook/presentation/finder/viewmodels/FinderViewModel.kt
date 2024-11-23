@@ -11,15 +11,17 @@ import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.finder.models.SearchBody
+import com.example.cookbook.presentation.finder.models.SearchRecipeBody
 import com.example.cookbook.presentation.finder.network.FinderBodyRepository
 import kotlinx.coroutines.launch
 
 class FinderViewModel(val FinderBodyRepository: FinderBodyRepository) : ViewModel() {
     var isLoading: Boolean by mutableStateOf(false)
-    val loginResponse = mutableStateOf<List<RecipeBody>>(emptyList())
+    val loginResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
     val searchQuery = mutableStateOf("")
     var categories by mutableStateOf(emptyList<Pair<String, String>>())
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
+
 
     init {
         loadCategories()
