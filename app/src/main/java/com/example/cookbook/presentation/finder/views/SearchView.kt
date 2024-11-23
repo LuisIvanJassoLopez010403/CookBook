@@ -312,7 +312,7 @@ fun RecipeItem(recipe: RecipeBody) {
                         )
                     }
                     Text(
-                        text = recipe.calificacion.toString(),
+                        text = recipe.grade.toString(),
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFFFFFFF),
@@ -372,7 +372,7 @@ fun RecipeItem(recipe: RecipeBody) {
                         )
                     }
                     Text(
-                        text = recipe.preptime,
+                        text = recipe.preptime.toString(),
                         fontSize = 18.sp,
                         color = Color(0xFFFFFFFF),
                         textAlign = TextAlign.Left
