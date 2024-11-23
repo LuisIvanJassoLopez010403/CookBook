@@ -87,4 +87,6 @@ dependencies {
     implementation("com.airbnb.android:lottie-compose:4.0.0")
     implementation ("com.google.android.exoplayer:exoplayer:2.18.7")
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.auth0.android:jwtdecode:2.0.0")
 }

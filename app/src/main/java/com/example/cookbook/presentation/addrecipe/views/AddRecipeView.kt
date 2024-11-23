@@ -64,7 +64,8 @@ import com.example.cookbook.presentation.addrecipe.viewmodels.AddRecipeViewModel
 
 @Composable
 fun AddRecipeView(navController: NavController) {
-    val addRecipeViewModel: AddRecipeViewModel = viewModel(factory = AddRecipeViewModelFactory())
+    val appContext = LocalContext.current.applicationContext
+    val addRecipeViewModel: AddRecipeViewModel = viewModel(factory = AddRecipeViewModelFactory(appContext))
     addRecipeViewModel.recipeResponse.message
 
     // Variables de TextFields
@@ -374,10 +375,9 @@ fun AddRecipeView(navController: NavController) {
                                 val stepsValue = steps.text
                                 val categoryId = addRecipeViewModel.selectedCategoryId
                                 val ingredientsList = addRecipeViewModel.selectedIngredientDetails
-                                val autor = "Autor de prueba" // Puedes reemplazar esto con un valor dinámico
-                                val image = "URL de imagen"  // Puedes añadir un campo para la URL de la imagen
-                                val video = "URL de video"  // Puedes añadir un campo para la URL del video
-                                val grade = 5.0 // Calificación predeterminada, o capturarla de otro campo si lo deseas
+                                val image = "URL de imagen"
+                                val video = "URL de video"
+                                val grade = 0.0
 
                                 addRecipeViewModel.createRecipe(
                                     nameRecipe = recipeNameValue,
@@ -386,7 +386,6 @@ fun AddRecipeView(navController: NavController) {
                                     ingredients = ingredientsList,
                                     steps = stepsValue,
                                     category = categoryId,
-                                    autor = autor,
                                     image = image,
                                     video = video,
                                     grade = grade
@@ -406,6 +405,7 @@ fun AddRecipeView(navController: NavController) {
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
+
                     }
                 }
             }

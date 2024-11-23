@@ -1,12 +1,11 @@
 package com.example.cookbook.presentation.addrecipe.models
 
-import com.example.cookbook.Category
 import com.example.cookbook.Ingredient
 
 data class RecipeBody(
     val nameRecipe: String,
     val description: String,
-    val preptime: Int,
+    val preptime: Number,
     val ingredients: List<Ingredient>,
     val steps: String,
     val createdDate: String,
