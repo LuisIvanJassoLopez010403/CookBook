@@ -9,18 +9,18 @@ import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
-import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.finder.models.SearchBody
 import com.example.cookbook.presentation.finder.models.SearchRecipeBody
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
 import kotlinx.coroutines.launch
 
-class FinderViewModel(val FinderBodyRepository: FinderBodyRepository) : ViewModel() {
+class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderRepository) : ViewModel() {
     var isLoading: Boolean by mutableStateOf(false)
-    val loginResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
+    val searchResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
     val searchQuery = mutableStateOf("")
     var categories by mutableStateOf(emptyList<Pair<String, String>>())
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
+    var selectedingredients by mutableStateOf(mutableSetOf<String>())
 
 
     init {
@@ -29,17 +29,22 @@ class FinderViewModel(val FinderBodyRepository: FinderBodyRepository) : ViewMode
     }
 
     fun searchRecipes(nameRecipe: String) {
+
+        if (nameRecipe.isBlank() && ingredients.isEmpty()) {
+            return // Detén la función si no hay filtros aplicados
+        }
+
         isLoading = true
         viewModelScope.launch {
             try {
                 val searchBody = SearchBody(
                     nameRecipe = nameRecipe,
-                    //ingredients = emptyList(),
-                    //category =
+                    ingredients = selectedingredients.toList()
+                    //category = if (categoryid.isNullOrEmpty()) emptyList() else listOf(categoryid)
                 )
-                val response = FinderBodyRepository.searcRecipe(searchBody)
+                val response = FinderBodyRepository.searchSpecifiedRecipe(searchBody)
                 println("Respuesta de la API: ${response.recipes}")
-                loginResponse.value = response.recipes
+                searchResponse.value = response.recipes
             } catch (e: Exception) {
                 // Manejo de errores
                 e.printStackTrace()
@@ -69,16 +74,16 @@ class FinderViewModel(val FinderBodyRepository: FinderBodyRepository) : ViewMode
         }
     }
 
-    /*fun getIngredientsList(): List<IngredientDetails> {
-        return ingredients.map { (id,name, cat) ->
+    fun getIngredientsList(): List<IngredientDetails> {
+        return ingredients.map { (id,name) ->
             IngredientDetails(
                 _id = id,
                 nameIngredient = name,
-                categoy = cat,
-                __v = null
+                categoy = "",
+                __v = 0
             )
         }
-    }*/
+    }
 
     private fun loadIngredients() {
         viewModelScope.launch {
@@ -91,4 +96,13 @@ class FinderViewModel(val FinderBodyRepository: FinderBodyRepository) : ViewMode
 
         }
     }
+
+    fun toggleIngredientSelection(id: String){
+        if (selectedingredients.contains(id)){
+            selectedingredients.remove(id)
+        }else{
+            selectedingredients.add(id)
+        }
+    }
+
 }
