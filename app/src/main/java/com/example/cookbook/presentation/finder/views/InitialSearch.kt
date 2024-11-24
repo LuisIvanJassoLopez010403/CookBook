@@ -37,15 +37,16 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.Category
+import com.example.cookbook.IngredientDetails
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
-import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 
 @Composable
-fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) {
+fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderViewModel) {
     var text by remember { viewModel.searchQuery }
-    val categoryresults = viewModel.loginResponse.value
+    val categoryresults = viewModel.searchResponse.value
 
 
     Scaffold(
@@ -138,7 +139,21 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 items(viewModel.getCategoryList()) { Category ->
-                                    LazyRowCategories(Category)
+                                    LazyRowCategories(Category, viewModel)
+                                }
+                            }
+                        }
+                        item{
+                            LazyColumnHome("Ingredients")
+                        }
+                        item{
+                            LazyRow(
+                                modifier = Modifier
+                                    .padding(start = 0.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(viewModel.getIngredientsList()) { IngredientDetails ->
+                                    LazyRowIngredients(IngredientDetails, viewModel)
                                 }
                             }
                         }
@@ -203,7 +218,7 @@ fun LazyColumnHome ( Category: String){
 }
 
 @Composable
-fun LazyRowCategories (category: Category){
+fun LazyRowCategories (category: Category, viewModel: SpecifiedFinderViewModel){
     var isClicked by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -211,6 +226,7 @@ fun LazyRowCategories (category: Category){
             .height(105.dp)
             .clickable(onClick = {
                 isClicked = !isClicked
+                viewModel.toggleCategoriesSelection(category._id)
             })
     ) {
         Box(
@@ -256,9 +272,64 @@ fun LazyRowCategories (category: Category){
     }
 }
 
+@Composable
+fun LazyRowIngredients (ingredient: IngredientDetails, viewModel: SpecifiedFinderViewModel){
+    var isClicked by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(105.dp)
+            .clickable(onClick = {
+                isClicked = !isClicked
+                viewModel.toggleIngredientSelection(ingredient._id)
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .size(90.dp)
+                .padding(10.dp)
+                .border(3.dp, if (isClicked) Color(0xFF00FF18) else Color.Black , CircleShape)
+                .background(Color.Transparent, CircleShape)
+                .align(Alignment.TopCenter)
+        ){
+            Icon(
+                imageVector = Icons.Filled.Home,
+                contentDescription = "Category",
+                tint = Color(0xFF000000),
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(26.dp)
+                .padding(bottom = 5.dp)
+                .align(Alignment.BottomCenter)
+                .zIndex(1f)
+        ){
+            Row (
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
+                Text(
+                    text = ingredient.nameIngredient,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 17.sp,
+                    color = if (isClicked) Color(0xFFFF9800) else Color(0xFF000000),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewBuscadorinicialView() {
-    InitialFinderView(rememberNavController(), FinderViewModel(FinderBodyRepository = FinderBodyRepository))
+    InitialFinderView(rememberNavController(), SpecifiedFinderViewModel(FinderBodyRepository = SpecifiedFinderRepository))
 }

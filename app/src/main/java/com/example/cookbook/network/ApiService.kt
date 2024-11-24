@@ -21,6 +21,7 @@ private const val END_URL_LOGIN = "cookbook/login"
 private const val END_URL_SIGNUP = "cookbook/signup"
 private const val END_URL_CREATE_RECIPE = "cookbook/create-recipe"
 private const val END_URL_SEARCH_RECIPE = "cookbook/search-recipe"
+private const val END_URL_SEARCH_SPECIFIED_RECIPE = "cookbook/search-specified-recipe"
 private const val END_URL_GET_ALL_CATEGORIES = "cookbook/get-all-categories"
 private const val END_URL_GET_ALL_INGREDIENTS = "cookbook/get-all-ingredients"
 private const val END_URL_VIEW_HISTORY = "cookbook/view-history"
@@ -37,6 +38,9 @@ interface ApiService {
 
     @POST(END_URL_SEARCH_RECIPE)
     suspend fun searchRecipe(@Body recipe: SearchBody): SearchResponse
+
+    @POST(END_URL_SEARCH_SPECIFIED_RECIPE)
+    suspend fun searchSpecifiedRecipe(@Body recipe: SearchBody): SearchResponse
 
     @GET(END_URL_GET_ALL_CATEGORIES)
     suspend fun getAllCategories(): List<Category>

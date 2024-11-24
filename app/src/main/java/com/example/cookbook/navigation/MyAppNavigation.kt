@@ -16,8 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.presentation.finder.views.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
-import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import com.example.cookbook.presentation.finder.viewmodels.FinderViewModelFactory
 import com.example.cookbook.presentation.finder.views.SearchView
 import com.example.cookbook.presentation.home.view.HomeView
@@ -74,8 +74,10 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.InitialFinderView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
-                val finderViewModel: FinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(FinderBodyRepository))
-                InitialFinderView(navController, finderViewModel)
+                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(
+                    SpecifiedFinderRepository
+                ))
+                InitialFinderView(navController, specifiedFinderViewModel)
             }
             composable(Routes.MyRecipeView) {
                 MyRecipeView(navController)
@@ -88,8 +90,10 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.SearchView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
-                val finderViewModel: FinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(FinderBodyRepository))
-                SearchView(navController, finderViewModel)
+                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(
+                    SpecifiedFinderRepository)
+                )
+                SearchView(navController, specifiedFinderViewModel)
             }
         }
     }
