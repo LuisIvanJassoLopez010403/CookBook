@@ -30,7 +30,7 @@ import com.example.cookbook.presentation.onboarding.OnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingViewModel
 import com.example.cookbook.presentation.signup.views.SignupView
 import com.example.cookbook.presentation.title.TitleView
-import com.example.cookbook.presentation.user.UserView
+import com.example.cookbook.presentation.user.views.UserView
 
 // Prueba
 @SuppressLint("UnrememberedGetBackStackEntry")
