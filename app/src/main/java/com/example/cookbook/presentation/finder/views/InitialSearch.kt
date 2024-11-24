@@ -139,7 +139,7 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 items(viewModel.getCategoryList()) { Category ->
-                                    LazyRowCategories(Category)
+                                    LazyRowCategories(Category, viewModel)
                                 }
                             }
                         }
@@ -218,7 +218,7 @@ fun LazyColumnHome ( Category: String){
 }
 
 @Composable
-fun LazyRowCategories (category: Category){
+fun LazyRowCategories (category: Category, viewModel: SpecifiedFinderViewModel){
     var isClicked by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -226,6 +226,7 @@ fun LazyRowCategories (category: Category){
             .height(105.dp)
             .clickable(onClick = {
                 isClicked = !isClicked
+                viewModel.toggleCategoriesSelection(category._id)
             })
     ) {
         Box(

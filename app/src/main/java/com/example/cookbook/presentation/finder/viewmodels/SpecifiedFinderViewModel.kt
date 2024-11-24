@@ -21,6 +21,7 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
     var categories by mutableStateOf(emptyList<Pair<String, String>>())
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
     var selectedingredients by mutableStateOf(mutableSetOf<String>())
+    var selectedcategories by mutableStateOf(mutableSetOf<String>())
 
 
     init {
@@ -39,8 +40,8 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
             try {
                 val searchBody = SearchBody(
                     nameRecipe = nameRecipe,
-                    ingredients = selectedingredients.toList()
-                    //category = if (categoryid.isNullOrEmpty()) emptyList() else listOf(categoryid)
+                    ingredients = selectedingredients.toList(),
+                    category = selectedcategories.toList()
                 )
                 val response = FinderBodyRepository.searchSpecifiedRecipe(searchBody)
                 println("Respuesta de la API: ${response.recipes}")
@@ -71,6 +72,14 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
                 // Manejar errores (opcional)
                 categories = emptyList()
             }
+        }
+    }
+
+    fun toggleCategoriesSelection(id: String){
+        if (selectedcategories.contains(id)){
+            selectedcategories.remove(id)
+        }else{
+            selectedcategories.add(id)
         }
     }
 
