@@ -7,5 +7,5 @@ import com.example.cookbook.IngredientDetails
 data class SearchBody (
     val nameRecipe: String,
     val ingredients: List<String>,
-    //val category: List<String> = emptyList(),
+    val category: List<String>,
     )
