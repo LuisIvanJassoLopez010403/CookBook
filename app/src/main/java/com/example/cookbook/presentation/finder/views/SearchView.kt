@@ -1,9 +1,7 @@
 package com.example.cookbook.presentation.finder.views
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
-import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,15 +38,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.zIndex
 import com.example.cookbook.navigation.Routes
-import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.finder.models.SearchRecipeBody
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
-import kotlinx.serialization.json.Json.Default.configuration
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
 
 @Composable
-fun SearchView(navController: NavController, viewModel: FinderViewModel) {
+fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel) {
     var text by remember { viewModel.searchQuery }
-    val results = viewModel.loginResponse.value
+    val results = viewModel.searchResponse.value
 
     Scaffold(
         bottomBar = {
@@ -129,129 +125,6 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
                             )
                         }
                     )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.23f)
-                    .align(Alignment.BottomCenter)
-                    .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(23.dp))
-                    .clip(RoundedCornerShape(23.dp))
-                    .paint(
-                        painterResource(id = R.drawable.firstonboardingview), // Reemplaza con tu recurso
-                        contentScale = ContentScale.FillBounds // Ajusta cómo se escala la imagen
-                    ),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth()
-                        .zIndex(1f),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // Row de la parte superior
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0x80000000)) //se agrega un background con transparencia
-                            .padding(start = 7.dp, end = 7.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Receta", //Se llama al listado de variables para los titulos
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFFFFF),
-                            textAlign = TextAlign.Left
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .padding(end = 7.dp)
-                        ) {
-                            IconButton(
-                                onClick = { },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.heart),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = Color(0xFFFFA500)
-                                )
-                            }
-                            Text(
-                                text = "4.5",
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFFFFFFF),
-                                textAlign = TextAlign.Left
-                            )
-                        }
-                    }
-
-                    // Row Parte inferior
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0x80000000)) //se agrega un background con transparencia
-                            .padding(start = 10.dp, end = 10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(
-                                onClick = { },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.userplaceholdericon),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = Color(0xFFFFA500)
-                                )
-                            }
-                            Text(
-                                text = "Pedro Perez",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFFFFFFF),
-                                textAlign = TextAlign.Left
-                            )
-                        }
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(
-                                onClick = { },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.clock),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = Color.Unspecified
-                                )
-                            }
-                            Text(
-                                text = "15 - min",
-                                fontSize = 18.sp,
-                                color = Color(0xFFFFFFFF),
-                                textAlign = TextAlign.Left
-                            )
-                        }
-                    }
                 }
             }
         }
@@ -389,6 +262,6 @@ fun RecipeItem(recipe: SearchRecipeBody) {
 fun PreviewSearchView() {
     SearchView(
         rememberNavController(),
-        FinderViewModel(FinderBodyRepository = FinderBodyRepository)
+        SpecifiedFinderViewModel(FinderBodyRepository = SpecifiedFinderRepository)
     )
 }
