@@ -1,4 +1,4 @@
-package com.example.cookbook.presentation.user
+package com.example.cookbook.presentation.user.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -32,12 +32,18 @@ import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.cookbook.presentation.user.viewmodels.HistoryViewModel
+import com.example.cookbook.presentation.user.viewmodels.HistoryViewModelFactory
 
 @Composable
 fun UserView(navController: NavController) {
     var selectedTab by remember { mutableStateOf("My Recipes") }
+    val appContext = LocalContext.current.applicationContext
+    val historyViewModel: HistoryViewModel = viewModel(factory = HistoryViewModelFactory(appContext))
 
     Scaffold(
         content = { innerPadding ->
@@ -180,6 +186,15 @@ fun UserView(navController: NavController) {
                                         image = painterResource(id = R.drawable.cookbooklogo3)
                                     )
                                 }
+                            }
+                        }
+                        "History" -> {
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                // Llama al ViewModel para cargar el historial
+                                historyViewModel.viewHistory()
+
+                                // Renderiza la lista de recetas
+                                RecipeHistoryList(historyViewModel)
                             }
                         }
                     }
