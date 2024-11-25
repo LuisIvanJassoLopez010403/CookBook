@@ -13,6 +13,8 @@ import com.example.cookbook.presentation.signup.models.SignupResponse
 import com.example.cookbook.presentation.user.models.HistoryBody
 import com.example.cookbook.presentation.user.models.HistoryItem
 import com.example.cookbook.presentation.user.models.RecipeStructure
+import com.example.cookbook.presentation.user.models.UserDetailsBody
+import com.example.cookbook.presentation.user.models.UserDetailsResponse
 import com.example.cookbook.presentation.user.models.UserRecipesBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,6 +29,7 @@ private const val END_URL_GET_ALL_CATEGORIES = "cookbook/get-all-categories"
 private const val END_URL_GET_ALL_INGREDIENTS = "cookbook/get-all-ingredients"
 private const val END_URL_VIEW_HISTORY = "cookbook/view-history"
 private const val END_URL_GET_USER_RECIPES = "cookbook/get-user-recipes"
+private const val END_URL_GET_USER = "cookbook/get-user"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -55,4 +58,7 @@ interface ApiService {
 
     @POST(END_URL_GET_USER_RECIPES)
     suspend fun getUserRecipes(@Body userRecipesBody: UserRecipesBody): List<RecipeStructure>
+
+    @POST(END_URL_GET_USER)
+    suspend fun getUser(@Body userDetailsBody: UserDetailsBody): UserDetailsResponse
 }
