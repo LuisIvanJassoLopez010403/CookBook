@@ -13,12 +13,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.cookbook.presentation.user.models.RecipeHistory
 
 @Composable
-fun RecipeCard(recipeHistory: RecipeHistory, modifier: Modifier = Modifier) {
-    val recipe = recipeHistory.recipeId
-
+fun RecipeCard(
+    name: String,
+    description: String,
+    imageUrl: String,
+    preptime: Int,
+    modifier: Modifier = Modifier
+) {
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier.padding(8.dp)
@@ -26,8 +29,8 @@ fun RecipeCard(recipeHistory: RecipeHistory, modifier: Modifier = Modifier) {
         Column(modifier = Modifier.fillMaxWidth()) {
             // Imagen de la receta
             Image(
-                painter = rememberAsyncImagePainter(recipe.image),
-                contentDescription = recipe.nameRecipe,
+                painter = rememberAsyncImagePainter(imageUrl),
+                contentDescription = name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -36,19 +39,19 @@ fun RecipeCard(recipeHistory: RecipeHistory, modifier: Modifier = Modifier) {
             // Detalles de la receta
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
-                    text = recipe.nameRecipe,
+                    text = name,
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.Black,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "${recipe.preptime} min",
+                    text = "${preptime} min",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
                 Text(
-                    text = recipe.description,
+                    text = description,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis

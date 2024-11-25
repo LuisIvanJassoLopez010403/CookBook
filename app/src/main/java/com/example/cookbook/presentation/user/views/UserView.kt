@@ -38,12 +38,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.presentation.user.viewmodels.HistoryViewModel
 import com.example.cookbook.presentation.user.viewmodels.HistoryViewModelFactory
+import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModel
+import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModelFactory
 
 @Composable
 fun UserView(navController: NavController) {
     var selectedTab by remember { mutableStateOf("My Recipes") }
-    val appContext = LocalContext.current.applicationContext
-    val historyViewModel: HistoryViewModel = viewModel(factory = HistoryViewModelFactory(appContext))
+    val appContext1 = LocalContext.current.applicationContext
+    val appContext2 = LocalContext.current.applicationContext
+    val historyViewModel: HistoryViewModel = viewModel(factory = HistoryViewModelFactory(appContext1))
+    val userRecipesViewModel: UserRecipesViewModel = viewModel(factory = UserRecipesViewModelFactory(appContext2))
 
     Scaffold(
         content = { innerPadding ->
@@ -132,31 +136,9 @@ fun UserView(navController: NavController) {
                     // Mostrar contenido según el tab seleccionado
                     when (selectedTab) {
                         "My Recipes" -> {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                item {
-                                    RecipeCard(
-                                        title = "Carnitas Tacos",
-                                        time = "25 min",
-                                        image = painterResource(id = R.drawable.cookbooklogo3)
-                                    )
-                                }
-                                item {
-                                    RecipeCard(
-                                        title = "California Roll",
-                                        time = "20 min",
-                                        image = painterResource(id = R.drawable.cookbooklogo3)
-                                    )
-                                }
-                                item {
-                                    RecipeCard(
-                                        title = "Burger",
-                                        time = "15 min",
-                                        image = painterResource(id = R.drawable.cookbooklogo3)
-                                    )
-                                }
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                userRecipesViewModel.getUserRecipes()
+                                UserRecipesList(userRecipesViewModel)
                             }
                         }
 
@@ -190,10 +172,7 @@ fun UserView(navController: NavController) {
                         }
                         "History" -> {
                             Column(modifier = Modifier.fillMaxSize()) {
-                                // Llama al ViewModel para cargar el historial
                                 historyViewModel.viewHistory()
-
-                                // Renderiza la lista de recetas
                                 RecipeHistoryList(historyViewModel)
                             }
                         }
