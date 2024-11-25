@@ -13,9 +13,11 @@ import com.example.cookbook.presentation.signup.models.SignupResponse
 import com.example.cookbook.presentation.user.models.HistoryBody
 import com.example.cookbook.presentation.user.models.HistoryItem
 import com.example.cookbook.presentation.user.models.RecipeStructure
+import com.example.cookbook.presentation.user.models.UpdateUserBody
 import com.example.cookbook.presentation.user.models.UserDetailsBody
 import com.example.cookbook.presentation.user.models.UserDetailsResponse
 import com.example.cookbook.presentation.user.models.UserRecipesBody
+import com.example.cookbook.presentation.user.models.UserUpdateResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -30,6 +32,7 @@ private const val END_URL_GET_ALL_INGREDIENTS = "cookbook/get-all-ingredients"
 private const val END_URL_VIEW_HISTORY = "cookbook/view-history"
 private const val END_URL_GET_USER_RECIPES = "cookbook/get-user-recipes"
 private const val END_URL_GET_USER = "cookbook/get-user"
+private const val END_URL_UPDATE_USER = "cookbook/update-user"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -61,4 +64,7 @@ interface ApiService {
 
     @POST(END_URL_GET_USER)
     suspend fun getUser(@Body userDetailsBody: UserDetailsBody): UserDetailsResponse
+
+    @POST(END_URL_UPDATE_USER)
+    suspend fun updateUser(@Body updateUserBody: UpdateUserBody): UserUpdateResponse
 }

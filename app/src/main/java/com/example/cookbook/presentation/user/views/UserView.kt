@@ -98,7 +98,7 @@ fun UserView(navController: NavController) {
 
                     Spacer(modifier = Modifier.width(300.dp))
 
-                    IconButton(onClick = { /* TODO */ }) {
+                    IconButton(onClick = { navController.navigate(Routes.UserEditView) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.settingicon),
                             contentDescription = "Settings",
