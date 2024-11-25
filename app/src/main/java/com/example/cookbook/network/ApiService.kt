@@ -8,6 +8,7 @@ import com.example.cookbook.Ingredient
 import com.example.cookbook.IngredientDetails
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
+import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
 import com.example.cookbook.presentation.signup.models.SignupBody
@@ -24,6 +25,8 @@ private const val END_URL_SEARCH_RECIPE = "cookbook/search-recipe"
 private const val END_URL_SEARCH_SPECIFIED_RECIPE = "cookbook/search-specified-recipe"
 private const val END_URL_GET_ALL_CATEGORIES = "cookbook/get-all-categories"
 private const val END_URL_GET_ALL_INGREDIENTS = "cookbook/get-all-ingredients"
+//private const val END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY = "cookbook/get-all-ingredients-by-category"
+private const val END_URL_GET_ALL_RECIPES_BY_CATEGORY = "cookbook/get-all-recipes-by-category"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -46,4 +49,10 @@ interface ApiService {
 
     @GET(END_URL_GET_ALL_INGREDIENTS)
     suspend fun getAllIngredients(): List<IngredientDetails>
+
+    /*@GET(END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY)
+    suspend fun getIngredientsbycategory(): List<IngredientDetails>*/
+
+    @GET(END_URL_GET_ALL_RECIPES_BY_CATEGORY)
+    suspend fun getRecipebyCategory(): List<HomeResponse>
 }

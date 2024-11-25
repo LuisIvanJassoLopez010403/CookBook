@@ -32,7 +32,7 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
     fun searchRecipes(nameRecipe: String) {
 
         if (nameRecipe.isBlank() && ingredients.isEmpty()) {
-            return // Detén la función si no hay filtros aplicados
+            return
         }
 
         isLoading = true
@@ -47,7 +47,6 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
                 println("Respuesta de la API: ${response.recipes}")
                 searchResponse.value = response.recipes
             } catch (e: Exception) {
-                // Manejo de errores
                 e.printStackTrace()
                 isLoading = false
             }
@@ -69,7 +68,6 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
             try {
                 categories = CategoryRepository.getCategories()
             } catch (exception: Exception) {
-                // Manejar errores (opcional)
                 categories = emptyList()
             }
         }
@@ -99,7 +97,6 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
             try {
                 ingredients = IngredientRepository.getIngredients()
             } catch (exception: Exception) {
-                // Manejar errores (opcional)
                 ingredients = emptyList()
             }
 
