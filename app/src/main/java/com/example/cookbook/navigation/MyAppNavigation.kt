@@ -30,6 +30,7 @@ import com.example.cookbook.presentation.onboarding.OnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingViewModel
 import com.example.cookbook.presentation.signup.views.SignupView
 import com.example.cookbook.presentation.title.TitleView
+import com.example.cookbook.presentation.user.views.UserEditView
 import com.example.cookbook.presentation.user.views.UserView
 
 // Prueba
@@ -87,6 +88,9 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.AddRecipeView) {
                 AddRecipeView(navController)
+            }
+            composable(Routes.UserEditView) {
+                UserEditView(navController)
             }
             composable(Routes.SearchView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }

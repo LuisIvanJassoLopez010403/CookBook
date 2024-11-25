@@ -3,12 +3,15 @@ package com.example.cookbook.presentation.finder.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
@@ -28,9 +31,14 @@ import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -48,6 +56,9 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
     var text by remember { viewModel.searchQuery }
     val categoryresults = viewModel.searchResponse.value
 
+    // Variables de Keyboard
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         bottomBar = {
@@ -60,6 +71,9 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                 .padding(innerPadding)
                 .fillMaxHeight()
                 .background(Color(0xFFF6F6F6))
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                }
         ) {
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -95,6 +109,15 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                         onValueChange = { text = it },
                         modifier = Modifier
                             .fillMaxWidth(1f),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
+
                         placeholder = {
                             Text(
                                 text = stringResource(id = R.string.Search),

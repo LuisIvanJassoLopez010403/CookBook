@@ -27,6 +27,6 @@ object Routes {
     var MyRecipeView = "MyRecipeView"
     var AddRecipeView = "AddRecipeView"
 
-
+    var UserEditView = "UserEditView"
 
 }
