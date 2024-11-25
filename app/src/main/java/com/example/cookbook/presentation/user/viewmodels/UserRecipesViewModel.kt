@@ -9,20 +9,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cookbook.preferences.getToken
 import com.example.cookbook.preferences.getUserIdFromToken
-import com.example.cookbook.presentation.user.models.HistoryBody
-import com.example.cookbook.presentation.user.models.RecipeHistory
-import com.example.cookbook.presentation.user.network.HistoryBodyRepository
+import com.example.cookbook.presentation.user.models.UserRecipesBody
+import com.example.cookbook.presentation.user.models.RecipeStructure
+import com.example.cookbook.presentation.user.network.UserBodyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class HistoryViewModel(
-    private val historyBodyRepository: HistoryBodyRepository,
+class UserRecipesViewModel(
+    private val userBodyRepository: UserBodyRepository,
     private val appContext: Context
 ) : ViewModel() {
-    private val _recipeHistory = MutableStateFlow<List<RecipeHistory>>(emptyList())
-    val recipeHistory: StateFlow<List<RecipeHistory>> = _recipeHistory
+    private val _userRecipes = MutableStateFlow<List<RecipeStructure>>(emptyList())
+    val userRecipes: StateFlow<List<RecipeStructure>> = _userRecipes
 
     var userId by mutableStateOf("")
     var errorMessage by mutableStateOf<String?>(null)
@@ -43,7 +43,7 @@ class HistoryViewModel(
         }
     }
 
-    fun viewHistory() {
+    fun getUserRecipes() {
         viewModelScope.launch {
             val token = getToken(appContext).firstOrNull()
             if (token.isNullOrEmpty() || userId.isEmpty()) {
@@ -51,19 +51,14 @@ class HistoryViewModel(
                 return@launch
             }
 
-            val historyBody = HistoryBody(id = userId)
+            val userRecipesBody = UserRecipesBody(userId = userId)
             isLoading = true
             try {
-                val response = historyBodyRepository.viewHistory(historyBody, token)
-                if (response.isNotEmpty()) {
-                    _recipeHistory.value = response[0].recipeHistory
-                    errorMessage = null
-                } else {
-                    _recipeHistory.value = emptyList()
-                    errorMessage = "No hay historial disponible."
-                }
+                val response = userBodyRepository.getUserRecipes(userRecipesBody, token)
+                _userRecipes.value = response
+                errorMessage = null
             } catch (e: Exception) {
-                errorMessage = "Error al cargar el historial: ${e.message}"
+                errorMessage = "Error al cargar las recetas del usuario: ${e.message}"
             } finally {
                 isLoading = false
             }
@@ -71,11 +66,12 @@ class HistoryViewModel(
     }
 }
 
-class HistoryViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {
+
+class UserRecipesViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
-            return HistoryViewModel(HistoryBodyRepository, appContext) as T
+        if (modelClass.isAssignableFrom(UserRecipesViewModel::class.java)) {
+            return UserRecipesViewModel(UserBodyRepository, appContext) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
