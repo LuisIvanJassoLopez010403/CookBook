@@ -46,7 +46,6 @@ import com.example.cookbook.Category
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.navigation.Routes
-import com.example.cookbook.presentation.finder.models.SearchRecipeBody
 import com.example.cookbook.presentation.finder.views.LazyRowCategories
 import com.example.cookbook.presentation.finder.views.SearchView
 import com.example.cookbook.presentation.home.home.models.HomeResponse
@@ -59,61 +58,7 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
     //variables para cambiar de color los botones al hacer click
     val Clicked = remember { mutableStateOf(false) }
     val iconColor = if (Clicked.value) Color(0xFFFF9800) else Color.White
-
-    //Variables que proporcionan los elementos de las categorias
-
-    /*//Categoria Popular
-    val PopularImages = listOf(
-        R.drawable.picza,
-        R.drawable.tacosp,
-        R.drawable.hamburguer,
-        R.drawable.hotdog,
-        R.drawable.sushi,
-    )
-
-    val PopularTitles = listOf(
-        stringResource(id = R.string.Pizza),
-        stringResource(id = R.string.Tacos),
-        stringResource(id = R.string.Hamburger),
-        stringResource(id = R.string.HotDog),
-        stringResource(id = R.string.Sushi)
-    )
-
-    val PopularIngredients = listOf(
-        listOf(
-            stringResource(id = R.string.Sourdough), stringResource(id = R.string.Flour), stringResource(id = R.string.Salt),
-            stringResource(id = R.string.Water), stringResource(id = R.string.olivoil), stringResource(id = R.string.Tomato),
-            stringResource(id = R.string.Cheese), stringResource(id = R.string.Pepperoni)
-        ),
-        listOf(
-            stringResource(id = R.string.Tortilla), stringResource(id = R.string.Meat), stringResource(id = R.string.Onion),
-            stringResource(id = R.string.Cilantro), stringResource(id = R.string.Lime), stringResource(id = R.string.Sauce),
-            stringResource(id = R.string.Avocado)
-        ),
-        listOf(
-            stringResource(id = R.string.Bread), stringResource(id = R.string.Meat), stringResource(id = R.string.Lettuce),
-            stringResource(id = R.string.Tomato), stringResource(id = R.string.Cheese), stringResource(id = R.string.Ketchup),
-            stringResource(id = R.string.Mustard), stringResource(id = R.string.Pickles)
-        ),
-        listOf(
-            stringResource(id = R.string.Bread), stringResource(id = R.string.Sausage), stringResource(id = R.string.Ketchup),
-            stringResource(id = R.string.Mustard), stringResource(id = R.string.Onion), stringResource(id = R.string.ChiliPeper),
-            stringResource(id = R.string.Avocado)
-        ),
-        listOf(
-            stringResource(id = R.string.Rice), stringResource(id = R.string.Seaweed), stringResource(id = R.string.Salmon),
-            stringResource(id = R.string.Cucumber), stringResource(id = R.string.Avocado), stringResource(id = R.string.Soysauce),
-            stringResource(id = R.string.Wasabi), stringResource(id = R.string.Ginger)
-        )
-    )
-
-    val PopularDescriptions = listOf(
-        stringResource(id = R.string.PiczaDescription),
-        stringResource(id = R.string.TacosDescription),
-        stringResource(id = R.string.HamburgerDescription),
-        stringResource(id = R.string.HotDogDescription),
-        stringResource(id = R.string.SushiDescription)
-    )*/
+    val groupedRecipes = viewModel.groupRecipesByCategory(viewModel.recipesbycategory)
 
     //Se utiliza un Scaffold para tener la barra de navegación en la parte inferior
     Scaffold(
@@ -151,16 +96,32 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
-                items(viewModel.getRecipesByCategory()) { Category ->
-                    LazyRowCategories(Category, SearchRecipeBody())
+                items(groupedRecipes) { response ->
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 15.dp)
+                    ) {
+                        Text(
+                            text = response.category,
+                            fontStyle = FontStyle.Italic,
+                            fontSize = 35.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF000000),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    LazyRowRecipes(response)
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
+fun LazyRowRecipes(response: HomeResponse) {
     val Clicked = remember { mutableStateOf(false) }
     val iconColor = if (Clicked.value) Color(0xFFFF9800) else Color.White
     Column(
@@ -168,21 +129,7 @@ fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
             .fillMaxWidth()
     ) {
 
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 15.dp)
-        ) {
-            Text(
-                text = response.Category,
-                fontStyle = FontStyle.Italic,
-                fontSize = 35.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF000000),
-                textAlign = TextAlign.Center
-            )
-        }
+
 
         LazyRow(
             modifier = Modifier.padding(start = 0.dp)
@@ -225,7 +172,7 @@ fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
                             verticalAlignment = Alignment.Top
                         ) {
                             Text(
-                                text = recipebody.nameRecipe, //Se llama al listado de variables para los titulos
+                                text = recipes.nameRecipe, //Se llama al listado de variables para los titulos
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFFFFFFF),
@@ -250,7 +197,7 @@ fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(130.dp)
+                                .height(100.dp)
                                 .background(Color(0x80000000)),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.Bottom
@@ -258,12 +205,12 @@ fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(130.dp)
+                                    .height(100.dp)
                                     .padding(start = 4.dp, end = 0.dp),
                                 //horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.Top
                             ) {
-                                //Columna de ingredientes
+                                /*//Columna de ingredientes
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth(0.5f)
@@ -279,19 +226,19 @@ fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
                                     // Recorre la lista de ingredientes y muestra cada uno
 
                                     Text(
-                                        text = stringResource(id = R.string.Sourdough),
+                                        text = recipes.ingredients.joinToString("\n"),
                                         color = Color.White,
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Normal,
                                         lineHeight = 20.sp,
                                         modifier = Modifier.padding(vertical = 2.dp)
                                     )
-                                }
+                                }*/
 
                                 //Columna de Descripciones
                                 Column(
                                     modifier = Modifier
-                                        //.fillMaxWidth(0.5f)
+                                    //.fillMaxWidth(0.5f)
                                 ) {
                                     Text(
                                         text = stringResource(id = R.string.Description),
@@ -303,7 +250,7 @@ fun LazyRowRecipes(response: HomeResponse, recipebody: SearchRecipeBody) {
                                     )
 
                                     Text(
-                                        text = stringResource(id = R.string.FlanDescription),
+                                        text = recipes.description,
                                         modifier = Modifier
                                             .fillMaxWidth(),
                                         fontSize = 12.sp,
