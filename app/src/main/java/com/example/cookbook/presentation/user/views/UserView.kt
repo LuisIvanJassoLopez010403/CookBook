@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -59,6 +61,8 @@ fun UserView(navController: NavController) {
     val userRecipesViewModel: UserRecipesViewModel = viewModel(factory = UserRecipesViewModelFactory(appContext2))
     val userDetailsViewModel: UserDetailsViewModel = viewModel(factory = UserDetailsViewModelFactory(appContext3))
 
+    var showLogoutConfirmation by remember { mutableStateOf(false) }
+
     Scaffold(
         content = { innerPadding ->
             Column(
@@ -87,7 +91,7 @@ fun UserView(navController: NavController) {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { navController.navigate(Routes.TitleView) }) {
+                    IconButton(onClick = { showLogoutConfirmation = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.logouticon),
                             contentDescription = "Settings",
@@ -96,9 +100,35 @@ fun UserView(navController: NavController) {
                         )
                     }
 
+                    if (showLogoutConfirmation) { // Logout confirmation dialog
+                        AlertDialog(
+                            onDismissRequest = { showLogoutConfirmation = false },
+                            title = {
+                                Text(text = "Cerrar Sesión")
+                            },
+                            text = {
+                                Text("¿Estás seguro de que deseas cerrar sesión?")
+                            },
+                            confirmButton = {
+                                Button(onClick = {
+                                    showLogoutConfirmation = false
+                                    navController.navigate(Routes.TitleView)
+                                }) {
+                                    Text("Sí")
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = { showLogoutConfirmation = false }) {
+                                    Text("No")
+                                }
+                            }
+                        )
+                    }
+
                     Spacer(modifier = Modifier.width(300.dp))
 
-                    IconButton(onClick = { navController.navigate(Routes.UserEditView) }) {
+                    IconButton(onClick = {
+                        navController.navigate(Routes.UserEditView) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.settingicon),
                             contentDescription = "Settings",
