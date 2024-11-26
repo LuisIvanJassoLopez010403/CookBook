@@ -20,7 +20,10 @@ import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepositor
 import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import com.example.cookbook.presentation.finder.viewmodels.FinderViewModelFactory
 import com.example.cookbook.presentation.finder.views.SearchView
-import com.example.cookbook.presentation.home.view.HomeView
+import com.example.cookbook.presentation.home.home.network.HomeRepository
+import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModel
+import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModelFactory
+import com.example.cookbook.presentation.home.home.views.HomeView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
 import com.example.cookbook.presentation.login.views.LoginView
@@ -84,7 +87,13 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 MyRecipeView(navController)
             }
             composable(Routes.HomeView) {
-                HomeView(navController)
+                val viewModel: HomeViewModel = viewModel(
+                    factory = HomeViewModelFactory(HomeRepository)
+                )
+                HomeView(
+                    navController = navController,
+                    viewModel = viewModel
+                )
             }
             composable(Routes.AddRecipeView) {
                 AddRecipeView(navController)
