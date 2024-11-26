@@ -2,6 +2,7 @@ package com.example.cookbook.presentation.finder.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,13 +30,20 @@ import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.zIndex
 import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.finder.models.SearchRecipeBody
@@ -45,6 +53,10 @@ import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepositor
 fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel) {
     var text by remember { viewModel.searchQuery }
     val results = viewModel.searchResponse.value
+
+    // Variables de Keyboard
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         bottomBar = {
@@ -57,6 +69,9 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                 .padding(innerPadding)
                 .fillMaxHeight()
                 .background(Color(0xFFF6F6F6))
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                }
         ) {
 
             Row(
@@ -119,6 +134,14 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                         onValueChange = { text = it },
                         modifier = Modifier
                             .fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
                         placeholder = {
                             Text(
                                 text = stringResource(id = R.string.Search),

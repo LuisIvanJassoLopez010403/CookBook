@@ -10,6 +10,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -34,7 +35,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -48,7 +51,7 @@ import com.google.android.gms.common.config.GservicesValue.value
 @Composable
 fun LoginView(navController: NavController) {
     // Contexto de la aplicación
-    val appContext = LocalContext.current.applicationContext // Contexto global para DataStore
+    val appContext = LocalContext.current.applicationContext
 
     // Variables de ViewModel
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(appContext))
@@ -59,6 +62,9 @@ fun LoginView(navController: NavController) {
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+
+    //Variable de keyboard
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     // Lógica del ViewModel
     if (loginViewModel.state != 0) {
@@ -128,7 +134,14 @@ fun LoginView(navController: NavController) {
             value = username,
             onValueChange = { username = it },
             label = { Text(text = stringResource(id = R.string.Username)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                }
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
