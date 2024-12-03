@@ -192,21 +192,25 @@ fun UserView(navController: NavController) {
                         MenuButton(
                             icon = painterResource(id = R.drawable.bookicon),
                             text = "My Recipes",
+                            isSelected = selectedTab == "My Recipes",
                             onClick = { selectedTab = "My Recipes" }
                         )
                         MenuButton(
                             icon = painterResource(id = R.drawable.clipboardicon),
                             text = "Lists",
+                            isSelected = selectedTab == "Lists",
                             onClick = { selectedTab = "Lists" }
                         )
                         MenuButton(
                             icon = painterResource(id = R.drawable.usercheckicon),
                             text = "Following",
+                            isSelected = selectedTab == "Following",
                             onClick = { selectedTab = "Following" }
                         )
                         MenuButton(
                             icon = painterResource(id = R.drawable.historyicon),
                             text = "History",
+                            isSelected = selectedTab == "History",
                             onClick = { selectedTab = "History" }
                         )
                     }
@@ -271,21 +275,29 @@ fun UserView(navController: NavController) {
 fun MenuButton(
     icon: Painter,
     text: String,
-    iconTint: Color = Color(0xFFFFA500),
+    isSelected: Boolean,
     onClick: () -> Unit
 ) {
+    val selectedColor = Color(0xFFFFA500)
+    val defaultColor = Color.Gray
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         IconButton(onClick = onClick) {
             Icon(
                 painter = icon,
                 contentDescription = text,
-                tint = iconTint,
+                tint = if (isSelected) selectedColor else defaultColor,
                 modifier = Modifier.size(32.dp)
             )
         }
-        Text(text, fontSize = 16.sp)
+        Text(
+            text = text,
+            fontSize = 16.sp,
+            color = if (isSelected) selectedColor else defaultColor
+        )
     }
 }
+
 
 @Composable
 fun RecipeCard(title: String, time: String, image: Painter) {
