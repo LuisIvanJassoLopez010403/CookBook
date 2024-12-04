@@ -55,7 +55,7 @@ fun RecipeHistoryList(viewModel: HistoryViewModel = viewModel(), navController: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    navController.navigate("recipe_detail/${recipe._id}")
+                                    navController.navigate("recipe_detail/${recipe.recipeId._id}")
                                 }
                         )
                     }
