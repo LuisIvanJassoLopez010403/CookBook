@@ -11,9 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.cookbook.presentation.finder.views.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
@@ -31,6 +33,7 @@ import com.example.cookbook.presentation.login.views.VerificationCodeView
 import com.example.cookbook.presentation.myRecipe.MyRecipeView
 import com.example.cookbook.presentation.onboarding.OnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingViewModel
+import com.example.cookbook.presentation.recipe.views.RecipeDetailView
 import com.example.cookbook.presentation.signup.views.SignupView
 import com.example.cookbook.presentation.title.TitleView
 import com.example.cookbook.presentation.user.views.UserEditView
@@ -107,6 +110,13 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                     SpecifiedFinderRepository)
                 )
                 SearchView(navController, specifiedFinderViewModel)
+            }
+            composable(
+                Routes.RecipeDetailView,
+                arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
+                RecipeDetailView(recipeId = recipeId, navController = navController)
             }
         }
     }

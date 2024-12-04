@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.user.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,10 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.cookbook.presentation.user.viewmodels.HistoryViewModel
 
 @Composable
-fun RecipeHistoryList(viewModel: HistoryViewModel = viewModel()) {
+fun RecipeHistoryList(viewModel: HistoryViewModel = viewModel(), navController: NavController) {
     val recipeHistory = viewModel.recipeHistory.collectAsState()
     val isLoading = viewModel.isLoading
     val errorMessage = viewModel.errorMessage
@@ -50,7 +52,11 @@ fun RecipeHistoryList(viewModel: HistoryViewModel = viewModel()) {
                             description = recipe.recipeId.description,
                             imageUrl = recipe.recipeId.image,
                             preptime = recipe.recipeId.preptime,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    navController.navigate("recipe_detail/${recipe._id}")
+                                }
                         )
                     }
                 }

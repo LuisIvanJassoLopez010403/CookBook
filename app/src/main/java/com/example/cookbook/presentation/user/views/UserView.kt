@@ -90,6 +90,7 @@ fun UserView(navController: NavController) {
 
                 Row(
                     modifier = Modifier.fillMaxWidth()
+                    //horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     IconButton(onClick = { showLogoutConfirmation = true }) {
                         Icon(
@@ -126,6 +127,7 @@ fun UserView(navController: NavController) {
                     }
 
                     Spacer(modifier = Modifier.width(300.dp))
+                    //Spacer(modifier = Modifier.width(100.dp))
 
                     IconButton(onClick = {
                         navController.navigate(Routes.UserEditView) }) {
@@ -222,7 +224,7 @@ fun UserView(navController: NavController) {
                         "My Recipes" -> {
                             Column(modifier = Modifier.fillMaxSize()) {
                                 userRecipesViewModel.getUserRecipes()
-                                UserRecipesList(userRecipesViewModel)
+                                UserRecipesList(viewModel = userRecipesViewModel, navController = navController)
                             }
                         }
 
@@ -257,7 +259,7 @@ fun UserView(navController: NavController) {
                         "History" -> {
                             Column(modifier = Modifier.fillMaxSize()) {
                                 historyViewModel.viewHistory()
-                                RecipeHistoryList(historyViewModel)
+                                RecipeHistoryList(viewModel = historyViewModel, navController = navController)
                             }
                         }
                     }
