@@ -26,7 +26,8 @@ object Routes {
     //App views
     var MyRecipeView = "MyRecipeView"
     var AddRecipeView = "AddRecipeView"
-
     var UserEditView = "UserEditView"
+
+    var RecipeDetailView = "recipe_detail/{recipeId}"
 
 }

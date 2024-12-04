@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.user.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,10 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModel
 
 @Composable
-fun UserRecipesList(viewModel: UserRecipesViewModel = viewModel()) {
+fun UserRecipesList(viewModel: UserRecipesViewModel = viewModel(), navController: NavController) {
     val userRecipes = viewModel.userRecipes.collectAsState()
     val isLoading = viewModel.isLoading
     val errorMessage = viewModel.errorMessage
@@ -48,7 +50,11 @@ fun UserRecipesList(viewModel: UserRecipesViewModel = viewModel()) {
                             description = recipe.description,
                             imageUrl = recipe.image,
                             preptime = recipe.preptime,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    navController.navigate("recipe_detail/${recipe._id}")
+                                }
                         )
                     }
                 }
