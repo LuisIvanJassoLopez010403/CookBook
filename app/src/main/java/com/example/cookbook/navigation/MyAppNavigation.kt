@@ -36,7 +36,7 @@ import com.example.cookbook.presentation.onboarding.OnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingViewModel
 import com.example.cookbook.presentation.recipe.views.RecipeDetailView
 import com.example.cookbook.presentation.signup.views.SignupView
-import com.example.cookbook.presentation.title.TitleView
+import com.example.cookbook.presentation.title.views.TitleView
 import com.example.cookbook.presentation.title.views.AboutView
 import com.example.cookbook.presentation.user.views.UserEditView
 import com.example.cookbook.presentation.user.views.UserView

@@ -1,4 +1,4 @@
-package com.example.cookbook.presentation.title
+package com.example.cookbook.presentation.title.views
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
