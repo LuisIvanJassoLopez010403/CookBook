@@ -10,6 +10,8 @@ import com.example.cookbook.presentation.finder.models.IngredientResponse
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
+import com.example.cookbook.presentation.recipe.models.GetRecipeBody
+import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.presentation.signup.models.SignupBody
 import com.example.cookbook.presentation.signup.models.SignupResponse
 import com.example.cookbook.presentation.user.models.HistoryBody
@@ -37,6 +39,7 @@ private const val END_URL_GET_USER = "cookbook/get-user"
 private const val END_URL_UPDATE_USER = "cookbook/update-user"
 private const val END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY = "cookbook/get-all-ingredients-by-category"
 private const val END_URL_GET_ALL_RECIPES_BY_CATEGORY = "cookbook/get-all-recipes-by-category"
+private const val END_URL_GET_RECIPE = "cookbook/get-recipe"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -77,4 +80,7 @@ interface ApiService {
 
     @GET(END_URL_GET_ALL_RECIPES_BY_CATEGORY)
     suspend fun getRecipebyCategory(): List<HomeResponse>
+
+    @POST(END_URL_GET_RECIPE)
+    suspend fun getRecipe(@Body getRecipeBody: GetRecipeBody): GetRecipeResponse
 }

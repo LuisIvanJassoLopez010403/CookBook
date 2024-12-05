@@ -1,6 +1,7 @@
 package com.example.cookbook.presentation.user.viewmodels
 
 import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import com.example.cookbook.preferences.getToken
 import com.example.cookbook.preferences.getUserIdFromToken
 import com.example.cookbook.presentation.user.models.UpdateUserBody
 import com.example.cookbook.presentation.user.network.UpdateUserBodyRepository
+import com.example.cookbook.utils.uriToBase64
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -51,6 +53,8 @@ class UpdateUserViewModel(
                 return@launch
             }
 
+            println("Profile Picture Base64 before API call: $profilePicture")
+
             val updateUserBody = UpdateUserBody(
                 userId = userId,
                 bio = bio,
@@ -60,9 +64,9 @@ class UpdateUserViewModel(
             isLoading = true
             try {
                 val response = updateUserBodyRepository.updateUser(updateUserBody, token)
-
                 updateMessage = response.message
                 errorMessage = null
+
                 bio = response.user.bio
                 profilePicture = response.user.profile_picture
             } catch (e: Exception) {
@@ -73,6 +77,7 @@ class UpdateUserViewModel(
             }
         }
     }
+
 }
 
 class UpdateUserViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {
