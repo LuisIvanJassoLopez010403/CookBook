@@ -130,7 +130,13 @@ class AddRecipeViewModel(
             }
         }
     }
-
+    fun resetState() {
+        state = 0
+        recipeResponse = RecipeResponse("", false)
+        selectedCategoryId = ""
+        SelectedIngredientId = ""
+        selectedIngredientDetails = emptyList()
+    }
 }
 
 class AddRecipeViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {

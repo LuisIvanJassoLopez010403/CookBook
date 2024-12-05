@@ -2,20 +2,13 @@ package com.example.cookbook.presentation.title
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,53 +28,73 @@ import com.example.cookbook.navigation.Routes
 
 @Composable
 fun TitleView(navController: NavController) {
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
+            .padding(10.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.cookbooklogo),
-            contentDescription = "Cookbook Logo",
+        Column(
             modifier = Modifier
-                .size(350.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Button(
-            onClick = {  navController.navigate(Routes.SignupView) },
-            modifier = Modifier
-                .shadow(10.dp, RoundedCornerShape(25.dp))
-                .width(350.dp)
-                .height(50.dp),
-            border = BorderStroke(1.dp, Color.White),
-            shape = RoundedCornerShape(30.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = R.string.Signup), fontSize = 18.sp, color = Color(0xFFFFA500))
+            // Image Logo
+            Image(
+                painter = painterResource(id = R.drawable.cookbooklogo),
+                contentDescription = "Cookbook Logo",
+                modifier = Modifier
+                    .size(350.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            // Signup Button
+            Button(
+                onClick = { navController.navigate(Routes.SignupView) },
+                modifier = Modifier
+                    .shadow(10.dp, RoundedCornerShape(25.dp))
+                    .width(350.dp)
+                    .height(50.dp),
+                border = BorderStroke(1.dp, Color.White),
+                shape = RoundedCornerShape(30.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
+            ) {
+                Text(text = stringResource(id = R.string.Signup), fontSize = 18.sp, color = Color(0xFFFFA500))
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            // Login Button
+            Button(
+                onClick = { navController.navigate(Routes.LoginView) },
+                modifier = Modifier
+                    .shadow(10.dp, RoundedCornerShape(25.dp))
+                    .width(350.dp)
+                    .height(50.dp),
+                border = BorderStroke(1.dp, color = Color(0xFFFFA500)),
+                shape = RoundedCornerShape(30.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFA500))
+            ) {
+                Text(text = stringResource(id = R.string.Login), fontSize = 18.sp, color = Color(0xFFFFFFFF))
+            }
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Button(
-            onClick = { navController.navigate(Routes.LoginView) },
+        // "Acerca De" Textbutton
+        TextButton(
+            onClick = { navController.navigate(Routes.AboutView) },
             modifier = Modifier
-                .shadow(10.dp, RoundedCornerShape(25.dp))
-                .width(350.dp)
-                .height(50.dp),
-            border = BorderStroke(1.dp, color = Color(0xFFFFA500)),
-            shape = RoundedCornerShape(30.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFFFA500))
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 20.dp)
         ) {
-            Text(text = stringResource(id = R.string.Login), fontSize = 18.sp, color = Color(0xFFFFFFFF))
+            Text(text = "More About Us", fontSize = 16.sp, color = Color.Blue)
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewTitleView() {

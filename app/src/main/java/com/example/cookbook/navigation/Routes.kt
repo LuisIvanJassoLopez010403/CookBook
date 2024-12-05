@@ -7,8 +7,10 @@ object Routes {
 
     //Inicio de sesion
     var TitleView = "TitleView"
+    var AboutView = "AboutView"
     var LoginView = "LoginView"
     var UserView = "UserView"
+    var WebView = "webview/{url}"
 
     //Home
     var HomeView = "HomeView"

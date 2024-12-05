@@ -36,8 +36,10 @@ import com.example.cookbook.presentation.onboarding.OnboardingViewModel
 import com.example.cookbook.presentation.recipe.views.RecipeDetailView
 import com.example.cookbook.presentation.signup.views.SignupView
 import com.example.cookbook.presentation.title.TitleView
+import com.example.cookbook.presentation.title.views.AboutView
 import com.example.cookbook.presentation.user.views.UserEditView
 import com.example.cookbook.presentation.user.views.UserView
+import com.example.cookbook.utils.WebViewScreen
 
 // Prueba
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -60,6 +62,16 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.TitleView) {
                 TitleView(navController)
+            }
+            composable(Routes.AboutView) {
+                AboutView(navController)
+            }
+            composable(
+                Routes.WebView,
+                arguments = listOf(navArgument("url") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                WebViewScreen(url = url, navController)
             }
             composable(Routes.SignupView) {
                 SignupView(navController)
