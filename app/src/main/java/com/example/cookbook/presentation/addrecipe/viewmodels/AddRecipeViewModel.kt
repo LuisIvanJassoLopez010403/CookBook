@@ -30,7 +30,7 @@ class AddRecipeViewModel(
     var recipeResponse by mutableStateOf(RecipeResponse("", false))
     var state by mutableStateOf(0)
 
-    var categories by mutableStateOf(emptyList<Pair<String, String>>())
+    var categories by mutableStateOf(emptyList<Triple<String, String, String?>>())
     var selectedCategoryId by mutableStateOf("")
 
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())

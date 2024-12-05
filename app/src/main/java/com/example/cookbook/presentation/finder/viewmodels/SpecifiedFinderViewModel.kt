@@ -26,7 +26,7 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
     var isLoading: Boolean by mutableStateOf(false)
     val searchResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
     val searchQuery = mutableStateOf("")
-    var categories by mutableStateOf(emptyList<Pair<String, String>>())
+    var categories by mutableStateOf(emptyList<Triple<String, String, String?>>())
     var ingredientsbycategory by mutableStateOf(emptyList<IngredientResponse>())
     var selectedingredients by mutableStateOf(mutableSetOf<String>())
     var selectedcategories by mutableStateOf(mutableSetOf<String>())
@@ -62,11 +62,12 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
     }
 
     fun getCategoryList(): List<Category> {
-        return categories.map { (id, name) ->
+        return categories.map { (id, name, icon) ->
             Category(
                 _id = id,
                 categoria = name,
-                category = null
+                category = null,
+                icon = icon
             )
         }
     }
