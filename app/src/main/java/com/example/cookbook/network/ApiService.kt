@@ -6,6 +6,7 @@ import com.example.cookbook.Category
 import com.example.cookbook.IngredientDetails
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
+import com.example.cookbook.presentation.finder.models.IngredientResponse
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
@@ -36,7 +37,7 @@ private const val END_URL_VIEW_HISTORY = "cookbook/view-history"
 private const val END_URL_GET_USER_RECIPES = "cookbook/get-user-recipes"
 private const val END_URL_GET_USER = "cookbook/get-user"
 private const val END_URL_UPDATE_USER = "cookbook/update-user"
-//private const val END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY = "cookbook/get-all-ingredients-by-category"
+private const val END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY = "cookbook/get-all-ingredients-by-category"
 private const val END_URL_GET_ALL_RECIPES_BY_CATEGORY = "cookbook/get-all-recipes-by-category"
 private const val END_URL_GET_RECIPE = "cookbook/get-recipe"
 
@@ -74,8 +75,8 @@ interface ApiService {
     @POST(END_URL_UPDATE_USER)
     suspend fun updateUser(@Body updateUserBody: UpdateUserBody): UserUpdateResponse
 
-    /*@GET(END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY)
-    suspend fun getIngredientsbycategory(): List<IngredientDetails>*/
+    @GET(END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY)
+    suspend fun getIngredientsbycategory(): List<IngredientResponse>
 
     @GET(END_URL_GET_ALL_RECIPES_BY_CATEGORY)
     suspend fun getRecipebyCategory(): List<HomeResponse>
