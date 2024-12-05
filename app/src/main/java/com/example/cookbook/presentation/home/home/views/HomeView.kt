@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.cookbook.Category
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
@@ -142,18 +143,20 @@ fun LazyRowRecipes(response: HomeResponse) {
                         .padding(10.dp)
                         .clip(RoundedCornerShape(23.dp))
                         //Se utiliza este painter para poner la imagen como fondo del box
-                        .paint(painterResource(id = R.drawable.picza)) //Se importa la variable de popularImages
+                        //.paint(painterResource(id = R.drawable.picza)) //Se importa la variable de popularImages
                         .clickable(onClick = {
                             //Ruta a la pantalla de receta en cuestion
                         })
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.picza), //se llama la variable PopularImages para implementar una imagen distinta por receta
+                        //                painter = rememberAsyncImagePainter(imageUrl),painter = painterResource(id = R.drawable.picza),
+                        painter = rememberAsyncImagePainter(recipes.image), //se llama la variable PopularImages para implementar una imagen distinta por receta
                         contentDescription = "Descripción de la imagen",
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(RoundedCornerShape(23.dp)),
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.FillHeight,
+                        //contentScale = ContentScale.FillBounds
                     )
 
                     Column(
@@ -210,31 +213,6 @@ fun LazyRowRecipes(response: HomeResponse) {
                                 //horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.Top
                             ) {
-                                /*//Columna de ingredientes
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.5f)
-                                ) {
-                                    Text(
-                                        text = stringResource(id = R.string.Ingredients),
-                                        fontStyle = FontStyle.Italic,
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    // Recorre la lista de ingredientes y muestra cada uno
-
-                                    Text(
-                                        text = recipes.ingredients.joinToString("\n"),
-                                        color = Color.White,
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Normal,
-                                        lineHeight = 20.sp,
-                                        modifier = Modifier.padding(vertical = 2.dp)
-                                    )
-                                }*/
-
                                 //Columna de Descripciones
                                 Column(
                                     modifier = Modifier

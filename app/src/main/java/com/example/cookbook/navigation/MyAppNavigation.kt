@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.presentation.finder.views.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
+import com.example.cookbook.presentation.finder.network.IngredientByCategory
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
 import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import com.example.cookbook.presentation.finder.viewmodels.FinderViewModelFactory
@@ -78,8 +79,11 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.InitialFinderView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
-                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(
-                    SpecifiedFinderRepository
+                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(
+                    parentEntry,
+                    factory = FinderViewModelFactory(
+                    SpecifiedFinderRepository,
+                        IngredientByCategory
                 ))
                 InitialFinderView(navController, specifiedFinderViewModel)
             }
@@ -103,8 +107,12 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.SearchView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
-                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(
-                    SpecifiedFinderRepository)
+                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(
+                    parentEntry,
+                    factory = FinderViewModelFactory(
+                    SpecifiedFinderRepository,
+                        IngredientByCategory
+                    )
                 )
                 SearchView(navController, specifiedFinderViewModel)
             }

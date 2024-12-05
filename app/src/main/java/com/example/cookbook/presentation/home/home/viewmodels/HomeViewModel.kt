@@ -6,9 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.preferences.getToken
+import com.example.cookbook.preferences.getUserIdFromToken
 import com.example.cookbook.presentation.home.home.models.HomeRecipeBody
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.home.home.network.HomeRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class HomeViewModel(val HomeBodyrepository: HomeRepository) : ViewModel() {
