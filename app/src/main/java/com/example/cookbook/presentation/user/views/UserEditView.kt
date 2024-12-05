@@ -47,6 +47,7 @@ import com.example.cookbook.R
 import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.user.viewmodels.UpdateUserViewModel
 import com.example.cookbook.presentation.user.viewmodels.UpdateUserViewModelFactory
+import com.example.cookbook.utils.uriToBase64
 
 @Composable
 fun UserEditView(navController: NavController) {
@@ -61,9 +62,13 @@ fun UserEditView(navController: NavController) {
     ) { uri: Uri? ->
         uri?.let {
             profilePicture = it.toString()
+            val base64Image = uriToBase64(appContext, it)
+            if (base64Image != null) {
+                updateUserViewModel.profilePicture = base64Image
+                println("Profile Picture Base64 generated: $base64Image")
+            }
         }
     }
-
 
     Column(
         modifier = Modifier
@@ -98,7 +103,11 @@ fun UserEditView(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 val profileImagePainter = rememberAsyncImagePainter(
-                    model = profilePicture.ifEmpty { null },
+                    model = if (profilePicture.isEmpty()) {
+                        null
+                    } else {
+                        profilePicture
+                    },
                     placeholder = painterResource(id = R.drawable.userplaceholdericon),
                     error = painterResource(id = R.drawable.userplaceholdericon)
                 )
@@ -139,7 +148,6 @@ fun UserEditView(navController: NavController) {
             Button(
                 onClick = {
                     updateUserViewModel.bio = bio
-                    updateUserViewModel.profilePicture = profilePicture
                     updateUserViewModel.updateUserDetails()
                     navController.navigate(Routes.UserView)
                 },

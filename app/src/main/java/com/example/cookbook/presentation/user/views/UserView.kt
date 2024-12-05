@@ -1,6 +1,7 @@
 package com.example.cookbook.presentation.user.views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -35,6 +37,8 @@ import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +54,7 @@ import com.example.cookbook.presentation.user.viewmodels.UserDetailsViewModel
 import com.example.cookbook.presentation.user.viewmodels.UserDetailsViewModelFactory
 import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModel
 import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModelFactory
+import com.example.cookbook.utils.base64ToBitmap
 
 @Composable
 fun UserView(navController: NavController) {
@@ -147,26 +152,30 @@ fun UserView(navController: NavController) {
                         .padding(top = 16.dp)
                 ) {
                     Box(
-                        modifier = Modifier.size(100.dp),
+                        modifier = Modifier
+                            .size(150.dp)
+                            .clip(CircleShape)
+                            .border(2.dp, Color(0xFFFFA500), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        val profileImagePainter = rememberAsyncImagePainter(
-                            model = if (userDetailsViewModel.profilePicture == "default_placeholder_url") {
-                                null
-                            } else {
-                                userDetailsViewModel.profilePicture
-                            },
-                            placeholder = painterResource(id = R.drawable.userplaceholdericon),
-                            error = painterResource(id = R.drawable.userplaceholdericon)
-                        )
+                        val profileImageBitmap = userDetailsViewModel.profilePicture.let {
+                            if (it.isEmpty()) null else base64ToBitmap(it)
+                        }
 
-                        Image(
-                            painter = profileImagePainter,
-                            contentDescription = "Profile Picture",
-                            modifier = Modifier.size(100.dp)
-                        )
+                        if (profileImageBitmap != null) {
+                            Image(
+                                bitmap = profileImageBitmap.asImageBitmap(),
+                                contentDescription = "Profile Picture",
+                                modifier = Modifier.size(150.dp) // Tamaño de la imagen
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(id = R.drawable.userplaceholdericon),
+                                contentDescription = "Profile Placeholder",
+                                modifier = Modifier.size(150.dp) // Tamaño de la imagen por defecto
+                            )
+                        }
                     }
-
 
                     Spacer(modifier = Modifier.height(10.dp))
 
