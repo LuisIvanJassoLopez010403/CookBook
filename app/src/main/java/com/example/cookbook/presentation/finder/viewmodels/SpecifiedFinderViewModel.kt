@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.finder.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,29 +10,36 @@ import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
+import com.example.cookbook.presentation.finder.models.IngredientResponse
 import com.example.cookbook.presentation.finder.models.SearchBody
+import com.example.cookbook.presentation.finder.models.SearchIngredient
 import com.example.cookbook.presentation.finder.models.SearchRecipeBody
+import com.example.cookbook.presentation.finder.network.IngredientByCategory
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.presentation.home.home.models.HomeResponse
+import com.example.cookbook.presentation.home.home.network.HomeRepository
 import kotlinx.coroutines.launch
 
-class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderRepository) : ViewModel() {
+class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderRepository,
+                               val IngredientBody: IngredientByCategory
+) : ViewModel() {
     var isLoading: Boolean by mutableStateOf(false)
     val searchResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
     val searchQuery = mutableStateOf("")
     var categories by mutableStateOf(emptyList<Pair<String, String>>())
-    var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
+    var ingredientsbycategory by mutableStateOf(emptyList<IngredientResponse>())
     var selectedingredients by mutableStateOf(mutableSetOf<String>())
     var selectedcategories by mutableStateOf(mutableSetOf<String>())
 
 
     init {
         loadCategories()
-        loadIngredients()
+        loadIngredientsbyCategory()
     }
 
     fun searchRecipes(nameRecipe: String) {
 
-        if (nameRecipe.isBlank() && ingredients.isEmpty()) {
+        if (nameRecipe.isBlank() && ingredientsbycategory.isEmpty()) {
             return
         }
 
@@ -81,25 +89,25 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
         }
     }
 
-    fun getIngredientsList(): List<IngredientDetails> {
-        return ingredients.map { (id,name) ->
-            IngredientDetails(
-                _id = id,
-                nameIngredient = name,
-                categoy = "",
-                __v = 0
-            )
+    private fun loadIngredientsbyCategory() {
+        viewModelScope.launch {
+            try {
+                val response = IngredientBody.ingredientsbyCategory()
+                ingredientsbycategory = response
+                Log.d("SpecifiedFinderViewModel", "Ingredients Loaded: $ingredientsbycategory")
+            } catch (e: Exception) {
+                Log.e("SpecifiedFinderViewModel", "Error loading ingredients", e)
+                ingredientsbycategory = emptyList()
+            }
         }
     }
 
-    private fun loadIngredients() {
-        viewModelScope.launch {
-            try {
-                ingredients = IngredientRepository.getIngredients()
-            } catch (exception: Exception) {
-                ingredients = emptyList()
-            }
-
+    fun groupingredientsbycategory(response: List<IngredientResponse>): List<IngredientResponse> {
+        return response.map { ingredientresponse ->
+            IngredientResponse(
+                category = ingredientresponse.category,
+                ingredients = ingredientresponse.ingredients
+            )
         }
     }
 

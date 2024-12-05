@@ -47,6 +47,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.zIndex
 import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.finder.models.SearchRecipeBody
+import com.example.cookbook.presentation.finder.network.IngredientByCategory
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
 
 @Composable
@@ -285,6 +286,9 @@ fun RecipeItem(recipe: SearchRecipeBody) {
 fun PreviewSearchView() {
     SearchView(
         rememberNavController(),
-        SpecifiedFinderViewModel(FinderBodyRepository = SpecifiedFinderRepository)
+        SpecifiedFinderViewModel(
+            FinderBodyRepository = SpecifiedFinderRepository,
+            IngredientBody = IngredientByCategory
+        )
     )
 }
