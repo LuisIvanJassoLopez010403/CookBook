@@ -284,11 +284,11 @@ fun LazyRowCategories(category: Category, viewModel: SpecifiedFinderViewModel) {
                 .align(Alignment.TopCenter)
         ) {
             Icon(
-                imageVector = Icons.Filled.Home,
+                painter = rememberAsyncImagePainter(category.icon),
                 contentDescription = "Category",
                 tint = Color(0xFF000000),
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(45.dp)
                     .align(Alignment.Center)
             )
         }
