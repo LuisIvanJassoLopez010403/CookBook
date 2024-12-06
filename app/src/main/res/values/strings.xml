@@ -13,6 +13,14 @@
     //Third Onboarding View
     <string name="CreLists">Create Lists</string>
     <string name="ThirdOnboardingDescription">Save your favorite recipes\nand create your own lists to\naccommodate each recipe for\nthe right occasion.</string>
+    //Title View
+    <string name="About">More About Us</string>
+    //About View
+    <string name="Title">What is Cookbook?</string>
+    <string name="Explanation">CookBook is a social network whose focus is based exclusively on cooking.\nUsers around the world can share their own recipes with other users quickly and easily, breaking them down by name, description, category, ingredients, steps and you can even include photos and videos.\nAren\'t you an expert in the kitchen? No problem. There are millions of people who can teach one to cook using the minimum amount of ingredients, up to the most exuberant amounts, making your search even easier through our advanced recipe search engine, which can filter recipes by name, ingredients and categories.\nIf you have found a recipe that has fascinated you, you can save it along with others within personalized lists so you can revisit your favorite dishes whenever you want.</string>
+    <string name="Subject">Subject: </string>
+    <string name="SubjectClass">Mobile Device Programming I</string>
+    <string name="Developers">Developers: </string>
     //Signup View
     <string name="Signup">Sign Up</string>
     <string name="Username">Username</string>

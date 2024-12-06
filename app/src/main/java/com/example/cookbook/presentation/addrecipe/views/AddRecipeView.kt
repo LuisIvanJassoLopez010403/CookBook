@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -87,14 +88,17 @@ fun AddRecipeView(navController: NavController) {
     //Variable de Toast
     val context = LocalContext.current
 
-    // ViewModel Logica
-    if(addRecipeViewModel.state != 0) {
-        if (addRecipeViewModel.recipeResponse.isSuccess) {
-            navController.navigate(Routes.UserView)
-            addRecipeViewModel.state = 0
-        } else {
-            Toast.makeText(context,"Error al crear receta", Toast.LENGTH_SHORT).show()
-            addRecipeViewModel.state = 0
+    // Gestionar la navegación basada en el estado
+    LaunchedEffect(addRecipeViewModel.state) {
+        if (addRecipeViewModel.state != 0) {
+            if (addRecipeViewModel.recipeResponse.isSuccess) {
+                navController.navigate(Routes.UserView) {
+                    popUpTo(Routes.AddRecipeView) { inclusive = true }
+                }
+            } else {
+                Toast.makeText(context, "Error al crear receta", Toast.LENGTH_SHORT).show()
+            }
+            addRecipeViewModel.resetState()
         }
     }
 

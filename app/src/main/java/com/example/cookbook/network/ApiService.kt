@@ -8,6 +8,10 @@ import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.finder.models.IngredientResponse
 import com.example.cookbook.presentation.home.home.models.HomeResponse
+import com.example.cookbook.presentation.lists.models.CreateListBody
+import com.example.cookbook.presentation.lists.models.CreateListResponse
+import com.example.cookbook.presentation.lists.models.UpdateListBody
+import com.example.cookbook.presentation.lists.models.UpdateListResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
 import com.example.cookbook.presentation.recipe.models.GetRecipeBody
@@ -40,6 +44,8 @@ private const val END_URL_UPDATE_USER = "cookbook/update-user"
 private const val END_URL_GET_ALL_INGREDIENTS_BY_CATEGORY = "cookbook/get-all-ingredients-by-category"
 private const val END_URL_GET_ALL_RECIPES_BY_CATEGORY = "cookbook/get-all-recipes-by-category"
 private const val END_URL_GET_RECIPE = "cookbook/get-recipe"
+private const val END_URL_CREATE_LIST = "cookbook/create-list"
+private const val END_URL_UPDATE_LIST = "cookbook/update-list"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -83,4 +89,10 @@ interface ApiService {
 
     @POST(END_URL_GET_RECIPE)
     suspend fun getRecipe(@Body getRecipeBody: GetRecipeBody): GetRecipeResponse
+
+    @POST(END_URL_CREATE_LIST)
+    suspend fun createList(@Body createListBody: CreateListBody): CreateListResponse
+
+    @POST(END_URL_UPDATE_LIST)
+    suspend fun updateList(@Body updateListBody: UpdateListBody): UpdateListResponse
 }

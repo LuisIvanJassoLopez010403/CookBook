@@ -27,6 +27,7 @@ import com.example.cookbook.presentation.home.home.network.HomeRepository
 import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModel
 import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModelFactory
 import com.example.cookbook.presentation.home.home.views.HomeView
+import com.example.cookbook.presentation.lists.views.CreateListView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
 import com.example.cookbook.presentation.login.views.LoginView
@@ -36,9 +37,11 @@ import com.example.cookbook.presentation.onboarding.OnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingViewModel
 import com.example.cookbook.presentation.recipe.views.RecipeDetailView
 import com.example.cookbook.presentation.signup.views.SignupView
-import com.example.cookbook.presentation.title.TitleView
+import com.example.cookbook.presentation.title.views.TitleView
+import com.example.cookbook.presentation.title.views.AboutView
 import com.example.cookbook.presentation.user.views.UserEditView
 import com.example.cookbook.presentation.user.views.UserView
+import com.example.cookbook.utils.WebViewScreen
 
 // Prueba
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -61,6 +64,16 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.TitleView) {
                 TitleView(navController)
+            }
+            composable(Routes.AboutView) {
+                AboutView(navController)
+            }
+            composable(
+                Routes.WebView,
+                arguments = listOf(navArgument("url") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                WebViewScreen(url = url, navController)
             }
             composable(Routes.SignupView) {
                 SignupView(navController)
@@ -126,6 +139,14 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
                 RecipeDetailView(recipeId = recipeId, navController = navController)
             }
+            composable(
+                Routes.CreateListView,
+                arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getString("recipeId")
+                CreateListView(navController = navController, recipeId = recipeId)
+            }
+
         }
     }
 }

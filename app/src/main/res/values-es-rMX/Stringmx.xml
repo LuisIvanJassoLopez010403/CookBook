@@ -14,6 +14,14 @@
     //Third Onboarding View
     <string name="CreLists">Crea Listas</string>
     <string name="ThirdOnboardingDescription">Guarda tus recetas favoritas y\ncrea tus propias listas para\nacomodar cada receta para la\nocasión adecuada.</string>
+    //Title View
+    <string name="About">Más Sobre Nosotros</string>
+    //About View
+    <string name="Title">¿Qué es CookBook?</string>
+    <string name="Explanation">CookBook es una red social cuyo enfoque se basa exclusivamente en la cocina.\nUsuarios alrededor del mundo pueden compartir sus propias recetas con otros usuarios de una forma rápida y sencilla, desglozándolas por nombre, descripción, categoría, ingredientes, pasos e incluso puedes incluir fotos y videos.\n¿No eres experto en la cocina? No hay ningún problema. Existen millones de personas que pueden enseñar a uno a cocinar usando desde la mínima cantidad de ingredientes, hasta la cantidad más exuberante, facilitando aún más su búsqueda por medio de nuestro avanzado buscador de recetas, el cual puede filtrar recetas por nombre, ingredientes y categorías.\nSi haz encontrado una receta que te ha fascinado, puedes guardarla junto a otras dentro de listas personalizadas para poder revisitar tus platillos favoritos cuando tú quieras.</string>
+    <string name="Subject">Materia: </string>
+    <string name="SubjectClass">Programación de Dispositivos Móviles I</string>
+    <string name="Developers">Desarrolladores: </string>
     //Signup View
     <string name="Signup">Registrarse</string>
     <string name="Username">Usuario</string>

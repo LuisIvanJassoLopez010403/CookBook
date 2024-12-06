@@ -2,32 +2,36 @@ package com.example.cookbook.navigation
 
 object Routes {
 
-    //Onboarding
-    var OnboardingView = "OnboardingView"
+    // Rutas existentes
+    const val OnboardingView = "OnboardingView"
+    const val TitleView = "TitleView"
+    const val AboutView = "AboutView"
+    const val LoginView = "LoginView"
+    const val UserView = "UserView"
+    const val WebView = "webview/{url}"
 
-    //Inicio de sesion
-    var TitleView = "TitleView"
-    var LoginView = "LoginView"
-    var UserView = "UserView"
+    // Home
+    const val HomeView = "HomeView"
 
-    //Home
-    var HomeView = "HomeView"
+    // Finder
+    const val InitialFinderView = "InitialFinderView"
+    const val SearchView = "SearchView"
 
-    //Finder
-    var InitialFinderView = "InitialFinderView"
-    var SearchView = "SearchView"
+    // Otras vistas
+    const val SignupView = "SignupView"
+    const val ForgotPasswordView = "ForgotPasswordView"
+    const val VerificationCodeView = "VerificationCodeView"
+    const val ChangePasswordView = "ChangePasswordView"
 
-    var SignupView = "SignupView"
-    var ForgotPasswordView = "ForgotPasswordView"
-    var VerificationCodeView = "VerificationCodeView"
-    var ChangePasswordView = "ChangePasswordView"
+    const val MyRecipeView = "MyRecipeView"
+    const val AddRecipeView = "AddRecipeView"
+    const val UserEditView = "UserEditView"
 
+    // Rutas dinámicas
+    const val RecipeDetailView = "recipe_detail/{recipeId}"
+    const val CreateListView = "createList/{recipeId}"
 
-    //App views
-    var MyRecipeView = "MyRecipeView"
-    var AddRecipeView = "AddRecipeView"
-    var UserEditView = "UserEditView"
-
-    var RecipeDetailView = "recipe_detail/{recipeId}"
-
+    // Helpers
+    fun recipeDetailRoute(recipeId: String) = "recipe_detail/$recipeId"
+    fun createListRoute(recipeId: String) = "createList/$recipeId"
 }
