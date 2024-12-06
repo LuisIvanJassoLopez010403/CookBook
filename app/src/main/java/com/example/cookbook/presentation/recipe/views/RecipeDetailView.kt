@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -99,9 +100,14 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
     val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
     val addRecipeToListViewModel: AddRecipeToListViewModel = viewModel(factory = AddRecipeToListViewModelFactory(appContext))
 
-    // Fetch user lists on component mount
-    LaunchedEffect(Unit) {
-        userListsViewModel.fetchUserLists()
+    // Espera a que el userId esté disponible
+    // Observar cambios en userId
+    val userId = userListsViewModel.userId.collectAsState().value
+
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            userListsViewModel.fetchUserLists(userId)
+        }
     }
 
     Scaffold(
@@ -240,8 +246,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
 
                                 Spacer(modifier = Modifier.height(16.dp))
 
-                                // Opciones del Dropdown
-                                userListsViewModel.userLists.forEach { list ->
+                                userListsViewModel.userLists.collectAsState().value.forEach { list ->
                                     TextButton(
                                         onClick = {
                                             selectedListId = list._id

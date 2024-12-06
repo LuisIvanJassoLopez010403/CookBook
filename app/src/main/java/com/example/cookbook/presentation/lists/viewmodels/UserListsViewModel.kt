@@ -12,6 +12,8 @@ import com.example.cookbook.preferences.getUserIdFromToken
 import com.example.cookbook.presentation.lists.models.UserListsBody
 import com.example.cookbook.presentation.lists.models.UserListsResponse
 import com.example.cookbook.presentation.lists.network.UserListsBodyRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -19,10 +21,14 @@ class UserListsViewModel(
     private val userListsBodyRepository: UserListsBodyRepository,
     private val appContext: Context
 ) : ViewModel() {
-    var userId by mutableStateOf("")
-    var userLists by mutableStateOf<List<UserListsResponse>>(emptyList())
+    private val _userLists = MutableStateFlow<List<UserListsResponse>>(emptyList())
+    val userLists: StateFlow<List<UserListsResponse>> = _userLists
+
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
+
+    private val _userId = MutableStateFlow("")
+    val userId: StateFlow<String> = _userId
 
     init {
         loadUserId()
@@ -31,27 +37,27 @@ class UserListsViewModel(
     private fun loadUserId() {
         viewModelScope.launch {
             val token = getToken(appContext).firstOrNull()
-            userId = if (!token.isNullOrEmpty()) {
+            _userId.value = if (!token.isNullOrEmpty()) {
                 getUserIdFromToken(token) ?: ""
             } else {
                 ""
             }
-            if (userId.isNotEmpty()) {
-                fetchUserLists()
+            if (_userId.value.isNotEmpty()) {
+                fetchUserLists(_userId.value)
             }
         }
     }
 
-    fun fetchUserLists() {
+    fun fetchUserLists(userId: String) {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             try {
                 val token = getToken(appContext).firstOrNull() ?: ""
-                userLists = userListsBodyRepository.getUserLists(UserListsBody(userId), token)
+                _userLists.value = userListsBodyRepository.getUserLists(UserListsBody(userId), token)
             } catch (e: Exception) {
                 errorMessage = "Error al cargar las listas: ${e.message}"
-                userLists = emptyList()
+                _userLists.value = emptyList()
             } finally {
                 isLoading = false
             }
