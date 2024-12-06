@@ -293,20 +293,6 @@ fun MenuButton(
     }
 }
 
-
-@Composable
-fun RecipeCard(title: String, time: String, image: Painter) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Image(painter = image, contentDescription = title, modifier = Modifier.size(150.dp))
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(title, fontSize = 16.sp)
-        Text(time, fontSize = 12.sp, color = Color.Gray)
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewUserView() {
