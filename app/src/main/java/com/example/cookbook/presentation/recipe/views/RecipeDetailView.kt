@@ -49,8 +49,10 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.navigation.Routes
-import com.example.cookbook.presentation.lists.viewmodels.UpdateListViewModel
-import com.example.cookbook.presentation.lists.viewmodels.UpdateListViewModelFactory
+import com.example.cookbook.presentation.lists.viewmodels.AddRecipeToListViewModel
+import com.example.cookbook.presentation.lists.viewmodels.AddRecipeToListViewModelFactory
+import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModel
+import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModelFactory
 import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModel
@@ -90,11 +92,17 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
 @Composable
 fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
     var showPopup by remember { mutableStateOf(false) }
-    var selectedListId by remember { mutableStateOf<String?>(null) }
     var showDropdown by remember { mutableStateOf(false) }
+    var selectedListId by remember { mutableStateOf<String?>(null) }
 
     val appContext = LocalContext.current.applicationContext
-    val updateListViewModel: UpdateListViewModel = viewModel(factory = UpdateListViewModelFactory(appContext))
+    val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
+    val addRecipeToListViewModel: AddRecipeToListViewModel = viewModel(factory = AddRecipeToListViewModelFactory(appContext))
+
+    // Fetch user lists on component mount
+    LaunchedEffect(Unit) {
+        userListsViewModel.fetchUserLists()
+    }
 
     Scaffold(
         content = { innerPadding ->
@@ -104,6 +112,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                     .fillMaxWidth()
                     .padding(innerPadding)
             ) {
+                // Botón superior
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -125,15 +134,10 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                         modifier = Modifier
                             .shadow(5.dp, RoundedCornerShape(50))
                             .border(1.dp, Color(0xFFFFA500), RoundedCornerShape(50)),
-                        border = BorderStroke(1.dp, Color.White),
-                        shape = RoundedCornerShape(20.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
+                        colors = ButtonDefaults.buttonColors(Color.White),
+                        shape = RoundedCornerShape(50)
                     ) {
-                        Text(
-                            text = "+",
-                            fontSize = 20.sp,
-                            color = Color(0xFFFFA500)
-                        )
+                        Text("+", fontSize = 20.sp, color = Color(0xFFFFA500))
                     }
                 }
 
@@ -151,11 +155,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                                 .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = "Opciones de Lista",
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                            Text("Opciones de Lista", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -165,9 +165,18 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                                     showPopup = false
                                     navController.navigate(Routes.createListRoute(recipe._id))
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp)),
+                                border = BorderStroke(1.dp, Color.White),
+                                shape = RoundedCornerShape(30.dp),
+                                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
-                                Text(text = "Crear Nueva Lista")
+                                Text(
+                                    text= "Crear Nueva Lista",
+                                    fontSize = 16.sp,
+                                    color = Color(0xFFFFA500)
+                                )
                             }
 
                             Spacer(modifier = Modifier.height(8.dp))
@@ -178,19 +187,24 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                                     showDropdown = true
                                     showPopup = false
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp)),
+                                border = BorderStroke(1.dp, Color.White),
+                                shape = RoundedCornerShape(30.dp),
+                                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
-                                Text(text = "Agregar a Lista ya Existente")
+                                Text(
+                                    text= "Agregar a Lista ya Existente",
+                                    fontSize = 16.sp,
+                                    color = Color(0xFFFFA500)
+                                )
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
 
                             TextButton(onClick = { showPopup = false }) {
-                                Text(
-                                    text = "Cancelar",
-                                    fontSize = 14.sp,
-                                    color = Color(0xFFFFA500)
-                                )
+                                Text("Cancelar", fontSize = 14.sp, color = Color(0xFFFFA500))
                             }
                         }
                     }
@@ -210,39 +224,61 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                                 .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            val listIds = listOf("Lista 1", "Lista 2", "Lista 3") // Ejemplo de listas
-                            Text(
-                                text = "Selecciona una Lista",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                            if (userListsViewModel.isLoading) {
+                                CircularProgressIndicator()
+                            } else if (userListsViewModel.errorMessage != null) {
+                                Text(
+                                    text = "Error: ${userListsViewModel.errorMessage}",
+                                    color = Color.Red
+                                )
+                            } else {
+                                Text(
+                                    text = "Selecciona una Lista",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
 
-                            Spacer(modifier = Modifier.height(16.dp))
+                                Spacer(modifier = Modifier.height(16.dp))
 
-                            // Opciones del Dropdown
-                            listIds.forEach { listId ->
-                                TextButton(
-                                    onClick = {
-                                        selectedListId = listId
-                                        showDropdown = false
-                                        updateListViewModel.updateList(listId, recipe._id)
+                                // Opciones del Dropdown
+                                userListsViewModel.userLists.forEach { list ->
+                                    TextButton(
+                                        onClick = {
+                                            selectedListId = list._id
+                                            showDropdown = false
+                                            addRecipeToListViewModel.addRecipeToList(
+                                                listId = list._id,
+                                                recipeId = recipe._id
+                                            )
+                                        }
+                                    ) {
+                                        Text(text = list.nameList, fontSize = 16.sp)
                                     }
-                                ) {
-                                    Text(text = listId, fontSize = 16.sp)
                                 }
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
 
                             TextButton(onClick = { showDropdown = false }) {
-                                Text(
-                                    text = "Cancelar",
-                                    fontSize = 14.sp,
-                                    color = Color(0xFFFFA500)
-                                )
+                                Text("Cancelar", fontSize = 14.sp, color = Color(0xFFFFA500))
                             }
                         }
                     }
+                }
+
+                // Mostrar mensaje de éxito o error al agregar receta
+                if (addRecipeToListViewModel.successMessage != null) {
+                    Text(
+                        text = addRecipeToListViewModel.successMessage!!,
+                        color = Color.Green,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                } else if (addRecipeToListViewModel.errorMessage != null) {
+                    Text(
+                        text = addRecipeToListViewModel.errorMessage!!,
+                        color = Color.Red,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
 
                 LazyColumn(
