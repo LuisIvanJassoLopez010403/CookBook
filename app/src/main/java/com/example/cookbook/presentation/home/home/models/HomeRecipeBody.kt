@@ -4,6 +4,7 @@ import com.example.cookbook.Category
 import com.example.cookbook.Ingredient
 
 class HomeRecipeBody (
+    val _id: String,
     val nameRecipe: String,
     val description: String,
     val preptime: Int,

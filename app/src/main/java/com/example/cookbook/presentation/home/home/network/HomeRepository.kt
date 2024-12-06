@@ -17,6 +17,7 @@ object HomeRepository {
                 category = responseItem.category ?: "Unknown",
                 recipes = responseItem.recipes.map { recipeItem ->
                     HomeRecipeBody(
+                        _id = recipeItem._id,
                         nameRecipe = recipeItem.nameRecipe,
                         description = recipeItem.description,
                         preptime = recipeItem.preptime,
