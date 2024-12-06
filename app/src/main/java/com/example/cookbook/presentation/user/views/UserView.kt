@@ -48,6 +48,9 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModel
+import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModelFactory
+import com.example.cookbook.presentation.lists.views.UserListsView
 import com.example.cookbook.presentation.user.viewmodels.HistoryViewModel
 import com.example.cookbook.presentation.user.viewmodels.HistoryViewModelFactory
 import com.example.cookbook.presentation.user.viewmodels.UserDetailsViewModel
@@ -238,31 +241,12 @@ fun UserView(navController: NavController) {
                         }
 
                         "Lists" -> {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                item {
-                                    RecipeCard(
-                                        title = "Favorites",
-                                        time = "Recipes added: 6",
-                                        image = painterResource(id = R.drawable.cookbooklogo3)
-                                    )
-                                }
-                                item {
-                                    RecipeCard(
-                                        title = "Seafood",
-                                        time = "Recipes added: 7",
-                                        image = painterResource(id = R.drawable.cookbooklogo3)
-                                    )
-                                }
-                                item {
-                                    RecipeCard(
-                                        title = "Japanese Cuisine",
-                                        time = "Recipes added: 14",
-                                        image = painterResource(id = R.drawable.cookbooklogo3)
-                                    )
-                                }
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                val appContext = LocalContext.current.applicationContext
+                                val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
+
+                                // Llama a la función de UserListsView
+                                UserListsView(viewModel = userListsViewModel, navController = navController)
                             }
                         }
                         "History" -> {

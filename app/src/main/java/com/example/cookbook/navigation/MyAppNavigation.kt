@@ -28,6 +28,7 @@ import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModel
 import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModelFactory
 import com.example.cookbook.presentation.home.home.views.HomeView
 import com.example.cookbook.presentation.lists.views.CreateListView
+import com.example.cookbook.presentation.lists.views.ListRecipesView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
 import com.example.cookbook.presentation.login.views.LoginView
@@ -146,7 +147,13 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 val recipeId = backStackEntry.arguments?.getString("recipeId")
                 CreateListView(navController = navController, recipeId = recipeId)
             }
-
+            composable(
+                Routes.ListRecipesView,
+                arguments = listOf(navArgument("listId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val listId = backStackEntry.arguments?.getString("listId") ?: ""
+                ListRecipesView(listId = listId, navController = navController)
+            }
         }
     }
 }

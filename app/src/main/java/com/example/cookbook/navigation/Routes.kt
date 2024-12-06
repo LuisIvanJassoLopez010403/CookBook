@@ -30,6 +30,7 @@ object Routes {
     // Rutas dinámicas
     const val RecipeDetailView = "recipe_detail/{recipeId}"
     const val CreateListView = "createList/{recipeId}"
+    const val ListRecipesView = "list_recipes/{listId}"
 
     // Helpers
     fun recipeDetailRoute(recipeId: String) = "recipe_detail/$recipeId"
