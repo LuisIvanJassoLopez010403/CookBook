@@ -118,7 +118,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = { navController.navigate(Routes.UserView) }) {
+                    TextButton(onClick = { navController.popBackStack() }) {
                         Text(
                             text = "< Back",
                             fontSize = 18.sp,
