@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -113,7 +114,7 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
                             textAlign = TextAlign.Center
                         )
                     }
-                    LazyRowRecipes(response)
+                    LazyRowRecipes(response, navController)
                 }
             }
         }
@@ -122,16 +123,13 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
 
 
 @Composable
-fun LazyRowRecipes(response: HomeResponse) {
+fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
     val Clicked = remember { mutableStateOf(false) }
-    val iconColor = if (Clicked.value) Color(0xFFFF9800) else Color.White
+    val iconColor = if (Clicked.value) Color(0xFFFF9800) else Color.LightGray
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-
-
-
         LazyRow(
             modifier = Modifier.padding(start = 0.dp)
         ) {
@@ -142,15 +140,12 @@ fun LazyRowRecipes(response: HomeResponse) {
                         .height(357.dp)
                         .padding(10.dp)
                         .clip(RoundedCornerShape(23.dp))
-                        //Se utiliza este painter para poner la imagen como fondo del box
-                        //.paint(painterResource(id = R.drawable.picza)) //Se importa la variable de popularImages
                         .clickable(onClick = {
-                            //Ruta a la pantalla de receta en cuestion
+                            navController.navigate("recipe_detail/${recipes._id}")
                         })
                 ) {
                     Image(
-                        //                painter = rememberAsyncImagePainter(imageUrl),painter = painterResource(id = R.drawable.picza),
-                        painter = rememberAsyncImagePainter(recipes.image), //se llama la variable PopularImages para implementar una imagen distinta por receta
+                        painter = rememberAsyncImagePainter(recipes.image),
                         contentDescription = "Descripción de la imagen",
                         modifier = Modifier
                             .fillMaxSize()
@@ -171,29 +166,16 @@ fun LazyRowRecipes(response: HomeResponse) {
                                 .fillMaxWidth()
                                 .background(Color(0x80000000)) //se agrega un background con transparencia
                                 .padding(start = 7.dp, end = 5.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                            horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.Top
                         ) {
                             Text(
-                                text = recipes.nameRecipe, //Se llama al listado de variables para los titulos
+                                text = recipes.nameRecipe,
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFFFFFFF),
                                 textAlign = TextAlign.Left
                             )
-
-                            IconButton(
-                                onClick = { Clicked.value = !Clicked.value },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.heart),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = iconColor // Ajusta el color del ícono
-                                )
-                            }
                         }
 
                         // Row Parte inferior
@@ -241,6 +223,32 @@ fun LazyRowRecipes(response: HomeResponse) {
                             }
                         }
                     }
+
+                    /*Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ){
+                        Row (
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 7.dp, end = 5.dp),
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.Top
+                        ){
+                            IconButton(
+                                onClick = { Clicked.value = !Clicked.value },
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .align(Alignment.CenterVertically)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.heart),
+                                    contentDescription = "Descripción del ícono",
+                                    tint = iconColor // Ajusta el color del ícono
+                                )
+                            }
+                        }
+                    }*/
                 }
             }
         }
