@@ -33,3 +33,10 @@ fun getUserIdFromToken(token: String): String? {
     val jwt = JWT(token)
     return jwt.getClaim("userId").asString()
 }
+
+suspend fun clearToken(context: Context) {
+    context.dataStore.edit { preferences ->
+        preferences.remove(UserPreferencesKeys.TOKEN)
+    }
+}
+
