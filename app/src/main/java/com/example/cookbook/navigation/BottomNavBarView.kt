@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +23,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavBarView(navController: NavController) {
-
     BottomAppBar(
         containerColor = Color(0xFFFFA500),
         modifier = Modifier
@@ -40,29 +40,38 @@ fun BottomNavBarView(navController: NavController) {
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(navItem.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (currentRoute != navItem.route) {
+                        navController.navigate(navItem.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 icon = {
                     Icon(
                         imageVector = navItem.image,
                         contentDescription = navItem.title,
-                        tint = Color.White,
+                        tint = if (isSelected) Color.DarkGray else Color.White,
                         modifier = Modifier.size(if (isSelected) 30.dp else 25.dp)
                     )
                 },
                 label = {
                     Text(
                         text = navItem.title,
-                        color = Color.White,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        color =  if (isSelected) Color.DarkGray else Color.White ,
+                        fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Normal,
                     )
                 },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color.White,
+                    unselectedIconColor = Color.White.copy(alpha = 0.6f),
+                    selectedTextColor = Color.White,
+                    unselectedTextColor = Color.White.copy(alpha = 0.6f),
+                    indicatorColor = Color(0xFFFFA500)
+                )
             )
         }
     }
