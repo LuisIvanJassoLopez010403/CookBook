@@ -33,3 +33,12 @@ fun getUserIdFromToken(token: String): String? {
     val jwt = JWT(token)
     return jwt.getClaim("userId").asString()
 }
+
+fun getRollFromToken(token: String): String? {
+    val jwt = JWT(token)
+    return jwt.getClaim("roll").asString()
+}
+
+
+
+

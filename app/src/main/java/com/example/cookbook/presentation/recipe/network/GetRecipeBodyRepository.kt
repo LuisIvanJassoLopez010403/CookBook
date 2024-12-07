@@ -10,4 +10,10 @@ object GetRecipeBodyRepository {
         val apiService = RetrofitClientInstance.getRetrofitInstance(token = token).create(ApiService::class.java)
         return apiService.getRecipe(getRecipeBody)
     }
+
+    /*suspend fun deleteRecipe(recipeId: String, token: String): Boolean {
+        val apiService = RetrofitClientInstance.getRetrofitInstance(token).create(ApiService::class.java)
+        val response = apiService.deleteRecipe(mapOf( "id" to recipeId))
+        return response.isSuccessful
+    }*/
 }
