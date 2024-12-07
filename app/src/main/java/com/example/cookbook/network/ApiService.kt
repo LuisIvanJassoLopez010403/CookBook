@@ -12,6 +12,8 @@ import com.example.cookbook.presentation.lists.models.AddRecipeToListBody
 import com.example.cookbook.presentation.lists.models.AddRecipeToListResponse
 import com.example.cookbook.presentation.lists.models.CreateListBody
 import com.example.cookbook.presentation.lists.models.CreateListResponse
+import com.example.cookbook.presentation.lists.models.RemoveRecipeFromListBody
+import com.example.cookbook.presentation.lists.models.RemoveRecipeFromListResponse
 import com.example.cookbook.presentation.lists.models.UpdateListBody
 import com.example.cookbook.presentation.lists.models.UpdateListResponse
 import com.example.cookbook.presentation.lists.models.UserListsBody
@@ -52,6 +54,7 @@ private const val END_URL_CREATE_LIST = "cookbook/create-list"
 private const val END_URL_UPDATE_LIST = "cookbook/update-list"
 private const val END_URL_GET_USER_LISTS = "cookbook/get-user-lists"
 private const val END_URL_ADD_RECIPE_TO_LIST = "cookbook/add-recipe-to-list"
+private const val END_URL_REMOVE_RECIPE_FROM_LIST = "cookbook/remove-recipe-from-list"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -107,4 +110,7 @@ interface ApiService {
 
     @POST(END_URL_ADD_RECIPE_TO_LIST)
     suspend fun addRecipeToList(@Body addRecipeToListBody: AddRecipeToListBody): AddRecipeToListResponse
+
+    @POST(END_URL_REMOVE_RECIPE_FROM_LIST)
+    suspend fun removeRecipeFromList(@Body removeRecipeFromListBody: RemoveRecipeFromListBody): RemoveRecipeFromListResponse
 }
