@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,21 +46,17 @@ import com.example.cookbook.presentation.user.views.RecipeCard
 
 @Composable
 fun ListRecipesView(listId: String, navController: NavController) {
-    // Inicializar appContext y ViewModels
     val appContext = LocalContext.current.applicationContext
     val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
-    val removeRecipeFromListViewModel: RemoveRecipeFromListViewModel =
-        viewModel(factory = RemoveRecipeFromListViewModelFactory(appContext))
+    val removeRecipeFromListViewModel: RemoveRecipeFromListViewModel = viewModel(factory = RemoveRecipeFromListViewModelFactory(appContext))
 
     val userLists by userListsViewModel.userLists.collectAsState()
     val isLoading = userListsViewModel.isLoading
     val errorMessage = userListsViewModel.errorMessage
 
-    // Buscar la lista seleccionada
     val selectedList = userLists.find { it._id == listId }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Header con botón de regreso y acciones
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -67,7 +64,6 @@ fun ListRecipesView(listId: String, navController: NavController) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Botón de regreso
             TextButton(onClick = { navController.popBackStack() }) {
                 Text(
                     text = "< " + stringResource(id = R.string.Back),
@@ -78,7 +74,6 @@ fun ListRecipesView(listId: String, navController: NavController) {
             }
         }
 
-        // Mostrar la lista de recetas o mensajes de carga/error
         Box(modifier = Modifier.fillMaxSize()) {
             when {
                 isLoading -> {
@@ -108,7 +103,6 @@ fun ListRecipesView(listId: String, navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                // Tarjeta de receta
                                 RecipeCard(
                                     name = recipe.nameRecipe,
                                     description = recipe.description,
@@ -117,19 +111,22 @@ fun ListRecipesView(listId: String, navController: NavController) {
                                     modifier = Modifier.weight(1f)
                                 )
 
-                                val reloadTrigger = remember { mutableStateOf(false) }
-
                                 Icon(
-                                    imageVector = Icons.Filled.Delete,
+                                    imageVector = Icons.Filled.Cancel,
                                     contentDescription = "Eliminar Receta",
                                     modifier = Modifier
-                                        .size(24.dp)
+                                        .size(30.dp)
                                         .clickable {
+                                            // "Dismiss" inmediato
+                                            userListsViewModel.removeRecipeLocally(listId, recipe._id)
+
+                                            // Llamar al backend para eliminar
                                             removeRecipeFromListViewModel.removeRecipeFromList(
                                                 listId = listId,
                                                 recipeId = recipe._id
                                             ) {
-                                                navController.navigate(Routes.UserView)
+                                                // Opcional: recargar listas completas si es necesario
+                                                userListsViewModel.fetchUserLists()
                                             }
                                         },
                                     tint = Color.Red
@@ -141,7 +138,6 @@ fun ListRecipesView(listId: String, navController: NavController) {
             }
         }
 
-        // Mensajes de éxito o error al eliminar receta
         val successMessage = removeRecipeFromListViewModel.responseMessage.collectAsState().value
         val removeErrorMessage = removeRecipeFromListViewModel.errorMessage.collectAsState().value
 
