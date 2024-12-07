@@ -15,10 +15,11 @@ data class GetRecipeResponse(
     val createdDate: String,
     val description: String,
     val image: String,
-    val video: String
+    val video: String,
 )
 
 data class Author(
     val _id: String,
-    val username: String
+    val username: String,
+    val roll: String,
 )

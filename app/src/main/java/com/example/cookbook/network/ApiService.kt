@@ -20,6 +20,7 @@ import com.example.cookbook.presentation.lists.models.UserListsBody
 import com.example.cookbook.presentation.lists.models.UserListsResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
+import com.example.cookbook.presentation.recipe.models.DeleteRecipeResponse
 import com.example.cookbook.presentation.recipe.models.GetRecipeBody
 import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.presentation.signup.models.SignupBody
@@ -55,6 +56,7 @@ private const val END_URL_UPDATE_LIST = "cookbook/update-list"
 private const val END_URL_GET_USER_LISTS = "cookbook/get-user-lists"
 private const val END_URL_ADD_RECIPE_TO_LIST = "cookbook/add-recipe-to-list"
 private const val END_URL_REMOVE_RECIPE_FROM_LIST = "cookbook/remove-recipe-from-list"
+private const val END_URL_DELETE_RECIPE = "cookbook/delete-recipe"
 
 interface ApiService {
     @POST(END_URL_LOGIN)
@@ -104,6 +106,9 @@ interface ApiService {
 
     @POST(END_URL_UPDATE_LIST)
     suspend fun updateList(@Body updateListBody: UpdateListBody): UpdateListResponse
+
+    @POST(END_URL_DELETE_RECIPE)
+    suspend fun deleteRecipe(@Body getRecipeBody: GetRecipeBody): DeleteRecipeResponse
 
     @POST(END_URL_GET_USER_LISTS)
     suspend fun getUserLists(@Body userListsBody: UserListsBody): List<UserListsResponse>

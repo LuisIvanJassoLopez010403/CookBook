@@ -1,15 +1,23 @@
 package com.example.cookbook.presentation.recipe.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.preferences.getRollFromToken
 import com.example.cookbook.presentation.recipe.models.GetRecipeBody
 import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.preferences.getToken
 import com.example.cookbook.preferences.getUserIdFromToken
 import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
+import com.example.cookbook.presentation.user.models.UserDetailsBody
+import com.example.cookbook.presentation.user.network.UserDetailsBodyRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -27,11 +35,16 @@ class GetRecipeViewModel(
     var errorMessage by mutableStateOf("")
         private set
 
+    private var _userRole = MutableStateFlow("")
+    val userRole: StateFlow<String> get() = _userRole
+
     var userId by mutableStateOf("")
 
     init {
         loadUserId()
+        loadRoll()
     }
+
 
     private fun loadUserId() {
         viewModelScope.launch {
@@ -41,6 +54,18 @@ class GetRecipeViewModel(
             } else {
                 ""
             }
+        }
+    }
+
+    private fun loadRoll() {
+        viewModelScope.launch {
+            val token = getToken(appContext).firstOrNull()
+            val role = if (!token.isNullOrEmpty()) {
+                getRollFromToken(token) ?: ""
+            } else {
+                ""
+            }
+            _userRole.value = role
         }
     }
 
