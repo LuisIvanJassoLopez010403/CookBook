@@ -43,25 +43,36 @@ class UserListsViewModel(
                 ""
             }
             if (_userId.value.isNotEmpty()) {
-                fetchUserLists(_userId.value)
+                fetchUserLists()
             }
         }
     }
 
-    fun fetchUserLists(userId: String) {
+    fun fetchUserLists() {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             try {
                 val token = getToken(appContext).firstOrNull() ?: ""
-                _userLists.value = userListsBodyRepository.getUserLists(UserListsBody(userId), token)
+                val updatedLists = userListsBodyRepository.getUserLists(UserListsBody(userId.value), token)
+                _userLists.value = updatedLists
             } catch (e: Exception) {
-                errorMessage = "Error al cargar las listas: ${e.message}"
-                _userLists.value = emptyList()
+                errorMessage = "Error al recargar las listas: ${e.message}"
             } finally {
                 isLoading = false
             }
         }
+    }
+
+    fun removeRecipeLocally(listId: String, recipeId: String) {
+        val updatedLists = _userLists.value.map { list ->
+            if (list._id == listId) {
+                list.copy(recipes = list.recipes.filter { it._id != recipeId })
+            } else {
+                list
+            }
+        }
+        _userLists.value = updatedLists
     }
 }
 

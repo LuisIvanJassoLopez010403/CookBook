@@ -110,7 +110,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
-            userListsViewModel.fetchUserLists(userId)
+            userListsViewModel.fetchUserLists()
         }
     }
 

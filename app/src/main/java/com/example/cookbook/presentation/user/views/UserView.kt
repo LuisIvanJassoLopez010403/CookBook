@@ -48,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.preferences.clearToken
 import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModel
 import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModelFactory
 import com.example.cookbook.presentation.lists.views.UserListsView
@@ -58,6 +59,9 @@ import com.example.cookbook.presentation.user.viewmodels.UserDetailsViewModelFac
 import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModel
 import com.example.cookbook.presentation.user.viewmodels.UserRecipesViewModelFactory
 import com.example.cookbook.utils.base64ToBitmap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserView(navController: NavController) {
@@ -103,13 +107,15 @@ fun UserView(navController: NavController) {
                     IconButton(onClick = { showLogoutConfirmation = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.logouticon),
-                            contentDescription = "Settings",
+                            contentDescription = "Cerrar Sesión",
                             tint = Color(0xFFFFA500),
                             modifier = Modifier.size(32.dp)
                         )
                     }
 
-                    if (showLogoutConfirmation) { // Logout confirmation dialog
+                    if (showLogoutConfirmation) {
+                        val context = LocalContext.current
+
                         AlertDialog(
                             onDismissRequest = { showLogoutConfirmation = false },
                             title = {
@@ -121,7 +127,15 @@ fun UserView(navController: NavController) {
                             confirmButton = {
                                 Button(onClick = {
                                     showLogoutConfirmation = false
-                                    navController.navigate(Routes.TitleView)
+
+                                    // Limpiar el token y redirigir
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        clearToken(context) // Eliminar el token del DataStore
+                                    }
+
+                                    navController.navigate(Routes.TitleView) {
+                                        popUpTo(Routes.UserView) { inclusive = true } // Asegura que el stack de navegación se limpie
+                                    }
                                 }) {
                                     Text("Sí")
                                 }
@@ -133,6 +147,7 @@ fun UserView(navController: NavController) {
                             }
                         )
                     }
+
 
                     Spacer(modifier = Modifier.width(300.dp))
                     //Spacer(modifier = Modifier.width(100.dp))

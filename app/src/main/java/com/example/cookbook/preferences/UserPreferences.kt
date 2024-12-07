@@ -42,3 +42,10 @@ fun getRollFromToken(token: String): String? {
 
 
 
+
+suspend fun clearToken(context: Context) {
+    context.dataStore.edit { preferences ->
+        preferences.remove(UserPreferencesKeys.TOKEN)
+    }
+}
+
