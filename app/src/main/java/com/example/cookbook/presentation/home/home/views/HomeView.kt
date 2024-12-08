@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -63,62 +64,77 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
     val Clicked = remember { mutableStateOf(false) }
     val iconColor = if (Clicked.value) Color(0xFFFF9800) else Color.White
     val groupedRecipes = viewModel.groupRecipesByCategory(viewModel.recipesbycategory)
+    val isLoading = viewModel.isLoading
+    val recipes = viewModel.recipesbycategory
 
-    //Se utiliza un Scaffold para tener la barra de navegación en la parte inferior
-    Scaffold(
-        bottomBar = {
-            BottomNavBarView(navController = navController)
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .fillMaxWidth()
-                .padding(innerPadding),
-        ) {
-            //En este Row se muestra el titulo de la aplicacion
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 15.dp, top = 10.dp)
-            ) {
-                Text(
-                    text = "CookBook",
-                    fontStyle = FontStyle.Italic,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFFFF9800),
-                    textAlign = TextAlign.Center
-                )
+    when {
+        isLoading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
             }
+        }
 
-            //Se utiliza un Lazy Column para poder hacer scroll entre las categorias de recetas
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(3.dp)
-            ) {
-                items(groupedRecipes) { response ->
+        recipes.isNotEmpty() -> {
+
+
+            //Se utiliza un Scaffold para tener la barra de navegación en la parte inferior
+            Scaffold(
+                bottomBar = {
+                    BottomNavBarView(navController = navController)
+                },
+                contentWindowInsets = WindowInsets(0, 0, 0, 0)
+            ) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .fillMaxWidth()
+                        .padding(innerPadding),
+                ) {
+                    //En este Row se muestra el titulo de la aplicacion
                     Row(
-                        horizontalArrangement = Arrangement.Start,
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.Top,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 15.dp)
+                            .padding(end = 15.dp, top = 10.dp)
                     ) {
                         Text(
-                            text = response.category,
+                            text = "CookBook",
                             fontStyle = FontStyle.Italic,
-                            fontSize = 35.sp,
+                            fontSize = 25.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF000000),
+                            color = Color(0xFFFF9800),
                             textAlign = TextAlign.Center
                         )
                     }
-                    LazyRowRecipes(response, navController)
+
+                    //Se utiliza un Lazy Column para poder hacer scroll entre las categorias de recetas
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(3.dp)
+                    ) {
+                        items(groupedRecipes) { response ->
+                            Row(
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 15.dp)
+                            ) {
+                                Text(
+                                    text = response.category,
+                                    fontStyle = FontStyle.Italic,
+                                    fontSize = 35.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF000000),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            LazyRowRecipes(response, navController)
+                        }
+                    }
                 }
             }
+
         }
     }
 }
@@ -225,7 +241,7 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                                     //.fillMaxWidth(0.5f)
                                 ) {
                                     Text(
-                                        text = stringResource(id = R.string.Description),
+                                        text = recipes.description,
                                         fontStyle = FontStyle.Italic,
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Bold,

@@ -35,6 +35,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +65,13 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
     // Variables de Keyboard
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val isLoading = viewModel.isLoading
+
+
+
+
+
 
     Scaffold(
         bottomBar = {
@@ -114,15 +122,46 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                     .fillMaxSize()
                     .padding(top = 130.dp),
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ){
-                    items(results){recipe ->
-                        RecipeCards(
-                            recipe,
-                            navController
-                        )
+                when {
+                    results.isEmpty() -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.NoResults),
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFFFA500),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+
+                    results.isNotEmpty() -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            items(results) { recipe ->
+                                RecipeCards(
+                                    recipe,
+                                    navController
+                                )
+                            }
+                        }
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            items(results) { recipe ->
+                                RecipeCards(
+                                    recipe,
+                                    navController
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -146,7 +185,8 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
-                            imeAction = ImeAction.Done),
+                            imeAction = ImeAction.Done
+                        ),
                         keyboardActions = KeyboardActions(
                             onDone = {
                                 keyboardController?.hide()
@@ -178,9 +218,9 @@ fun RecipeCards(
     ) {
         Box(
             modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(12.dp))
+                .fillMaxWidth()
+                .height(200.dp)
+                .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(12.dp))
         ) {
             // Imagen de la receta
             Image(
@@ -204,7 +244,7 @@ fun RecipeCards(
                         .background(Color(0x80000000))
                         .padding(start = 7.dp, end = 7.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ){
+                ) {
                     Text(
                         text = recipe.nameRecipe,
                         fontSize = 25.sp,

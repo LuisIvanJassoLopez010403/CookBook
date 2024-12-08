@@ -17,20 +17,25 @@ import kotlinx.coroutines.launch
 class HomeViewModel(val HomeBodyrepository: HomeRepository) : ViewModel() {
     var recipesbycategory by mutableStateOf(emptyList<HomeResponse>())
     val response = mutableStateOf<List<HomeResponse>>(emptyList())
+    var isLoading by mutableStateOf(false)
+        private set
 
     init {
         loadRecipesByCategory()
     }
 
     private fun loadRecipesByCategory() {
+        isLoading = true
         viewModelScope.launch {
             try {
                 val response = HomeBodyrepository.recipesbyCategory()
                 recipesbycategory = response
                 Log.d("HomeViewModel", "Recipes Loaded: $recipesbycategory")
+                isLoading = false
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error loading recipes", e)
                 recipesbycategory = emptyList()
+                isLoading = false
             }
         }
     }

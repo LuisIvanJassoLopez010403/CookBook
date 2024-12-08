@@ -23,13 +23,14 @@ import kotlinx.coroutines.launch
 class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderRepository,
                                val IngredientBody: IngredientByCategory
 ) : ViewModel() {
-    var isLoading: Boolean by mutableStateOf(false)
     val searchResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
     val searchQuery = mutableStateOf("")
     var categories by mutableStateOf(emptyList<Triple<String, String, String?>>())
     var ingredientsbycategory by mutableStateOf(emptyList<IngredientResponse>())
     var selectedingredients by mutableStateOf(mutableSetOf<String>())
     var selectedcategories by mutableStateOf(mutableSetOf<String>())
+    var isLoading by mutableStateOf(false)
+        private set
 
 
     init {
@@ -43,8 +44,9 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
             return
         }
 
-        isLoading = true
+
         viewModelScope.launch {
+            isLoading = true
             try {
                 val searchBody = SearchBody(
                     nameRecipe = nameRecipe,
@@ -54,6 +56,7 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
                 val response = FinderBodyRepository.searchSpecifiedRecipe(searchBody)
                 println("Respuesta de la API: ${response.recipes}")
                 searchResponse.value = response.recipes
+                isLoading = false
             } catch (e: Exception) {
                 e.printStackTrace()
                 isLoading = false
@@ -72,12 +75,15 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
         }
     }
 
-    private fun loadCategories() {
+    fun loadCategories() {
+        isLoading = true
         viewModelScope.launch {
             try {
                 categories = CategoryRepository.getCategories()
+                isLoading = false
             } catch (exception: Exception) {
                 categories = emptyList()
+                isLoading = false
             }
         }
     }
@@ -92,13 +98,16 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
 
     private fun loadIngredientsbyCategory() {
         viewModelScope.launch {
+            isLoading = true
             try {
                 val response = IngredientBody.ingredientsbyCategory()
                 ingredientsbycategory = response
                 Log.d("SpecifiedFinderViewModel", "Ingredients Loaded: $ingredientsbycategory")
+                isLoading = false
             } catch (e: Exception) {
                 Log.e("SpecifiedFinderViewModel", "Error loading ingredients", e)
                 ingredientsbycategory = emptyList()
+                isLoading = false
             }
         }
     }
