@@ -58,6 +58,7 @@ import com.example.cookbook.presentation.finder.network.IngredientByCategory
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
 
 @Composable
+// Comentario para cambios
 fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel) {
     var text by remember { viewModel.searchQuery }
     val results = viewModel.searchResponse.value

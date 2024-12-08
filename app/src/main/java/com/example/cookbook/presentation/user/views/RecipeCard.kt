@@ -8,11 +8,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.cookbook.utils.base64ToBitmap
 
 @Composable
 fun RecipeCard(
@@ -27,15 +30,27 @@ fun RecipeCard(
         modifier = modifier.padding(8.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // Imagen de la receta
-            Image(
-                painter = rememberAsyncImagePainter(imageUrl),
-                contentDescription = name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-            )
+            val recipeImageBitmap = base64ToBitmap(imageUrl)
+
+            if (recipeImageBitmap != null) {
+                Image(
+                    bitmap = recipeImageBitmap.asImageBitmap(),
+                    contentDescription = imageUrl,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(23.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Image(
+                    painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                    contentDescription = "Placeholder",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
             // Detalles de la receta
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(

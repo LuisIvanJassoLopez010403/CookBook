@@ -231,12 +231,6 @@ fun UserView(navController: NavController) {
                             onClick = { selectedTab = "Lists" }
                         )
                         MenuButton(
-                            icon = painterResource(id = R.drawable.usercheckicon),
-                            text = "Following",
-                            isSelected = selectedTab == "Following",
-                            onClick = { selectedTab = "Following" }
-                        )
-                        MenuButton(
                             icon = painterResource(id = R.drawable.historyicon),
                             text = "History",
                             isSelected = selectedTab == "History",
