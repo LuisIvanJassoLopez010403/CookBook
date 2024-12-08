@@ -167,18 +167,6 @@ fun LoginView(navController: NavController) {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // TextButton para iniciar proceso de recuperacion de contrasena
-        TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
-            Text(
-                text = stringResource(id = R.string.Forgotpasswd),
-                fontSize = 18.sp,
-                color = Color(0xFFFFA500),
-                textAlign = TextAlign.Center
-            )
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
         // Boton de Login
         Button(
             onClick = { loginViewModel.doLogin(username.text, password.text) },
