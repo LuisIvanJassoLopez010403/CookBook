@@ -8,5 +8,6 @@ data class UserDetailsResponse(
     val gender: String,
     val is_deleted: Boolean,
     val bio: String,
-    val profile_picture: String
+    val profile_picture: String,
+    val roll: String
 )

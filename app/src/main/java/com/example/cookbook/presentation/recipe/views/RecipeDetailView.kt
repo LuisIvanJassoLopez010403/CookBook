@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,12 +20,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Checklist
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -74,6 +77,7 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
     val isLoading = viewModel.isLoading
     val recipe = viewModel.recipe
     val errorMessage = viewModel.errorMessage
+    val userRole by viewModel.userRole.collectAsState()
 
     when {
         isLoading -> {
@@ -87,13 +91,13 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
             }
         }
         recipe != null -> {
-            RecipeDetails(recipe = recipe, navController = navController)
+            RecipeDetails(recipe = recipe, navController = navController, userRole = userRole)
         }
     }
 }
 
 @Composable
-fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
+fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userRole: String) {
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
     var selectedListId by remember { mutableStateOf<String?>(null) }
@@ -121,31 +125,73 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController) {
                     .padding(innerPadding)
             ) {
                 // Botón superior
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextButton(onClick = { navController.popBackStack() }) {
-                        Text(
-                            text = "< Back",
-                            fontSize = 18.sp,
-                            color = Color(0xFFFFA500),
-                            textAlign = TextAlign.Start
-                        )
-                    }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Button(
-                        onClick = { showPopup = true },
+                if (recipe.autor._id == userId || userRole == "moderator") {
+                    Row(
                         modifier = Modifier
-                            .shadow(5.dp, RoundedCornerShape(50))
-                            .border(1.dp, Color(0xFFFFA500), RoundedCornerShape(50)),
-                        colors = ButtonDefaults.buttonColors(Color.White),
-                        shape = RoundedCornerShape(50)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text("+", fontSize = 20.sp, color = Color(0xFFFFA500))
+                        TextButton(onClick = { navController.popBackStack() }) {
+                            Text(
+                                text = "< Back",
+                                fontSize = 18.sp,
+                                color = Color(0xFFFFA500),
+                                textAlign = TextAlign.Start
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Button(
+                            onClick = { showPopup = true },
+                            modifier = Modifier
+                                .shadow(5.dp, RoundedCornerShape(50))
+                                .border(1.dp, Color(0xFFFFA500), RoundedCornerShape(50)),
+                            colors = ButtonDefaults.buttonColors(Color.White),
+                            shape = RoundedCornerShape(50)
+                        ) {
+                            Text("+", fontSize = 20.sp, color = Color(0xFFFFA500))
+                        }
+
+                        IconButton(
+                            onClick = {
+                                // Acción para eliminar la receta
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete, // Usa el ícono que prefieras
+                                contentDescription = "Eliminar receta",
+                                tint = Color.Red // Color del ícono
+                            )
+                        }
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        TextButton(onClick = { navController.popBackStack() }) {
+                            Text(
+                                text = "< Back",
+                                fontSize = 18.sp,
+                                color = Color(0xFFFFA500),
+                                textAlign = TextAlign.Start
+                            )
+                        }
+
+                        Button(
+                            onClick = { showPopup = true },
+                            modifier = Modifier
+                                .shadow(5.dp, RoundedCornerShape(50))
+                                .border(1.dp, Color(0xFFFFA500), RoundedCornerShape(50)),
+                            colors = ButtonDefaults.buttonColors(Color.White),
+                            shape = RoundedCornerShape(50)
+                        ) {
+                            Text("+", fontSize = 20.sp, color = Color(0xFFFFA500))
+                        }
                     }
                 }
 

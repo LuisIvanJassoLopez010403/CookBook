@@ -34,6 +34,15 @@ fun getUserIdFromToken(token: String): String? {
     return jwt.getClaim("userId").asString()
 }
 
+fun getRollFromToken(token: String): String? {
+    val jwt = JWT(token)
+    return jwt.getClaim("roll").asString()
+}
+
+
+
+
+
 suspend fun clearToken(context: Context) {
     context.dataStore.edit { preferences ->
         preferences.remove(UserPreferencesKeys.TOKEN)
