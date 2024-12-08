@@ -39,6 +39,8 @@ class AddRecipeViewModel(
 
     var userId by mutableStateOf("")
 
+    var selectedImage by mutableStateOf("")
+
     init {
         loadCategories()
         loadIngredients()
@@ -64,9 +66,23 @@ class AddRecipeViewModel(
             }
         }
     }
+//    fun updateSelectedIngredients(selected: List<Ingredient>) {
+//        selectedIngredientDetails = selected
+//        SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
+//    }
+
     fun updateSelectedIngredients(selected: List<Ingredient>) {
-        selectedIngredientDetails = selected
+        selectedIngredientDetails = selected.map { it.copy() }
         SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
+    }
+
+
+    fun updateIngredientDetails(ingredientId: String, amount: Double, unit: String) {
+        selectedIngredientDetails = selectedIngredientDetails.map {
+            if (it._idIngredient._id == ingredientId) {
+                it.copy(amount = amount, unit = unit)
+            } else it
+        }
     }
 
     private fun loadUserId() {
