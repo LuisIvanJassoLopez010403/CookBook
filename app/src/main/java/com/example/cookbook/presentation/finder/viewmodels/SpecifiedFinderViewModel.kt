@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.finder.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
+import com.example.cookbook.preferences.getToken
 import com.example.cookbook.presentation.finder.models.IngredientResponse
 import com.example.cookbook.presentation.finder.models.SearchBody
 import com.example.cookbook.presentation.finder.models.SearchIngredient
@@ -18,10 +20,13 @@ import com.example.cookbook.presentation.finder.network.IngredientByCategory
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.home.home.network.HomeRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderRepository,
-                               val IngredientBody: IngredientByCategory
+class SpecifiedFinderViewModel(
+    val FinderBodyRepository: SpecifiedFinderRepository,
+    val IngredientBody: IngredientByCategory,
+    private val appContext: Context
 ) : ViewModel() {
     val searchResponse = mutableStateOf<List<SearchRecipeBody>>(emptyList())
     val searchQuery = mutableStateOf("")
@@ -34,8 +39,10 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
 
 
     init {
-        loadCategories()
-        loadIngredientsbyCategory()
+        viewModelScope.launch {
+            if (categories.isEmpty()) loadCategories()
+            if (ingredientsbycategory.isEmpty()) loadIngredientsbyCategory()
+        }
     }
 
     fun searchRecipes(nameRecipe: String) {
@@ -48,15 +55,21 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
         viewModelScope.launch {
             isLoading = true
             try {
-                val searchBody = SearchBody(
-                    nameRecipe = nameRecipe,
-                    ingredients = selectedingredients.toList(),
-                    category = selectedcategories.toList()
-                )
-                val response = FinderBodyRepository.searchSpecifiedRecipe(searchBody)
-                println("Respuesta de la API: ${response.recipes}")
-                searchResponse.value = response.recipes
-                isLoading = false
+                val token = getToken(appContext).firstOrNull().orEmpty()
+                if (token.isNotBlank()) {
+                    val searchBody = SearchBody(
+                        nameRecipe = nameRecipe,
+                        ingredients = selectedingredients.toList(),
+                        category = selectedcategories.toList()
+                    )
+                    val response = FinderBodyRepository.searchSpecifiedRecipe(searchBody, token)
+                    println("Respuesta de la API: ${response.recipes}")
+                    searchResponse.value = response.recipes
+                    isLoading = false
+                } else {
+                    Log.e("SpecifiedFinderViewModel", "Token is empty")
+                    isLoading = false
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 isLoading = false
@@ -84,14 +97,16 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
             } catch (exception: Exception) {
                 categories = emptyList()
                 isLoading = false
+            }finally {
+                isLoading = false
             }
         }
     }
 
-    fun toggleCategoriesSelection(id: String){
-        if (selectedcategories.contains(id)){
+    fun toggleCategoriesSelection(id: String) {
+        if (selectedcategories.contains(id)) {
             selectedcategories.remove(id)
-        }else{
+        } else {
             selectedcategories.add(id)
         }
     }
@@ -121,10 +136,10 @@ class SpecifiedFinderViewModel(val FinderBodyRepository: SpecifiedFinderReposito
         }
     }
 
-    fun toggleIngredientSelection(id: String){
-        if (selectedingredients.contains(id)){
+    fun toggleIngredientSelection(id: String) {
+        if (selectedingredients.contains(id)) {
             selectedingredients.remove(id)
-        }else{
+        } else {
             selectedingredients.add(id)
         }
     }

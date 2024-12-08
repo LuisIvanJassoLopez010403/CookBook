@@ -13,6 +13,7 @@ import com.example.cookbook.presentation.recipe.models.GetRecipeBody
 import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.preferences.getToken
 import com.example.cookbook.preferences.getUserIdFromToken
+import com.example.cookbook.presentation.recipe.models.DeleteRecipeBody
 import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.user.models.UserDetailsBody
 import com.example.cookbook.presentation.user.network.UserDetailsBodyRepository
@@ -32,7 +33,7 @@ class GetRecipeViewModel(
     var isLoading by mutableStateOf(false)
         private set
 
-    var errorMessage by mutableStateOf("")
+    var message by mutableStateOf("")
         private set
 
     private var _userRole = MutableStateFlow("")
@@ -72,7 +73,7 @@ class GetRecipeViewModel(
     fun getRecipe(recipeId: String) {
         viewModelScope.launch {
             isLoading = true
-            errorMessage = ""
+            message = ""
             try {
                 val token = getToken(appContext).firstOrNull()
                 if (!token.isNullOrEmpty()) {
@@ -82,16 +83,46 @@ class GetRecipeViewModel(
                     )
                     recipe = response
                 } else {
-                    errorMessage = "Token not found"
+                    message = "Token not found"
                 }
             } catch (e: Exception) {
-                errorMessage = "Error fetching recipe: ${e.message}"
+                message = "Error fetching recipe: ${e.message}"
             } finally {
                 isLoading = false
             }
         }
     }
+
+    fun deleteRecipe(recipeId: String, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            isLoading = true
+            message = ""
+            try {
+                val token = getToken(appContext).firstOrNull()
+                if (!token.isNullOrEmpty()) {
+                    val response = getRecipeBodyRepository.DeleteRecipe(
+                        DeleteRecipeBody(recipeId),
+                        token
+                    )
+                    if (response.message.contains("eliminada exitosamente", ignoreCase = true)) {
+                        onSuccess()
+                    } else {
+                        message = "Error deleting recipe: ${response.message}"
+                    }
+                } else {
+                    message = "Token not found"
+                }
+            } catch (e: Exception) {
+                message = "Error deleting recipe: ${e.message}"
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
 }
+
+
 
 
 class GetRecipeViewModelFactory(

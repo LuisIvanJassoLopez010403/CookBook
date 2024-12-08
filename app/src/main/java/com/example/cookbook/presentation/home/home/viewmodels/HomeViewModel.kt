@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.home.home.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,10 @@ import com.example.cookbook.presentation.home.home.network.HomeRepository
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val HomeBodyrepository: HomeRepository) : ViewModel() {
+class HomeViewModel(
+    val HomeBodyrepository: HomeRepository,
+    private val appContext: Context
+    ) : ViewModel() {
     var recipesbycategory by mutableStateOf(emptyList<HomeResponse>())
     val response = mutableStateOf<List<HomeResponse>>(emptyList())
     var isLoading by mutableStateOf(false)
@@ -28,10 +32,15 @@ class HomeViewModel(val HomeBodyrepository: HomeRepository) : ViewModel() {
         isLoading = true
         viewModelScope.launch {
             try {
-                val response = HomeBodyrepository.recipesbyCategory()
+                val token = getToken(appContext).firstOrNull().orEmpty()
+                if (token.isNotBlank()) {
+                val response = HomeBodyrepository.recipesbyCategory(token)
                 recipesbycategory = response
                 Log.d("HomeViewModel", "Recipes Loaded: $recipesbycategory")
                 isLoading = false
+                } else {
+                    Log.e("HomeViewModel", "Token is empty")
+                }
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error loading recipes", e)
                 recipesbycategory = emptyList()

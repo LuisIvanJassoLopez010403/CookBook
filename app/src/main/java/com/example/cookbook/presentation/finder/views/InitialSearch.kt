@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -68,7 +69,7 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val isLoading = viewModel.isLoading
-    val categories = viewModel.loadCategories()
+    val categories by remember { mutableStateOf(viewModel.categories) }
 
     Scaffold(
         bottomBar = {
@@ -382,10 +383,12 @@ fun LazyRowIngredients(ingredient: SearchIngredient, viewModel: SpecifiedFinderV
 @Preview(showBackground = true)
 @Composable
 fun PreviewBuscadorinicialView() {
+    val appContext = LocalContext.current
     InitialFinderView(
         rememberNavController(), SpecifiedFinderViewModel(
             FinderBodyRepository = SpecifiedFinderRepository,
-            IngredientBody = IngredientByCategory
+            IngredientBody = IngredientByCategory,
+            appContext
         )
     )
 }
