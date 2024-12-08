@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,6 +55,7 @@ import com.example.cookbook.presentation.finder.views.SearchView
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.home.home.network.HomeRepository
 import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModel
+import com.example.cookbook.utils.base64ToBitmap
 
 @Composable
 fun HomeView(navController: NavController, viewModel: HomeViewModel) {
@@ -160,15 +162,37 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                             navController.navigate("recipe_detail/${recipes._id}")
                         })
                 ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(recipes.image),
-                        contentDescription = "Descripción de la imagen",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(23.dp)),
-                        contentScale = ContentScale.FillHeight,
-                        //contentScale = ContentScale.FillBounds
-                    )
+                    val recipeImageBitmap = base64ToBitmap(recipes.image)
+
+                    if (recipeImageBitmap != null) {
+                        Image(
+                            bitmap = recipeImageBitmap.asImageBitmap(),
+                            contentDescription = recipes.nameRecipe,
+                            modifier = Modifier
+                           .fillMaxSize()
+                           .clip(RoundedCornerShape(23.dp)),
+                        contentScale = ContentScale.FillHeight
+                        )
+                    } else {
+                        // Imagen de marcador de posición en caso de error
+                        Image(
+                            painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                            contentDescription = "Placeholder",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(250.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                        )
+                    }
+//                    Image(
+//                        painter = rememberAsyncImagePainter(recipes.image),
+//                        contentDescription = "Descripción de la imagen",
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .clip(RoundedCornerShape(23.dp)),
+//                        contentScale = ContentScale.FillHeight,
+//                        //contentScale = ContentScale.FillBounds
+//                    )
 
                     Column(
                         modifier = Modifier

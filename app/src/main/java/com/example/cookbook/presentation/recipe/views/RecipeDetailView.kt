@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -61,6 +62,7 @@ import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModel
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModelFactory
+import com.example.cookbook.utils.base64ToBitmap
 
 @Composable
 fun RecipeDetailView(recipeId: String, navController: NavController) {
@@ -338,16 +340,28 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                         .padding(10.dp)
                 ) {
                     item {
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                model = recipe.image.ifEmpty { "https://via.placeholder.com/150" }
-                            ),
-                            contentDescription = recipe.nameRecipe,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(250.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                        )
+                        val recipeImageBitmap = base64ToBitmap(recipe.image)
+
+                        if (recipeImageBitmap != null) {
+                            Image(
+                                bitmap = recipeImageBitmap.asImageBitmap(),
+                                contentDescription = recipe.nameRecipe,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp)
+                                    .clip(RoundedCornerShape(16.dp))
+                            )
+                        } else {
+                            // Imagen de marcador de posición en caso de error
+                            Image(
+                                painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                                contentDescription = "Placeholder",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp)
+                                    .clip(RoundedCornerShape(16.dp))
+                            )
+                        }
 
                         Spacer(modifier = Modifier.height(16.dp))
 
