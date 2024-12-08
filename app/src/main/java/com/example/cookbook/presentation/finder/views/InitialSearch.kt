@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -65,6 +66,9 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
     // Variables de Keyboard
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val isLoading = viewModel.isLoading
+    val categories = viewModel.loadCategories()
 
     Scaffold(
         bottomBar = {
@@ -202,6 +206,7 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                                     LazyRowIngredients(ingredient, viewModel)
                                 }
                             }
+
                         }
                     }
                 }
