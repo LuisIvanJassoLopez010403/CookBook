@@ -42,8 +42,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -56,6 +58,7 @@ import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.finder.models.SearchRecipeBody
 import com.example.cookbook.presentation.finder.network.IngredientByCategory
 import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.utils.base64ToBitmap
 
 @Composable
 // Comentario para cambios
@@ -123,46 +126,27 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                     .fillMaxSize()
                     .padding(top = 130.dp),
             ) {
-                when {
-                    results.isEmpty() -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.NoResults),
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFFFA500),
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    items(results) { recipe ->
+                        RecipeCards(
+                            recipe,
+                            navController
+                        )
                     }
+                }
 
-                    results.isNotEmpty() -> {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(results) { recipe ->
-                                RecipeCards(
-                                    recipe,
-                                    navController
-                                )
-                            }
-                        }
-
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(results) { recipe ->
-                                RecipeCards(
-                                    recipe,
-                                    navController
-                                )
-                            }
-                        }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    items(results) { recipe ->
+                        RecipeCards(
+                            recipe,
+                            navController
+                        )
                     }
                 }
             }
@@ -224,14 +208,28 @@ fun RecipeCards(
                 .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(12.dp))
         ) {
             // Imagen de la receta
-            Image(
-                painter = rememberAsyncImagePainter(recipe.image),
-                contentDescription = recipe.nameRecipe,
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(150.dp)
-            )
+            val recipeImageBitmap = base64ToBitmap(recipe.image)
+
+            if (recipeImageBitmap != null) {
+                Image(
+                    bitmap = recipeImageBitmap.asImageBitmap(),
+                    contentDescription = recipe.nameRecipe,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(23.dp)),
+                    contentScale = ContentScale.FillWidth
+                )
+            } else {
+                // Imagen de marcador de posición en caso de error
+                Image(
+                    painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                    contentDescription = "Placeholder",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
             // Detalles de la receta
             Column(
                 modifier = Modifier
@@ -254,31 +252,6 @@ fun RecipeCards(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-
-                    Row(
-                        modifier = Modifier
-                            .padding(end = 7.dp)
-                    ) {
-                        IconButton(
-                            onClick = { },
-                            modifier = Modifier
-                                .size(32.dp)
-                                .align(Alignment.CenterVertically)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.heart),
-                                contentDescription = "Descripción del ícono",
-                                tint = Color(0xFFFFA500)
-                            )
-                        }
-                        Text(
-                            text = recipe.grade.toString(),
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFFFFF),
-                            textAlign = TextAlign.Left
-                        )
-                    }
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -290,26 +263,14 @@ fun RecipeCards(
                         .background(Color(0x80000000)) //se agrega un background con transparencia
                         .padding(start = 10.dp, end = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Bottom
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconButton(
-                            onClick = { },
-                            modifier = Modifier
-                                .size(32.dp)
-                                .align(Alignment.CenterVertically)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.userplaceholdericon),
-                                contentDescription = "Descripción del ícono",
-                                tint = Color(0xFFFFA500)
-                            )
-                        }
                         Text(
-                            text = recipe.autor,
+                            text = recipe.category.name,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFFFFFFF),
@@ -349,11 +310,13 @@ fun RecipeCards(
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchView() {
+    val appContext = LocalContext.current
     SearchView(
         rememberNavController(),
         SpecifiedFinderViewModel(
             FinderBodyRepository = SpecifiedFinderRepository,
-            IngredientBody = IngredientByCategory
+            IngredientBody = IngredientByCategory,
+            appContext
         )
     )
 }

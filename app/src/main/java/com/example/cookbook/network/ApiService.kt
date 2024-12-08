@@ -20,6 +20,7 @@ import com.example.cookbook.presentation.lists.models.UserListsBody
 import com.example.cookbook.presentation.lists.models.UserListsResponse
 import com.example.cookbook.presentation.login.models.LoginBody
 import com.example.cookbook.presentation.login.models.LoginResponse
+import com.example.cookbook.presentation.recipe.models.DeleteRecipeBody
 import com.example.cookbook.presentation.recipe.models.DeleteRecipeResponse
 import com.example.cookbook.presentation.recipe.models.GetRecipeBody
 import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
@@ -108,7 +109,7 @@ interface ApiService {
     suspend fun updateList(@Body updateListBody: UpdateListBody): UpdateListResponse
 
     @POST(END_URL_DELETE_RECIPE)
-    suspend fun deleteRecipe(@Body getRecipeBody: GetRecipeBody): DeleteRecipeResponse
+    suspend fun deleteRecipe(@Body getRecipeBody: DeleteRecipeBody): DeleteRecipeResponse
 
     @POST(END_URL_GET_USER_LISTS)
     suspend fun getUserLists(@Body userListsBody: UserListsBody): List<UserListsResponse>

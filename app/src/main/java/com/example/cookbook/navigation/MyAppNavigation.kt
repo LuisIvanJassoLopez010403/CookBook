@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -50,6 +51,7 @@ import com.example.cookbook.utils.WebViewScreen
 fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) {
     val navController = rememberNavController()
     val isOnboardingCompleted by onboardingViewModel.isOnboardingCompleted.collectAsState(initial = null)
+    val appContext = LocalContext.current
 
     // Decidir cuál será el destino inicial
     if (isOnboardingCompleted == null) {
@@ -100,7 +102,8 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                     parentEntry,
                     factory = FinderViewModelFactory(
                     SpecifiedFinderRepository,
-                        IngredientByCategory
+                        IngredientByCategory,
+                        appContext
                 ))
                 InitialFinderView(navController, specifiedFinderViewModel)
             }
@@ -108,8 +111,12 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 MyRecipeView(navController)
             }
             composable(Routes.HomeView) {
+
                 val viewModel: HomeViewModel = viewModel(
-                    factory = HomeViewModelFactory(HomeRepository)
+                    factory = HomeViewModelFactory(
+                        HomeRepository,
+                        appContext
+                    )
                 )
                 HomeView(
                     navController = navController,
@@ -128,7 +135,8 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                     parentEntry,
                     factory = FinderViewModelFactory(
                     SpecifiedFinderRepository,
-                        IngredientByCategory
+                        IngredientByCategory,
+                        appContext
                     )
                 )
                 SearchView(navController, specifiedFinderViewModel)

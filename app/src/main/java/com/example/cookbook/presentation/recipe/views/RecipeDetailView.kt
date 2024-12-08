@@ -76,7 +76,7 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
 
     val isLoading = viewModel.isLoading
     val recipe = viewModel.recipe
-    val errorMessage = viewModel.errorMessage
+    val errorMessage = viewModel.message
     val userRole by viewModel.userRole.collectAsState()
 
     when {
@@ -91,13 +91,13 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
             }
         }
         recipe != null -> {
-            RecipeDetails(recipe = recipe, navController = navController, userRole = userRole)
+            RecipeDetails(recipe = recipe, navController = navController, userRole = userRole, viewModel)
         }
     }
 }
 
 @Composable
-fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userRole: String) {
+fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userRole: String, viewModel: GetRecipeViewModel) {
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
     var selectedListId by remember { mutableStateOf<String?>(null) }
@@ -156,13 +156,15 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                         IconButton(
                             onClick = {
-                                // Acción para eliminar la receta
+                                viewModel.deleteRecipe(recipe._id) {
+                                    navController.popBackStack()
+                                }
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.Delete, // Usa el ícono que prefieras
+                                imageVector = Icons.Filled.Delete,
                                 contentDescription = "Eliminar receta",
-                                tint = Color.Red // Color del ícono
+                                tint = Color.Red
                             )
                         }
                     }

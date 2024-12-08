@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -241,9 +242,9 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                                     //.fillMaxWidth(0.5f)
                                 ) {
                                     Text(
-                                        text = recipes.description,
+                                        text = stringResource(id = R.string.Description),
                                         fontStyle = FontStyle.Italic,
-                                        fontSize = 14.sp,
+                                        fontSize = 20.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White,
                                         textAlign = TextAlign.Center
@@ -253,7 +254,7 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                                         text = recipes.description,
                                         modifier = Modifier
                                             .fillMaxWidth(),
-                                        fontSize = 12.sp,
+                                        fontSize = 16.sp,
                                         fontWeight = FontWeight.Normal,
                                         lineHeight = 20.sp,
                                         textAlign = TextAlign.Left,
@@ -263,32 +264,6 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                             }
                         }
                     }
-
-                    /*Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ){
-                        Row (
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 7.dp, end = 5.dp),
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.Top
-                        ){
-                            IconButton(
-                                onClick = { Clicked.value = !Clicked.value },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.heart),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = iconColor // Ajusta el color del ícono
-                                )
-                            }
-                        }
-                    }*/
                 }
             }
         }
@@ -298,8 +273,9 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeView() {
+    val appContext = LocalContext.current
     HomeView(
         rememberNavController(),
-        HomeViewModel(HomeBodyrepository = HomeRepository)
+        HomeViewModel(HomeBodyrepository = HomeRepository, appContext)
     )
 }

@@ -1,6 +1,7 @@
 package com.example.cookbook.presentation.home.home.network
 
 import com.example.cookbook.CategoryRepository
+import com.example.cookbook.network.ApiService
 import com.example.cookbook.network.RetrofitClientInstance
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import kotlinx.coroutines.Dispatchers
@@ -8,9 +9,9 @@ import kotlinx.coroutines.withContext
 import com.example.cookbook.presentation.home.home.models.HomeRecipeBody
 
 object HomeRepository {
-    val apiService = RetrofitClientInstance.apiService
 
-    suspend fun recipesbyCategory(): List<HomeResponse> = withContext(Dispatchers.IO) {
+    suspend fun recipesbyCategory(token: String): List<HomeResponse> = withContext(Dispatchers.IO) {
+        val apiService = RetrofitClientInstance.getRetrofitInstance(token = token).create(ApiService::class.java)
         val apiResponse = apiService.getRecipebyCategory()
         apiResponse.map { responseItem ->
             HomeResponse(

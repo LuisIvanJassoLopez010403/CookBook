@@ -1,5 +1,5 @@
 package com.example.cookbook.presentation.recipe.models
 
-class DeleteRecipeBody {
-    val id = String
-}
+class DeleteRecipeBody (
+    val id: String
+)

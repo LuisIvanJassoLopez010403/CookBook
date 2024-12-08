@@ -44,6 +44,7 @@
     <string name="Newpasswd">New Password</string>
     <string name="Confirmnewpasswd">Confirm New Password</string>
     //HomeView
+    <string name="Description">Description:</string>
     //initialSearch
     <string name="Search">Search</string>
     <string name="NoResults">No results found</string>
