@@ -326,13 +326,12 @@ fun LazyRowCategories(category: Category, viewModel: SpecifiedFinderViewModel) {
 
 @Composable
 fun LazyRowIngredients(ingredient: SearchIngredient, viewModel: SpecifiedFinderViewModel) {
-    var isClicked by remember { mutableStateOf(false) }
+    val isClicked = viewModel.selectedingredients.contains(ingredient._id)
     Box(
         modifier = Modifier
             .width(90.dp)
             .height(105.dp)
             .clickable(onClick = {
-                isClicked = !isClicked
                 viewModel.toggleIngredientSelection(ingredient._id)
             })
     ) {
