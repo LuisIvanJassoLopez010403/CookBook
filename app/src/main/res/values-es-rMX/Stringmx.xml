@@ -49,4 +49,7 @@
     //initialSearch
     <string name="Search">Search</string>
     <string name="NoResults">No se encontraron resultados</string>
+    //RecipeView
+    <string name="DeleteRecipe">Eliminar Receta</string>
+    <string name="SureDeleteRecipe">Estas seuro de querer Eliminar esta Receta?</string>
 </resources>
