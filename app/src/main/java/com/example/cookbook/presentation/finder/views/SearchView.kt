@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,24 +30,52 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
-import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
+import coil.compose.rememberAsyncImagePainter
 import com.example.cookbook.navigation.Routes
-import com.example.cookbook.presentation.addrecipe.models.RecipeBody
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
-import kotlinx.serialization.json.Json.Default.configuration
+import com.example.cookbook.presentation.finder.models.SearchRecipeBody
+import com.example.cookbook.presentation.finder.network.IngredientByCategory
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.utils.base64ToBitmap
 
 @Composable
-fun SearchView(navController: NavController, viewModel: FinderViewModel) {
+// Comentario para cambios
+fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel) {
     var text by remember { viewModel.searchQuery }
-    val results = viewModel.loginResponse.value
+    val results = viewModel.searchResponse.value
+
+    // Variables de Keyboard
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val isLoading = viewModel.isLoading
+
+
+
+
+
 
     Scaffold(
         bottomBar = {
@@ -59,15 +88,29 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
                 .padding(innerPadding)
                 .fillMaxHeight()
                 .background(Color(0xFFF6F6F6))
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                }
         ) {
 
             Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp, end = 10.dp)
+                    .padding(top = 5.dp, end = 10.dp)
             ) {
+                TextButton(onClick = { navController.navigate(Routes.InitialFinderView) }) {
+                    Text(
+                        text = "< " + stringResource(id = R.string.Back),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFFA500),
+                        modifier = Modifier,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Text(
                     text = "CookBook",
                     fontStyle = FontStyle.Italic,
@@ -78,17 +121,32 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
                 )
             }
 
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 130.dp),
             ) {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
                 ) {
-                    items (results) { recipe ->
-                        RecipeItem(recipe)
+                    items(results) { recipe ->
+                        RecipeCards(
+                            recipe,
+                            navController
+                        )
+                    }
+                }
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    items(results) { recipe ->
+                        RecipeCards(
+                            recipe,
+                            navController
+                        )
                     }
                 }
             }
@@ -110,6 +168,15 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
                         onValueChange = { text = it },
                         modifier = Modifier
                             .fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
                         placeholder = {
                             Text(
                                 text = stringResource(id = R.string.Search),
@@ -118,253 +185,122 @@ fun SearchView(navController: NavController, viewModel: FinderViewModel) {
                     )
                 }
             }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.23f)
-                    .align(Alignment.BottomCenter)
-                    .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(23.dp))
-                    .clip(RoundedCornerShape(23.dp))
-                    .paint(
-                        painterResource(id = R.drawable.firstonboardingview), // Reemplaza con tu recurso
-                        contentScale = ContentScale.FillBounds // Ajusta cómo se escala la imagen
-                    ),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth()
-                        .zIndex(1f),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // Row de la parte superior
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0x80000000)) //se agrega un background con transparencia
-                            .padding(start = 7.dp, end = 7.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Receta", //Se llama al listado de variables para los titulos
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFFFFF),
-                            textAlign = TextAlign.Left
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .padding(end = 7.dp)
-                        ) {
-                            IconButton(
-                                onClick = { },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.heart),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = Color(0xFFFFA500)
-                                )
-                            }
-                            Text(
-                                text = "4.5",
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFFFFFFF),
-                                textAlign = TextAlign.Left
-                            )
-                        }
-                    }
-
-                    // Row Parte inferior
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0x80000000)) //se agrega un background con transparencia
-                            .padding(start = 10.dp, end = 10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(
-                                onClick = { },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.userplaceholdericon),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = Color(0xFFFFA500)
-                                )
-                            }
-                            Text(
-                                text = "Pedro Perez",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFFFFFFF),
-                                textAlign = TextAlign.Left
-                            )
-                        }
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(
-                                onClick = { },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .align(Alignment.CenterVertically)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.clock),
-                                    contentDescription = "Descripción del ícono",
-                                    tint = Color.Unspecified
-                                )
-                            }
-                            Text(
-                                text = "15 - min",
-                                fontSize = 18.sp,
-                                color = Color(0xFFFFFFFF),
-                                textAlign = TextAlign.Left
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
 }
 
-
 @Composable
-fun RecipeItem(recipe: RecipeBody) {
-    Column(
+fun RecipeCards(
+    recipe: SearchRecipeBody, navController: NavController
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.23f)
-            .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(23.dp))
-            .clip(RoundedCornerShape(23.dp))
-            .paint(
-                painterResource(id = R.drawable.firstonboardingview),
-                contentScale = ContentScale.FillBounds
-            ),
-        verticalArrangement = Arrangement.SpaceBetween
+            .padding(5.dp)
+            .clickable {
+                navController.navigate("recipe_detail/${recipe._id}")
+            }
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxHeight()
                 .fillMaxWidth()
-                .zIndex(1f),
-            verticalArrangement = Arrangement.SpaceBetween
+                .height(200.dp)
+                .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(12.dp))
         ) {
-            // Row de la parte superior
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0x80000000))
-                    .padding(start = 7.dp, end = 7.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = recipe.nameRecipe,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFFFFFFFF),
-                    textAlign = TextAlign.Left
-                )
+            // Imagen de la receta
+            val recipeImageBitmap = base64ToBitmap(recipe.image)
 
+            if (recipeImageBitmap != null) {
+                Image(
+                    bitmap = recipeImageBitmap.asImageBitmap(),
+                    contentDescription = recipe.nameRecipe,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(23.dp)),
+                    contentScale = ContentScale.FillWidth
+                )
+            } else {
+                // Imagen de marcador de posición en caso de error
+                Image(
+                    painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                    contentDescription = "Placeholder",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
+            // Detalles de la receta
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
+
+            ) {
                 Row(
                     modifier = Modifier
-                        .padding(end = 7.dp)
+                        .fillMaxWidth()
+                        .background(Color(0x80000000))
+                        .padding(start = 7.dp, end = 7.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.CenterVertically)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.heart),
-                            contentDescription = "Descripción del ícono",
-                            tint = Color(0xFFFFA500)
-                        )
-                    }
                     Text(
-                        text = recipe.calificacion.toString(),
+                        text = recipe.nameRecipe,
                         fontSize = 25.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Left
-                    )
-                }
-            }
-
-            // Row Parte inferior
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0x80000000)) //se agrega un background con transparencia
-                    .padding(start = 10.dp, end = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.CenterVertically)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.userplaceholdericon),
-                            contentDescription = "Descripción del ícono",
-                            tint = Color(0xFFFFA500)
-                        )
-                    }
-                    Text(
-                        text = recipe.autor,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Left
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.White,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
+                Spacer(modifier = Modifier.weight(1f))
+
+                //Row de la parte inferior
                 Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0x80000000)) //se agrega un background con transparencia
+                        .padding(start = 10.dp, end = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.CenterVertically)
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.clock),
-                            contentDescription = "Descripción del ícono",
-                            tint = Color.Unspecified
+                        Text(
+                            text = recipe.category.name,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFFFFFF),
+                            textAlign = TextAlign.Left
                         )
                     }
-                    Text(
-                        text = recipe.preptime,
-                        fontSize = 18.sp,
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Left
-                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            onClick = { },
+                            modifier = Modifier
+                                .size(32.dp)
+                                .align(Alignment.CenterVertically)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.clock),
+                                contentDescription = "Descripción del ícono",
+                                tint = Color.Unspecified
+                            )
+                        }
+                        Text(
+                            text = recipe.preptime.toString() + " min",
+                            fontSize = 18.sp,
+                            color = Color(0xFFFFFFFF),
+                            textAlign = TextAlign.Left
+                        )
+                    }
                 }
             }
         }
@@ -374,8 +310,13 @@ fun RecipeItem(recipe: RecipeBody) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchView() {
+    val appContext = LocalContext.current
     SearchView(
         rememberNavController(),
-        FinderViewModel(FinderBodyRepository = FinderBodyRepository)
+        SpecifiedFinderViewModel(
+            FinderBodyRepository = SpecifiedFinderRepository,
+            IngredientBody = IngredientByCategory,
+            appContext
+        )
     )
 }

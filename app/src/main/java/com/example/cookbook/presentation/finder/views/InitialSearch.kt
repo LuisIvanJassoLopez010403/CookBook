@@ -3,15 +3,20 @@ package com.example.cookbook.presentation.finder.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,23 +32,44 @@ import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import com.example.cookbook.Category
+import com.example.cookbook.Ingredient
+import com.example.cookbook.IngredientDetails
 import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
-import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.models.IngredientResponse
+import com.example.cookbook.presentation.finder.models.SearchIngredient
+import com.example.cookbook.presentation.finder.network.IngredientByCategory
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
+import com.example.cookbook.presentation.home.home.models.HomeResponse
 
 @Composable
-fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) {
+fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderViewModel) {
     var text by remember { viewModel.searchQuery }
-    var isClicked by remember { mutableStateOf(false) }
+    val groupedIngredient = viewModel.groupingredientsbycategory(viewModel.ingredientsbycategory)
+
+    // Variables de Keyboard
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val isLoading = viewModel.isLoading
+    val categories by remember { mutableStateOf(viewModel.categories) }
 
     Scaffold(
         bottomBar = {
@@ -56,6 +82,9 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                 .padding(innerPadding)
                 .fillMaxHeight()
                 .background(Color(0xFFF6F6F6))
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                }
         ) {
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -63,7 +92,7 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp, end = 10.dp)
-            ){
+            ) {
                 Text(
                     text = "CookBook",
                     fontStyle = FontStyle.Italic,
@@ -91,6 +120,16 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                         onValueChange = { text = it },
                         modifier = Modifier
                             .fillMaxWidth(1f),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
+
                         placeholder = {
                             Text(
                                 text = stringResource(id = R.string.Search),
@@ -105,7 +144,7 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                     .fillMaxHeight(0.83f)
                     .fillMaxWidth(0.91f)
                     .align(Alignment.BottomCenter),
-                contentAlignment = Alignment.BottomCenter
+                //contentAlignment = Alignment.BottomCenter
             ) {
                 Column(
                     modifier = Modifier
@@ -125,67 +164,50 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                             .padding(top = 10.dp),
                         verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
-                        item{
+                        item {
                             LazyColumnHome("Categories")
                         }
-                        item{
+                        item {
                             LazyRow(
                                 modifier = Modifier
                                     .padding(start = 0.dp),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                items(5) { index ->
-                                    Box(
-                                        modifier = Modifier
-                                            .width(90.dp)
-                                            .height(105.dp)
-                                            .clickable(onClick = {
-                                                isClicked = !isClicked
-                                            })
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(90.dp)
-                                                .padding(10.dp)
-                                                .border(3.dp, if (isClicked) Color(0xFF00FF18) else Color.Black , CircleShape)
-                                                .background(Color.Transparent, CircleShape)
-                                                .align(Alignment.TopCenter)
-                                        ){
-                                            Icon(
-                                                imageVector = Icons.Filled.Home,
-                                                contentDescription = "Category",
-                                                tint = Color(0xFF000000),
-                                                modifier = Modifier
-                                                    .size(50.dp)
-                                                    .align(Alignment.Center)
-                                            )
-                                        }
-
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(26.dp)
-                                                .padding(bottom = 5.dp)
-                                                .align(Alignment.BottomCenter)
-                                                .zIndex(1f)
-                                        ){
-                                            Row (
-                                                horizontalArrangement = Arrangement.Center,
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                            ){
-                                                Text(
-                                                    text = "Category",
-                                                    fontStyle = FontStyle.Italic,
-                                                    fontSize = 17.sp,
-                                                    color = if (isClicked) Color(0xFFFF9800) else Color(0xFF000000),
-                                                    textAlign = TextAlign.Center
-                                                )
-                                            }
-                                        }
-                                    }
+                                items(viewModel.getCategoryList()) { Category ->
+                                    LazyRowCategories(Category, viewModel)
                                 }
                             }
+                        }
+                        item {
+                            LazyColumnHome("Ingredients")
+                        }
+                        items(groupedIngredient) { ingredientResponse ->
+                            Row(
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 15.dp)
+                            ) {
+                                Text(
+                                    text = ingredientResponse.category,
+                                    fontStyle = FontStyle.Italic,
+                                    fontSize = 23.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF000000),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+
+                            LazyRow(
+                                modifier = Modifier
+                                    .padding(start = 0.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(ingredientResponse.ingredients) { ingredient ->
+                                    LazyRowIngredients(ingredient, viewModel)
+                                }
+                            }
+
                         }
                     }
                 }
@@ -201,7 +223,7 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
                 Row(
                     modifier = Modifier
                         .padding(start = 25.dp, end = 25.dp)
-                ){
+                ) {
                     Button(
                         onClick = {
                             viewModel.searchRecipes(text)
@@ -229,17 +251,17 @@ fun InitialFinderView(navController: NavController, viewModel: FinderViewModel) 
 }
 
 @Composable
-fun LazyColumnHome ( Category: String){
-    Row (
+fun LazyColumnHome(Category: String) {
+    Row(
         horizontalArrangement = Arrangement.Start,
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 15.dp)
-    ){
+    ) {
         Text(
             Category,
             fontStyle = FontStyle.Italic,
-            fontSize = 20.sp,
+            fontSize = 27.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF000000),
             textAlign = TextAlign.Center
@@ -247,9 +269,126 @@ fun LazyColumnHome ( Category: String){
     }
 }
 
+@Composable
+fun LazyRowCategories(category: Category, viewModel: SpecifiedFinderViewModel) {
+    var isClicked by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(105.dp)
+            .clickable(onClick = {
+                isClicked = !isClicked
+                viewModel.toggleCategoriesSelection(category._id)
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .size(90.dp)
+                .padding(10.dp)
+                .border(3.dp, if (isClicked) Color(0xFF00FF18) else Color.Black, CircleShape)
+                .background(Color.Transparent, CircleShape)
+                .align(Alignment.TopCenter)
+        ) {
+            Icon(
+                painter = rememberAsyncImagePainter(category.icon),
+                contentDescription = "Category",
+                tint = Color(0xFF000000),
+                modifier = Modifier
+                    .size(45.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(26.dp)
+                .padding(bottom = 5.dp)
+                .align(Alignment.BottomCenter)
+                .zIndex(1f)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = category.name,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 17.sp,
+                    color = if (isClicked) Color(0xFFFF9800) else Color(0xFF000000),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LazyRowIngredients(ingredient: SearchIngredient, viewModel: SpecifiedFinderViewModel) {
+    var isClicked by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(105.dp)
+            .clickable(onClick = {
+                isClicked = !isClicked
+                viewModel.toggleIngredientSelection(ingredient._id)
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .size(90.dp)
+                .padding(10.dp)
+                .border(3.dp, if (isClicked) Color(0xFF00FF18) else Color.Black, CircleShape)
+                .background(Color.Transparent, CircleShape)
+                .align(Alignment.TopCenter)
+        ) {
+            Icon(
+                painter = rememberAsyncImagePainter(ingredient.icon),
+                contentDescription = "Category",
+                tint = Color(0xFF000000),
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(26.dp)
+                .padding(bottom = 5.dp)
+                .align(Alignment.BottomCenter)
+                .zIndex(1f)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = ingredient.nameIngredient,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 17.sp,
+                    color = if (isClicked) Color(0xFFFF9800) else Color(0xFF000000),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewBuscadorinicialView() {
-    InitialFinderView(rememberNavController(), FinderViewModel(FinderBodyRepository = FinderBodyRepository))
+    val appContext = LocalContext.current
+    InitialFinderView(
+        rememberNavController(), SpecifiedFinderViewModel(
+            FinderBodyRepository = SpecifiedFinderRepository,
+            IngredientBody = IngredientByCategory,
+            appContext
+        )
+    )
 }

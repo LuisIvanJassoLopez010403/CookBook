@@ -7,10 +7,10 @@ import kotlinx.coroutines.withContext
 object CategoryRepository {
     val apiService = RetrofitClientInstance.apiService
 
-    suspend fun getCategories(): List<Pair<String, String>> = withContext(Dispatchers.IO) {
+    suspend fun getCategories(): List<Triple<String, String, String?>> = withContext(Dispatchers.IO) {
         val categories = apiService.getAllCategories()
         categories.map { category ->
-            category._id to category.name
+            Triple(category._id, category.name, category.icon)
         }
     }
 }

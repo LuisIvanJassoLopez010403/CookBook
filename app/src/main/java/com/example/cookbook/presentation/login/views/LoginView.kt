@@ -6,9 +6,11 @@ import androidx.compose.foundation.BorderStroke
 import com.example.cookbook.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -30,8 +32,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,32 +50,40 @@ import com.google.android.gms.common.config.GservicesValue.value
 
 @Composable
 fun LoginView(navController: NavController) {
-    //Variables de ViewModel
-    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
+    // Contexto de la aplicación
+    val appContext = LocalContext.current.applicationContext
+
+    // Variables de ViewModel
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(appContext))
     loginViewModel.loginResponse.message
 
-    //Variables de TextFields
-    var username by remember { mutableStateOf(TextFieldValue(""))}
+    // Variables de TextFields
+    var username by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
-    //Variable de Toast
-    val context = LocalContext.current
+    //Variable de keyboard
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    // ViewModel Logica
-    if(loginViewModel.state != 0) {
+    // Lógica del ViewModel
+    if (loginViewModel.state != 0) {
         if (loginViewModel.loginResponse.isSuccess) {
+            Log.d("Token", "Token guardado: ${loginViewModel.loginResponse.token}")
             navController.navigate(Routes.HomeView)
             loginViewModel.state = 0
         } else {
-            Toast.makeText(context,"Contrasena incorrecta",Toast.LENGTH_SHORT).show()
+            Toast.makeText(appContext, "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
             loginViewModel.state = 0
         }
     }
 
-    // TextButton para regresar a pantalla de inicio
+    // Diseño de la interfaz de usuario
     Row(
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier.pointerInput(Unit) {
+            detectTapGestures(onTap = { focusManager.clearFocus() })
+        }
     ) {
         TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
             Text(
@@ -88,10 +102,9 @@ fun LoginView(navController: NavController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        
         Spacer(modifier = Modifier.height(60.dp))
 
-        //Image Logo
+        // Image Logo
         Image(
             painter = painterResource(id = R.drawable.cookbooklogo),
             contentDescription = "Cookbook Logo",
@@ -103,7 +116,7 @@ fun LoginView(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        if(loginViewModel.isLoading) {
+        if (loginViewModel.isLoading) {
             CircularProgressIndicator(color = Color.Blue)
         }
 
@@ -121,7 +134,14 @@ fun LoginView(navController: NavController) {
             value = username,
             onValueChange = { username = it },
             label = { Text(text = stringResource(id = R.string.Username)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                }
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -137,30 +157,13 @@ fun LoginView(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
+                val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
 
-                val description = if (passwordVisible) "Hide password" else "Show password"
-
-                IconButton(onClick = {passwordVisible = !passwordVisible}){
-                    Icon(imageVector  = image, description)
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = null)
                 }
             }
         )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // TextButton para iniciar proceso de recuperacion de contrasena
-        TextButton(onClick = { navController.navigate(Routes.ForgotPasswordView) }) {
-            Text(
-                text = stringResource(id = R.string.Forgotpasswd),
-                fontSize = 18.sp,
-                color = Color(0xFFFFA500),
-                modifier = Modifier,
-                textAlign = TextAlign.Center
-            )
-        }
 
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -174,15 +177,21 @@ fun LoginView(navController: NavController) {
                 .height(50.dp)
                 .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
                 .shadow(10.dp, RoundedCornerShape(25.dp)),
-            border = BorderStroke(1.dp,Color.White),
+            border = BorderStroke(1.dp, Color.White),
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
         ) {
-            Text(text = stringResource(id = R.string.Login), fontSize = 18.sp, color = Color(0xFFFFA500))
+            Text(
+                text = stringResource(id = R.string.Login),
+                fontSize = 18.sp,
+                color = Color(0xFFFFA500)
+            )
         }
+
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
+
 
 // Preview
 @Preview(showBackground = true)

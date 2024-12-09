@@ -1,55 +1,57 @@
 package com.example.cookbook.presentation.addrecipe.viewmodels
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
-import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
+import com.example.cookbook.preferences.getToken
+import com.example.cookbook.preferences.getUserIdFromToken
 import com.example.cookbook.presentation.addrecipe.models.RecipeBody
 import com.example.cookbook.presentation.addrecipe.models.RecipeResponse
 import com.example.cookbook.presentation.addrecipe.network.RecipeBodyRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 // ViewModel
-class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository) : ViewModel() {
+class AddRecipeViewModel(
+    private val recipeBodyRepository: RecipeBodyRepository,
+    private val appContext: Context
+) : ViewModel() {
     var recipeResponse by mutableStateOf(RecipeResponse("", false))
     var state by mutableStateOf(0)
 
-    var categories by mutableStateOf(emptyList<Pair<String, String>>())
+    var categories by mutableStateOf(emptyList<Triple<String, String, String?>>())
     var selectedCategoryId by mutableStateOf("")
 
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
     var SelectedIngredientId by mutableStateOf("")
+    var selectedIngredientDetails by mutableStateOf<List<Ingredient>>(emptyList())
+
+    var userId by mutableStateOf("")
+
+    var selectedImage by mutableStateOf("")
 
     init {
         loadCategories()
         loadIngredients()
+        loadUserId()
     }
-
-    // Campos para crear una receta
-    var recipeName by mutableStateOf("")
-    var description by mutableStateOf("")
-    var preptime by mutableStateOf(0)
-    var steps by mutableStateOf("")
-    var selectedCategory by mutableStateOf("")
-
-    //var ingredients by mutableStateOf(mutableListOf<Ingredient>())
-    var image by mutableStateOf("")
-    var video by mutableStateOf("")
-    var calificacion by mutableStateOf(0.0)
 
     private fun loadCategories() {
         viewModelScope.launch {
             try {
                 categories = CategoryRepository.getCategories()
             } catch (exception: Exception) {
-                // Manejar errores (opcional)
                 categories = emptyList()
             }
         }
@@ -60,67 +62,104 @@ class AddRecipeViewModel(private val recipeBodyRepository: RecipeBodyRepository)
             try {
                 ingredients = IngredientRepository.getIngredients()
             } catch (exception: Exception) {
-                // Manejar errores (opcional)
                 ingredients = emptyList()
             }
-            fun addIngredient(id: String, unit: String, amount: Double) {
-                //ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
+        }
+    }
+//    fun updateSelectedIngredients(selected: List<Ingredient>) {
+//        selectedIngredientDetails = selected
+//        SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
+//    }
+
+    fun updateSelectedIngredients(selected: List<Ingredient>) {
+        selectedIngredientDetails = selected.map { it.copy() }
+        SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
+    }
+
+
+    fun updateIngredientDetails(ingredientId: String, amount: Double, unit: String) {
+        selectedIngredientDetails = selectedIngredientDetails.map {
+            if (it._idIngredient._id == ingredientId) {
+                it.copy(amount = amount, unit = unit)
+            } else it
+        }
+    }
+
+    private fun loadUserId() {
+        viewModelScope.launch {
+            val token = getToken(appContext).firstOrNull()
+            userId = if (!token.isNullOrEmpty()) {
+                getUserIdFromToken(token) ?: ""
+            } else {
+                ""
             }
+        }
+    }
 
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
 
-            /*fun removeIngredient(index: Int) {
-                if (index in ingredients.indices) {
-                    ingredients.removeAt(index)
-                }
-            }*/
-
-            //fun addIngredient(id: String, unit: String, amount: Double) {
-            // ingredients.add(Ingredient(_idIngredient = id, unit = unit, amount = amount))
-            //}
-
-
-            //fun removeIngredient(index: Int) {
-            //if (index in ingredients.indices) {
-            //ingredients.removeAt(index)
-            //}
-            // }
-
-            /* fun createRecipe() {
-        val recipeBody = RecipeBody(
-            nameRecipe = recipeName,
-            preptime = "$preptime minutos",
-            ingredients = ingredients,
-            steps = steps.split("\n"),
-            image = image,
-            video = video,
-            category = selectedCategory,
-            autor = "60d21b4967d0d8992e610c8a",
-            calificacion = calificacion,
-            fecha = Date()
-        )
-
+    fun createRecipe(
+        nameRecipe: String,
+        description: String,
+        preptime: Number,
+        ingredients: List<Ingredient>,
+        steps: String,
+        category: String,
+        image: String,
+        video: String,
+        grade: Double
+    ) {
         viewModelScope.launch {
             try {
-                recipeResponse = recipeBodyRepository.createRecipe(recipeBody)
+                if (userId.isEmpty()) {
+                    throw IllegalStateException("El ID del usuario no está disponible.")
+                }
+
+                val token = getToken(appContext).firstOrNull() ?: throw IllegalStateException("Token no disponible")
+                val createdDate = getCurrentDate()
+                recipeResponse = recipeBodyRepository.createRecipe(
+                    RecipeBody(
+                        nameRecipe,
+                        description,
+                        preptime,
+                        ingredients,
+                        steps,
+                        createdDate,
+                        category,
+                        userId,
+                        image,
+                        video,
+                        grade
+                    ),
+                    token
+                )
                 state = 1
+                recipeResponse.message = "Receta creada de forma exitosa"
+                recipeResponse.isSuccess = true
             } catch (exception: Exception) {
                 state = 1
-                recipeResponse = RecipeResponse(
-                    message = "Error creating recipe: ${exception.localizedMessage}",
-                    isSuccess = false
-                )
+                recipeResponse.message = "Error en la creación de la receta: ${exception.message}"
+                recipeResponse.isSuccess = false
             }
         }
-    }*/
-        }
+    }
+    fun resetState() {
+        state = 0
+        recipeResponse = RecipeResponse("", false)
+        selectedCategoryId = ""
+        SelectedIngredientId = ""
+        selectedIngredientDetails = emptyList()
     }
 }
 
-class AddRecipeViewModelFactory : ViewModelProvider.Factory {
+class AddRecipeViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddRecipeViewModel::class.java)) {
-            return AddRecipeViewModel(RecipeBodyRepository) as T
+            return AddRecipeViewModel(RecipeBodyRepository, appContext) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

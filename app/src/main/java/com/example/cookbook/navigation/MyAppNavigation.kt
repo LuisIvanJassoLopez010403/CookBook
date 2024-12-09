@@ -10,17 +10,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.cookbook.presentation.finder.views.InitialFinderView
 import com.example.cookbook.presentation.addrecipe.views.AddRecipeView
-import com.example.cookbook.presentation.finder.network.FinderBodyRepository
-import com.example.cookbook.presentation.finder.viewmodels.FinderViewModel
+import com.example.cookbook.presentation.finder.network.IngredientByCategory
+import com.example.cookbook.presentation.finder.network.SpecifiedFinderRepository
+import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewModel
 import com.example.cookbook.presentation.finder.viewmodels.FinderViewModelFactory
 import com.example.cookbook.presentation.finder.views.SearchView
-import com.example.cookbook.presentation.home.view.HomeView
+import com.example.cookbook.presentation.home.home.network.HomeRepository
+import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModel
+import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModelFactory
+import com.example.cookbook.presentation.home.home.views.HomeView
+import com.example.cookbook.presentation.lists.views.CreateListView
+import com.example.cookbook.presentation.lists.views.ListRecipesView
 import com.example.cookbook.presentation.login.views.ChangePasswordView
 import com.example.cookbook.presentation.login.views.ForgotPasswordView
 import com.example.cookbook.presentation.login.views.LoginView
@@ -28,9 +37,13 @@ import com.example.cookbook.presentation.login.views.VerificationCodeView
 import com.example.cookbook.presentation.myRecipe.MyRecipeView
 import com.example.cookbook.presentation.onboarding.OnboardingView
 import com.example.cookbook.presentation.onboarding.OnboardingViewModel
+import com.example.cookbook.presentation.recipe.views.RecipeDetailView
 import com.example.cookbook.presentation.signup.views.SignupView
-import com.example.cookbook.presentation.title.TitleView
-import com.example.cookbook.presentation.user.UserView
+import com.example.cookbook.presentation.title.views.TitleView
+import com.example.cookbook.presentation.title.views.AboutView
+import com.example.cookbook.presentation.user.views.UserEditView
+import com.example.cookbook.presentation.user.views.UserView
+import com.example.cookbook.utils.WebViewScreen
 
 // Prueba
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -38,6 +51,7 @@ import com.example.cookbook.presentation.user.UserView
 fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) {
     val navController = rememberNavController()
     val isOnboardingCompleted by onboardingViewModel.isOnboardingCompleted.collectAsState(initial = null)
+    val appContext = LocalContext.current
 
     // Decidir cuál será el destino inicial
     if (isOnboardingCompleted == null) {
@@ -53,6 +67,16 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.TitleView) {
                 TitleView(navController)
+            }
+            composable(Routes.AboutView) {
+                AboutView(navController)
+            }
+            composable(
+                Routes.WebView,
+                arguments = listOf(navArgument("url") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                WebViewScreen(url = url, navController)
             }
             composable(Routes.SignupView) {
                 SignupView(navController)
@@ -74,22 +98,69 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             }
             composable(Routes.InitialFinderView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
-                val finderViewModel: FinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(FinderBodyRepository))
-                InitialFinderView(navController, finderViewModel)
+                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(
+                    parentEntry,
+                    factory = FinderViewModelFactory(
+                    SpecifiedFinderRepository,
+                        IngredientByCategory,
+                        appContext
+                ))
+                InitialFinderView(navController, specifiedFinderViewModel)
             }
             composable(Routes.MyRecipeView) {
                 MyRecipeView(navController)
             }
             composable(Routes.HomeView) {
-                HomeView(navController)
+
+                val viewModel: HomeViewModel = viewModel(
+                    factory = HomeViewModelFactory(
+                        HomeRepository,
+                        appContext
+                    )
+                )
+                HomeView(
+                    navController = navController,
+                    viewModel = viewModel
+                )
             }
             composable(Routes.AddRecipeView) {
                 AddRecipeView(navController)
             }
+            composable(Routes.UserEditView) {
+                UserEditView(navController)
+            }
             composable(Routes.SearchView) {
                 val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
-                val finderViewModel: FinderViewModel = viewModel(parentEntry, factory = FinderViewModelFactory(FinderBodyRepository))
-                SearchView(navController, finderViewModel)
+                val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(
+                    parentEntry,
+                    factory = FinderViewModelFactory(
+                    SpecifiedFinderRepository,
+                        IngredientByCategory,
+                        appContext
+                    )
+                )
+                SearchView(navController, specifiedFinderViewModel)
+            }
+            composable(
+                Routes.RecipeDetailView,
+                arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
+                RecipeDetailView(recipeId = recipeId, navController = navController)
+            }
+            composable(
+                Routes.CreateListView,
+                arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getString("recipeId")
+                CreateListView(navController = navController, recipeId = recipeId)
+            }
+            composable(
+                Routes.ListRecipesView,
+                arguments = listOf(navArgument("listId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val listId = backStackEntry.arguments?.getString("listId") ?: ""
+                ListRecipesView(listId = listId, navController = navController)
             }
         }
     }

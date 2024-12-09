@@ -7,10 +7,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -32,8 +34,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -81,6 +87,10 @@ fun SignupView(navController: NavController) {
     val genderOption3 = stringResource(id = R.string.GenderOp3)
     val genderOptions = listOf(genderOption1,genderOption2,genderOption3)
 
+    //Variable de keyboard
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     // ViewModel Logica
     if(signupViewModel.state != 0) {
         if (signupViewModel.signupResponse.isSuccess) {
@@ -94,7 +104,10 @@ fun SignupView(navController: NavController) {
 
     // TextButton para regresar a pantalla de inicio
     Row(
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier.pointerInput(Unit) {
+            detectTapGestures(onTap = { focusManager.clearFocus() })
+        }
     ) {
         TextButton(onClick = { navController.navigate(Routes.TitleView) }) {
             Text(
@@ -147,12 +160,20 @@ fun SignupView(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
+
                 //TextField de Email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
                     label = { Text(text = stringResource(id = R.string.Email)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -163,7 +184,14 @@ fun SignupView(navController: NavController) {
                     value = username,
                     onValueChange = { username = it },
                     label = { Text(text = stringResource(id = R.string.Username)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
 

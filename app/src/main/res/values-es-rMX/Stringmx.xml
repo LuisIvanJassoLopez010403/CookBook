@@ -14,6 +14,14 @@
     //Third Onboarding View
     <string name="CreLists">Crea Listas</string>
     <string name="ThirdOnboardingDescription">Guarda tus recetas favoritas y\ncrea tus propias listas para\nacomodar cada receta para la\nocasión adecuada.</string>
+    //Title View
+    <string name="About">Más Sobre Nosotros</string>
+    //About View
+    <string name="Title">¿Qué es CookBook?</string>
+    <string name="Explanation">CookBook es una red social cuyo enfoque se basa exclusivamente en la cocina.\nUsuarios alrededor del mundo pueden compartir sus propias recetas con otros usuarios de una forma rápida y sencilla, desglozándolas por nombre, descripción, categoría, ingredientes, pasos e incluso puedes incluir fotos y videos.\n¿No eres experto en la cocina? No hay ningún problema. Existen millones de personas que pueden enseñar a uno a cocinar usando desde la mínima cantidad de ingredientes, hasta la cantidad más exuberante, facilitando aún más su búsqueda por medio de nuestro avanzado buscador de recetas, el cual puede filtrar recetas por nombre, ingredientes y categorías.\nSi haz encontrado una receta que te ha fascinado, puedes guardarla junto a otras dentro de listas personalizadas para poder revisitar tus platillos favoritos cuando tú quieras.</string>
+    <string name="Subject">Materia: </string>
+    <string name="SubjectClass">Programación de Dispositivos Móviles I</string>
+    <string name="Developers">Desarrolladores: </string>
     //Signup View
     <string name="Signup">Registrarse</string>
     <string name="Username">Usuario</string>
@@ -37,110 +45,8 @@
     <string name="Newpasswd">Nueva Contraseña</string>
     <string name="Confirmnewpasswd">Confirmar Nueva Contraseña</string>
     //HomeView
-    //HomeView-CategoriaPopular-Titulos
-    <string name="Pizza">Picza:</string>
-    <string name="Tacos">Tacos:</string>
-    <string name="Hamburger">Hamburguesa:</string>
-    <string name="HotDog">Perro Caliente:</string>
-    <string name="Sushi">Sushi:</string>
-    //HomeView-CategoriaPopular-Ingredients
-    //Picza
-    <string name="Sourdough">Masa Madre</string>
-    <string name="Flour">Harina</string>
-    <string name="Salt">Sal</string>
-    <string name="Water">Agua</string>
-    <string name="olivoil">Aceite de Oliva</string>
-    <string name="Tomato">Tomate</string>
-    <string name="Cheese">Queso</string>
-    <string name="Pepperoni">Pepperoni</string>
-    //Tacos
-    <string name="Tortilla">Tortilla</string>
-    <string name="Meat">Carne</string>
-    <string name="Onion">Cebolla</string>
-    <string name="Cilantro">Cilantro</string>
-    <string name="Lime">Limon</string>
-    <string name="Sauce">Salsa</string>
-    <string name="Avocado">Aguacate</string>
-    //Hamburger
-    <string name="Bread">Pan</string>
-    <string name="Lettuce">Lechuga</string>
-    <string name="Ketchup">Catsup</string>
-    <string name="Mustard">Mostaza</string>
-    <string name="Pickles">Pepinillos</string>
-    //HHot Dog
-    <string name="Sausage">Salchicha</string>
-    <string name="ChiliPeper">Chile</string>
-    //Sushi
-    <string name="Rice">Arroz</string>
-    <string name="Seaweed">Alga</string>
-    <string name="Salmon">Salmon</string>
-    <string name="Cucumber">Pepino</string>
-    <string name="Soysauce">Salsa de Soya</string>
-    <string name="Wasabi">Wasabi</string>
-    <string name="Ginger">Jengibre</string>
-    //HomeView-CategoriaPopular-Descriptions
-    <string name="PiczaDescription">Una Picza Deliciosa con la que pueden comer hasta 4 personas, ademas es muy facil de hacer</string>
-    <string name="TacosDescription">Tacos al pastor caseros, faciles de hacer e identicos a los de puesto</string>
-    <string name="HamburgerDescription">Hamburguesa casera con la que puedes disfrutar de una comida rapida y deliciosa</string>
-    <string name="HotDogDescription">Hot Dog con el que puedes disfrutar de una comida rapida y deliciosa hecha en casa</string>
-    <string name="SushiDescription">Sushi casero con el que pueden disfrutar de una deliciosa cena hasta 5 personas</string>
-    //HomeView-CategoriaMexican-Titulos
-    <string name="Chilaquiles">Chilaquiles</string>
-    <string name="Pozole">Pozole</string>
-    <string name="Sopes">Sopes</string>
-    <string name="Molletes">Molletes</string>
-    <string name="Burritos">Burritos</string>
-    //HomeView-CategoriaMexican-Ingredients
-    //Chilaquiles
-    <string name="Cream">Crema</string>
-    <string name="Chicken">Pollo</string>
-    //Pozole
-    <string name="Corn">Maiz</string>
-    <string name="Radishes">Rabanos</string>
-    //Sopes
-    <string name="Dough">Masa</string>
-    <string name="Beans">Frijoles</string>
-    //Molletes
-    <string name="Chorizo">Chorizo</string>
-    //Burritos
-    //HomeView-MexicanCategory-Descriptions
-    <string name="ChilaquilesDescription">Chilaquiles caseros con los que puedes disfrutar de un desayuno delicioso y rapido</string>
-    <string name="PozoleDescription">Pozole casero con el que puedes disfrutar de una comida deliciosa y tradicional</string>
-    <string name="SopesDescription">Sopes caseros con los que puedes disfrutar de una comida deliciosa y rapida</string>
-    <string name="MolletesDescription">Molletes caseros con los que puedes disfrutar de una comida deliciosa y rapida</string>
-    <string name="BurritosDescription">Burritos caseros con los que puedes disfrutar de una comida deliciosa y rapida</string>
-    //HomeView-DressesCategory-Titulos
-    <string name="Flan">Flan</string>
-    <string name="Tiramisu">Tiramisu</string>
-    <string name="Brownie">Brownie</string>
-    <string name="Cheesecake">Pay de Queso</string>
-    <string name="Cornbread">Pan de Elote</string>
-    //HomeView-DressesCategory-Ingredients
-    //Flan
-    <string name="Milk">Leche</string>
-    <string name="Eggs">Huevos</string>
-    <string name="Sugar">Azucar</string>
-    <string name="Vanilla">Vainilla</string>
-    <string name="Caramel">Caramelo</string>
-    <string name="Gelatin">Gelatin</string>
-    //Tiramisu
-    <string name="Coffee">Cafe</string>
-    <string name="Cocoa">Cacao</string>
-    //Brownie
-    <string name="Chocolate">Chocolate</string>
-    <string name="Butter">Mantequilla</string>
-    //HomeView-DressesCategory-Descriptions
-    <string name="FlanDescription">Flan casero con el que puedes disfrutar de un postre delicioso y rapido</string>
-    <string name="TiramisuDescription">Tiramisu casero con el que puedes disfrutar de un postre delicioso y rapido</string>
-    <string name="BrownieDescription">Brownie casero con el que puedes disfrutar de un postre delicioso y rapido</string>
-    <string name="CheesecakeDescription">Cheesecake casero con el que puedes disfrutar de un postre delicioso y rapido</string>
-    <string name="CornBreadDescription">Pan de Elote casero con el que puedes disfrutar de un postre delicioso y rapido</string>
-    //HomeView-CategoryTitles
-    <string name="Popular">Popular</string>
-    <string name="Mexican">Mexicana</string>
-    <string name="Desserts">Postres</string>
-    <string name="Ingredients">Ingredientes:</string>
     <string name="Description">Descripcion:</string>
     //initialSearch
     <string name="Search">Search</string>
+    <string name="NoResults">No se encontraron resultados</string>
 </resources>
