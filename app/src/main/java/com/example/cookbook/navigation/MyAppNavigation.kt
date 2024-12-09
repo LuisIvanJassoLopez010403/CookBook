@@ -55,7 +55,7 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
 
     // Decidir cuál será el destino inicial
     if (isOnboardingCompleted == null) {
-    // Mientras se determina el estado, mostrar una pantalla de carga
+        // Mientras se determina el estado, mostrar una pantalla de carga
         LoadingScreen()
     } else {
         val startDestination = if (isOnboardingCompleted == true) Routes.TitleView else Routes.OnboardingView
@@ -97,24 +97,27 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
                 UserView(navController)
             }
             composable(Routes.InitialFinderView) {
-                val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
+                val specifiedFinderRepository = SpecifiedFinderRepository
+                val ingredientByCategory = IngredientByCategory
                 val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(
-                    parentEntry,
                     factory = FinderViewModelFactory(
-                    SpecifiedFinderRepository,
-                        IngredientByCategory,
+                        specifiedFinderRepository,
+                        ingredientByCategory,
                         appContext
-                ))
+                    )
+                )
+
                 InitialFinderView(navController, specifiedFinderViewModel)
             }
+
             composable(Routes.MyRecipeView) {
                 MyRecipeView(navController)
             }
             composable(Routes.HomeView) {
-
+                val homeRepository = HomeRepository // Instancia de HomeRepository
                 val viewModel: HomeViewModel = viewModel(
                     factory = HomeViewModelFactory(
-                        HomeRepository,
+                        homeRepository,
                         appContext
                     )
                 )
@@ -129,18 +132,21 @@ fun MyAppNavigationView(onboardingViewModel: OnboardingViewModel = viewModel()) 
             composable(Routes.UserEditView) {
                 UserEditView(navController)
             }
+
             composable(Routes.SearchView) {
-                val parentEntry = remember { navController.getBackStackEntry(Routes.InitialFinderView) }
+                val specifiedFinderRepository = SpecifiedFinderRepository
+                val ingredientByCategory = IngredientByCategory
                 val specifiedFinderViewModel: SpecifiedFinderViewModel = viewModel(
-                    parentEntry,
                     factory = FinderViewModelFactory(
-                    SpecifiedFinderRepository,
-                        IngredientByCategory,
+                        specifiedFinderRepository,
+                        ingredientByCategory,
                         appContext
                     )
                 )
+
                 SearchView(navController, specifiedFinderViewModel)
             }
+
             composable(
                 Routes.RecipeDetailView,
                 arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
@@ -175,3 +181,4 @@ fun LoadingScreen() {
         CircularProgressIndicator()
     }
 }
+

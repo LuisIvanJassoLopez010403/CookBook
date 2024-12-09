@@ -11,7 +11,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -20,9 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import kotlinx.coroutines.launch
 
 @Composable
 fun BottomNavBarView(navController: NavController) {
+    var canNavigate by remember { mutableStateOf(true) }
+    val coroutineScope = rememberCoroutineScope() // Obtener el scope aquí
+
     BottomAppBar(
         containerColor = Color(0xFFFFA500),
         modifier = Modifier
@@ -32,7 +41,7 @@ fun BottomNavBarView(navController: NavController) {
             .background(Color.Transparent),
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = backStackEntry?.destination?.route
+        val currentRoute = backStackEntry?.destination?.route ?: return@BottomAppBar
 
         NavBarItems.forEach { navItem ->
             val isSelected = currentRoute == navItem.route
@@ -40,13 +49,20 @@ fun BottomNavBarView(navController: NavController) {
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    if (currentRoute != navItem.route) {
+                    if (canNavigate && currentRoute != navItem.route) {
+                        canNavigate = false
                         navController.navigate(navItem.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
                             launchSingleTop = true
                             restoreState = true
+                        }
+
+                        // Usar el coroutineScope ya obtenido
+                        coroutineScope.launch {
+                            kotlinx.coroutines.delay(900) // Tiempo de espera en milisegundos
+                            canNavigate = true
                         }
                     }
                 },
@@ -61,7 +77,7 @@ fun BottomNavBarView(navController: NavController) {
                 label = {
                     Text(
                         text = navItem.title,
-                        color =  if (isSelected) Color.DarkGray else Color.White ,
+                        color = if (isSelected) Color.DarkGray else Color.White,
                         fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Normal,
                     )
                 },

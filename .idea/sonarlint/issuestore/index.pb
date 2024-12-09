@@ -1,10 +1,6 @@
 
 b
 2app/src/main/java/com/example/cookbook/Category.kt,6/5/656df5a358d5d8534acd619a0ff62964bb68035e
-D
-app/Local.properties,e/3/e3e1fbfbec997e902ca71404184d5a7b6e7b193c
-O
-app/Local.properties.properties,0/3/031356c4dbde7136bd7e5a4005cf3966c09436b6
 |
 Lapp/src/main/java/com/example/cookbook/presentation/login/views/LoginView.kt,8/c/8c30f298d99a76a7b4a19f121c47705b0d9c72bb
 ~
@@ -15,3 +11,23 @@ u
 Eapp/src/main/java/com/example/cookbook/navigation/BottomNavBarView.kt,a/2/a26bea8a870cdd1affd4170824ab40e983fb571e
 p
 @app/src/main/java/com/example/cookbook/navigation/NavBarItems.kt,a/4/a4579a40fd23731c23a14f314435fa20360a169a
+„
+Tapp/src/main/java/com/example/cookbook/presentation/addrecipe/views/AddRecipeView.kt,2/6/2630f14feb1108172302152246a4d761f7c9997d
+@
+local.properties,0/7/0712df971a99ac4d2fccb8e0fb19f377f3374cca
+t
+Dapp/src/main/java/com/example/cookbook/navigation/MyAppNavigation.kt,b/3/b3a16c09f8a751399620f53cc62ea5dd5995538a
+l
+<app/src/main/java/com/example/cookbook/navigation/BarItem.kt,f/d/fd52e7f2b14f3ab5d93f22c89b38cc35f64238dd
+k
+;app/src/main/java/com/example/cookbook/navigation/Routes.kt,2/1/21ba233ac6114d65884cb80f29d38b9d71afc0e0
+
+Qapp/src/main/java/com/example/cookbook/presentation/finder/views/InitialSearch.kt,3/5/35cbdc38825eecb9e18c57863e78574b37df16a7
+‚
+Rapp/src/main/java/com/example/cookbook/presentation/addrecipe/models/recipebody.kt,2/f/2fe346be5d739247786a32108f9a8619d8043795
+‚
+Rapp/src/main/java/com/example/cookbook/presentation/user/models/RecipeStructure.kt,8/7/8770c91ee082c181c3bfab879861298d96730391
+ƒ
+Sapp/src/main/java/com/example/cookbook/presentation/user/views/RecipeHistoryList.kt,2/6/260479e84aba88b7ec1ef5cd774b654bd6533609
+
+Qapp/src/main/java/com/example/cookbook/presentation/user/views/UserRecipesList.kt,a/5/a5b1d0c318d973fe20ac004f172eef5f88b37375

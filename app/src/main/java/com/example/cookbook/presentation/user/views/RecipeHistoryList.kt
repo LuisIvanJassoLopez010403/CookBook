@@ -54,7 +54,7 @@ fun RecipeHistoryList(viewModel: HistoryViewModel = viewModel(), navController: 
                         val recipeStructure = recipe.recipeId
                         if (recipeStructure != null) {
                             RecipeCard(
-                                name = recipeStructure.nameRecipe,
+                                name = recipeStructure.nameRecipe ?: "Receta sin nombre",
                                 description = recipeStructure.description,
                                 imageUrl = recipeStructure.image,
                                 preptime = recipeStructure.preptime,

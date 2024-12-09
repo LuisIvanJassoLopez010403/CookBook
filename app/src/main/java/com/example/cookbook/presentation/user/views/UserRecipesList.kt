@@ -46,7 +46,7 @@ fun UserRecipesList(viewModel: UserRecipesViewModel = viewModel(), navController
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(userRecipes.value) { recipe ->
                         RecipeCard(
-                            name = recipe.nameRecipe,
+                            name = recipe.nameRecipe ?: "Receta sin nombre",
                             description = recipe.description,
                             imageUrl = recipe.image,
                             preptime = recipe.preptime,

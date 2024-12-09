@@ -2,7 +2,7 @@ package com.example.cookbook.presentation.user.models
 
 data class RecipeStructure(
     val _id: String,
-    val nameRecipe: String,
+    val nameRecipe: String? = null,
     val description: String,
     val preptime: Int,
     val ingredients: List<IngredientStructure>,
