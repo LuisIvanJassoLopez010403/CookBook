@@ -136,7 +136,6 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
                     }
                 }
             }
-
         }
     }
 }

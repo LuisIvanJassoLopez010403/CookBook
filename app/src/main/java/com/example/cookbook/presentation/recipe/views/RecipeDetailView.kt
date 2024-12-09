@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FormatListNumbered
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -52,8 +54,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.preferences.clearToken
 import com.example.cookbook.presentation.lists.viewmodels.AddRecipeToListViewModel
 import com.example.cookbook.presentation.lists.viewmodels.AddRecipeToListViewModelFactory
 import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModel
@@ -63,6 +67,9 @@ import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModel
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModelFactory
 import com.example.cookbook.utils.base64ToBitmap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeDetailView(recipeId: String, navController: NavController) {
@@ -85,26 +92,41 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
                 CircularProgressIndicator()
             }
         }
+
         errorMessage.isNotEmpty() -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = errorMessage, color = Color.Red)
             }
         }
+
         recipe != null -> {
-            RecipeDetails(recipe = recipe, navController = navController, userRole = userRole, viewModel)
+            RecipeDetails(
+                recipe = recipe,
+                navController = navController,
+                userRole = userRole,
+                viewModel
+            )
         }
     }
 }
 
 @Composable
-fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userRole: String, viewModel: GetRecipeViewModel) {
+fun RecipeDetails(
+    recipe: GetRecipeResponse,
+    navController: NavController,
+    userRole: String,
+    viewModel: GetRecipeViewModel
+) {
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
     var selectedListId by remember { mutableStateOf<String?>(null) }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     val appContext = LocalContext.current.applicationContext
-    val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
-    val addRecipeToListViewModel: AddRecipeToListViewModel = viewModel(factory = AddRecipeToListViewModelFactory(appContext))
+    val userListsViewModel: UserListsViewModel =
+        viewModel(factory = UserListsViewModelFactory(appContext))
+    val addRecipeToListViewModel: AddRecipeToListViewModel =
+        viewModel(factory = AddRecipeToListViewModelFactory(appContext))
 
     // Espera a que el userId esté disponible
     // Observar cambios en userId
@@ -156,15 +178,66 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                         IconButton(
                             onClick = {
-                                viewModel.deleteRecipe(recipe._id) {
+                                showDeleteConfirmation = true
+                                /*viewModel.deleteRecipe(recipe._id) {
                                     navController.popBackStack()
-                                }
+                                }*/
                             }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = "Eliminar receta",
                                 tint = Color.Red
+                            )
+                        }
+
+                        if (showDeleteConfirmation) {
+                            val context = LocalContext.current
+
+                            AlertDialog(
+                                onDismissRequest = { showDeleteConfirmation = false },
+                                title = {
+                                    Text(text = stringResource(id = R.string.DeleteRecipe))
+                                },
+                                text = {
+                                    Text(text = stringResource(id = R.string.SureDeleteRecipe))
+                                },
+                                confirmButton = {
+
+                                    Button(
+                                        onClick = {
+                                            showDeleteConfirmation = false
+
+                                            viewModel.deleteRecipe(recipe._id) {
+                                                navController.popBackStack()
+                                            }
+                                        },
+                                        colors = ButtonDefaults.buttonColors(Color.White),
+                                        modifier = Modifier
+                                            .border(
+                                                1.5.dp,
+                                                Color(0xFFFFA500),
+                                                RoundedCornerShape(20.dp)
+                                            )
+                                    ) {
+                                        Text(
+                                            text = "si",
+                                            color = Color(0xFFFFA500),
+                                            fontSize = 16.sp
+                                        )
+                                    }
+                                },
+                                dismissButton = {
+                                    Button(
+                                        onClick = { showDeleteConfirmation = false },
+                                        colors = ButtonDefaults.buttonColors(Color(0xFFFFA500)),
+                                    ) {
+                                        Text(
+                                            text = "No",
+                                            color = Color.White,
+                                            )
+                                    }
+                                }
                             )
                         }
                     }
@@ -211,7 +284,11 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                                 .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("Opciones de Lista", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                            Text(
+                                "Opciones de Lista",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -229,7 +306,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
                                 Text(
-                                    text= "Crear Nueva Lista",
+                                    text = "Crear Nueva Lista",
                                     fontSize = 16.sp,
                                     color = Color(0xFFFFA500)
                                 )
@@ -251,7 +328,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
                                 Text(
-                                    text= "Agregar a Lista ya Existente",
+                                    text = "Agregar a Lista ya Existente",
                                     fontSize = 16.sp,
                                     color = Color(0xFFFFA500)
                                 )
@@ -414,7 +491,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Tiempo de preparación:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -439,7 +518,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Descripción:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -463,7 +544,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Ingredientes:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -492,7 +575,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Pasos:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
