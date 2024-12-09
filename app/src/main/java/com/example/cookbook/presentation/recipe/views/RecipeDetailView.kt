@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FormatListNumbered
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -52,8 +54,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.navigation.Routes
+import com.example.cookbook.preferences.clearToken
 import com.example.cookbook.presentation.lists.viewmodels.AddRecipeToListViewModel
 import com.example.cookbook.presentation.lists.viewmodels.AddRecipeToListViewModelFactory
 import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModel
@@ -63,6 +67,9 @@ import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModel
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModelFactory
 import com.example.cookbook.utils.base64ToBitmap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeDetailView(recipeId: String, navController: NavController) {
@@ -101,6 +108,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
     var selectedListId by remember { mutableStateOf<String?>(null) }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     val appContext = LocalContext.current.applicationContext
     val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
@@ -156,15 +164,51 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                         IconButton(
                             onClick = {
-                                viewModel.deleteRecipe(recipe._id) {
+                                showDeleteConfirmation = true
+                                /*viewModel.deleteRecipe(recipe._id) {
                                     navController.popBackStack()
-                                }
+                                }*/
                             }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = "Eliminar receta",
                                 tint = Color.Red
+                            )
+                        }
+
+                        if (showDeleteConfirmation){
+                            val context = LocalContext.current
+
+                            AlertDialog(
+                                onDismissRequest = { showDeleteConfirmation = false },
+                                title = {
+                                    Text (text = stringResource(id = R.string.DeleteRecipe))
+                                },
+                                text = {
+                                    Text (text = stringResource(id = R.string.SureDeleteRecipe))
+                                },
+                                confirmButton = {
+                                    Button(onClick = {
+                                        showDeleteConfirmation = false
+
+                                        // Limpiar el token y redirigir
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            clearToken(context) // Eliminar el token del DataStore
+                                        }
+
+                                        viewModel.deleteRecipe(recipe._id) {
+                                            navController.popBackStack()
+                                        }
+                                    }) {
+                                        Text("Sí")
+                                    }
+                                },
+                                dismissButton = {
+                                    Button(onClick = { showDeleteConfirmation = false }) {
+                                        Text("No")
+                                    }
+                                }
                             )
                         }
                     }
