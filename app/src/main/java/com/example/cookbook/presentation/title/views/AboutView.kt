@@ -42,7 +42,7 @@ fun AboutView(navController: NavController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp,0.dp),
+            .padding(10.dp, 0.dp),
         verticalArrangement = Arrangement.Top
     ) {
         item {
@@ -54,7 +54,6 @@ fun AboutView(navController: NavController) {
                         text = "< " + stringResource(id = R.string.Back),
                         fontSize = 18.sp,
                         color = Color(0xFFFFA500),
-                        modifier = Modifier,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -67,7 +66,9 @@ fun AboutView(navController: NavController) {
             ) {
                 Text(
                     text = stringResource(id = R.string.Title),
-                    style = androidx.compose.material3.MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                    style = androidx.compose.material3.MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
@@ -81,7 +82,9 @@ fun AboutView(navController: NavController) {
             Row {
                 Text(
                     text = stringResource(id = R.string.Subject) + " ",
-                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    )
                 )
                 Text(text = stringResource(id = R.string.SubjectClass))
             }
@@ -91,7 +94,9 @@ fun AboutView(navController: NavController) {
             Row {
                 Text(
                     text = stringResource(id = R.string.Developers),
-                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             }
 
@@ -101,6 +106,7 @@ fun AboutView(navController: NavController) {
                 DeveloperRow(
                     name = "Ricardo Andrés Jiménez Madero",
                     githubUrl = "https://github.com/JimenezRicardoA",
+                    imageResId = R.drawable.perfil2,
                     navController = navController
                 )
 
@@ -109,6 +115,7 @@ fun AboutView(navController: NavController) {
                 DeveloperRow(
                     name = "Victor Mauricio Hernández Carreón",
                     githubUrl = "https://github.com/MauCarreon1",
+                    imageResId = R.drawable.perfil3,
                     navController = navController
                 )
 
@@ -117,6 +124,7 @@ fun AboutView(navController: NavController) {
                 DeveloperRow(
                     name = "Luis Iván Jasso López",
                     githubUrl = "https://github.com/LuisIvanJassoLopez010403",
+                    imageResId = R.drawable.perfil1,
                     navController = navController
                 )
             }
@@ -125,15 +133,19 @@ fun AboutView(navController: NavController) {
     }
 }
 
-
 @Composable
-fun DeveloperRow(name: String, githubUrl: String, navController: NavController) {
+fun DeveloperRow(
+    name: String,
+    githubUrl: String,
+    imageResId: Int,
+    navController: NavController
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.cookbooklogo),
-            contentDescription = "Cookbook Logo",
+            painter = painterResource(id = imageResId),
+            contentDescription = "$name Profile Picture",
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape),

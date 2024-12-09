@@ -43,12 +43,13 @@ fun RecipeCard(
                 )
             } else {
                 Image(
-                    painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                    painter = rememberAsyncImagePainter("https://res.cloudinary.com/dlq6kbdw3/image/upload/v1733760478/cookbookplaceholder_p5owot.png"),
                     contentDescription = "Placeholder",
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .clip(RoundedCornerShape(16.dp))
+                        .fillMaxSize()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentScale = ContentScale.Crop
                 )
             }
             // Detalles de la receta
