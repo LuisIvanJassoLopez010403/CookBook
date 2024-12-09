@@ -92,27 +92,41 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
                 CircularProgressIndicator()
             }
         }
+
         errorMessage.isNotEmpty() -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = errorMessage, color = Color.Red)
             }
         }
+
         recipe != null -> {
-            RecipeDetails(recipe = recipe, navController = navController, userRole = userRole, viewModel)
+            RecipeDetails(
+                recipe = recipe,
+                navController = navController,
+                userRole = userRole,
+                viewModel
+            )
         }
     }
 }
 
 @Composable
-fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userRole: String, viewModel: GetRecipeViewModel) {
+fun RecipeDetails(
+    recipe: GetRecipeResponse,
+    navController: NavController,
+    userRole: String,
+    viewModel: GetRecipeViewModel
+) {
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
     var selectedListId by remember { mutableStateOf<String?>(null) }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     val appContext = LocalContext.current.applicationContext
-    val userListsViewModel: UserListsViewModel = viewModel(factory = UserListsViewModelFactory(appContext))
-    val addRecipeToListViewModel: AddRecipeToListViewModel = viewModel(factory = AddRecipeToListViewModelFactory(appContext))
+    val userListsViewModel: UserListsViewModel =
+        viewModel(factory = UserListsViewModelFactory(appContext))
+    val addRecipeToListViewModel: AddRecipeToListViewModel =
+        viewModel(factory = AddRecipeToListViewModelFactory(appContext))
 
     // Espera a que el userId esté disponible
     // Observar cambios en userId
@@ -177,36 +191,51 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                             )
                         }
 
-                        if (showDeleteConfirmation){
+                        if (showDeleteConfirmation) {
                             val context = LocalContext.current
 
                             AlertDialog(
                                 onDismissRequest = { showDeleteConfirmation = false },
                                 title = {
-                                    Text (text = stringResource(id = R.string.DeleteRecipe))
+                                    Text(text = stringResource(id = R.string.DeleteRecipe))
                                 },
                                 text = {
-                                    Text (text = stringResource(id = R.string.SureDeleteRecipe))
+                                    Text(text = stringResource(id = R.string.SureDeleteRecipe))
                                 },
                                 confirmButton = {
-                                    Button(onClick = {
-                                        showDeleteConfirmation = false
 
-                                        // Limpiar el token y redirigir
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            clearToken(context) // Eliminar el token del DataStore
-                                        }
+                                    Button(
+                                        onClick = {
+                                            showDeleteConfirmation = false
 
-                                        viewModel.deleteRecipe(recipe._id) {
-                                            navController.popBackStack()
-                                        }
-                                    }) {
-                                        Text("Sí")
+                                            viewModel.deleteRecipe(recipe._id) {
+                                                navController.popBackStack()
+                                            }
+                                        },
+                                        colors = ButtonDefaults.buttonColors(Color.White),
+                                        modifier = Modifier
+                                            .border(
+                                                1.5.dp,
+                                                Color(0xFFFFA500),
+                                                RoundedCornerShape(20.dp)
+                                            )
+                                    ) {
+                                        Text(
+                                            text = "si",
+                                            color = Color(0xFFFFA500),
+                                            fontSize = 16.sp
+                                        )
                                     }
                                 },
                                 dismissButton = {
-                                    Button(onClick = { showDeleteConfirmation = false }) {
-                                        Text("No")
+                                    Button(
+                                        onClick = { showDeleteConfirmation = false },
+                                        colors = ButtonDefaults.buttonColors(Color(0xFFFFA500)),
+                                    ) {
+                                        Text(
+                                            text = "No",
+                                            color = Color.White,
+                                            )
                                     }
                                 }
                             )
@@ -255,7 +284,11 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                                 .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("Opciones de Lista", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                            Text(
+                                "Opciones de Lista",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -273,7 +306,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
                                 Text(
-                                    text= "Crear Nueva Lista",
+                                    text = "Crear Nueva Lista",
                                     fontSize = 16.sp,
                                     color = Color(0xFFFFA500)
                                 )
@@ -295,7 +328,7 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
                                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
                                 Text(
-                                    text= "Agregar a Lista ya Existente",
+                                    text = "Agregar a Lista ya Existente",
                                     fontSize = 16.sp,
                                     color = Color(0xFFFFA500)
                                 )
@@ -458,7 +491,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Tiempo de preparación:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -483,7 +518,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Descripción:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -507,7 +544,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Ingredientes:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
@@ -536,7 +575,9 @@ fun RecipeDetails(recipe: GetRecipeResponse, navController: NavController, userR
 
                             Text(
                                 text = "Pasos:",
-                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
                                 color = androidx.compose.material3.MaterialTheme.colorScheme.secondary
                             )
                         }
