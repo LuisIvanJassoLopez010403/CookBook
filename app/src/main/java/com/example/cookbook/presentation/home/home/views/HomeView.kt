@@ -69,46 +69,49 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
     val isLoading = viewModel.isLoading
     val recipes = viewModel.recipesbycategory
 
-    when {
-        isLoading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+    //Se utiliza un Scaffold para tener la barra de navegación en la parte inferior
+    Scaffold(
+        bottomBar = {
+            BottomNavBarView(navController = navController)
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .fillMaxWidth()
+                .padding(innerPadding),
+        ) {
+            //En este Row se muestra el titulo de la aplicacion
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 15.dp, top = 10.dp)
+            ) {
+                Text(
+                    text = "CookBook",
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF9800),
+                    textAlign = TextAlign.Center
+                )
             }
-        }
 
-        recipes.isNotEmpty() -> {
-
-
-            //Se utiliza un Scaffold para tener la barra de navegación en la parte inferior
-            Scaffold(
-                bottomBar = {
-                    BottomNavBarView(navController = navController)
-                },
-                contentWindowInsets = WindowInsets(0, 0, 0, 0)
-            ) { innerPadding ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .fillMaxWidth()
-                        .padding(innerPadding),
-                ) {
-                    //En este Row se muestra el titulo de la aplicacion
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.Top,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 15.dp, top = 10.dp)
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "CookBook",
-                            fontStyle = FontStyle.Italic,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFF9800),
-                            textAlign = TextAlign.Center
-                        )
+                        CircularProgressIndicator()
                     }
+                }
+
+                recipes.isNotEmpty() -> {
+
 
                     //Se utiliza un Lazy Column para poder hacer scroll entre las categorias de recetas
                     LazyColumn(
@@ -170,9 +173,9 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                             bitmap = recipeImageBitmap.asImageBitmap(),
                             contentDescription = recipes.nameRecipe,
                             modifier = Modifier
-                           .fillMaxSize()
-                           .clip(RoundedCornerShape(23.dp)),
-                        contentScale = ContentScale.FillHeight
+                                .fillMaxSize()
+                                .clip(RoundedCornerShape(23.dp)),
+                            contentScale = ContentScale.FillHeight
                         )
                     } else {
                         // Imagen de marcador de posición en caso de error
@@ -180,7 +183,7 @@ fun LazyRowRecipes(response: HomeResponse, navController: NavController) {
                             painter = rememberAsyncImagePainter("https://res.cloudinary.com/dlq6kbdw3/image/upload/v1733760478/cookbookplaceholder_p5owot.png"),
                             contentDescription = "Placeholder",
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxSize()
                                 .height(250.dp)
                                 .clip(RoundedCornerShape(16.dp)),
                             contentScale = ContentScale.FillHeight

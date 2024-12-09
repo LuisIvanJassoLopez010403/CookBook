@@ -3,6 +3,7 @@ package com.example.cookbook.presentation.finder.viewmodels
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -32,10 +33,11 @@ class SpecifiedFinderViewModel(
     val searchQuery = mutableStateOf("")
     var categories by mutableStateOf(emptyList<Triple<String, String, String?>>())
     var ingredientsbycategory by mutableStateOf(emptyList<IngredientResponse>())
-    var selectedingredients by mutableStateOf(mutableSetOf<String>())
+    var selectedingredients = mutableStateListOf<String>()
     var selectedcategories by mutableStateOf(mutableSetOf<String>())
     var isLoading by mutableStateOf(false)
         private set
+
 
 
     init {
