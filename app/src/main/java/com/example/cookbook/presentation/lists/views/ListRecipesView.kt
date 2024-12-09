@@ -94,43 +94,55 @@ fun ListRecipesView(listId: String, navController: NavController) {
                     )
                 }
                 else -> {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(selectedList.recipes) { recipe ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                RecipeCard(
-                                    name = recipe.nameRecipe,
-                                    description = recipe.description,
-                                    imageUrl = recipe.image,
-                                    preptime = recipe.preptime,
-                                    modifier = Modifier.weight(1f)
-                                )
-
-                                Icon(
-                                    imageVector = Icons.Filled.Cancel,
-                                    contentDescription = "Eliminar Receta",
+                    Column {
+                        Text(
+                            text = selectedList.nameList ?: "Sin nombre",
+                            fontSize = 24.sp,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                            items(selectedList.recipes) { recipe ->
+                                Row(
                                     modifier = Modifier
-                                        .size(30.dp)
-                                        .clickable {
-                                            // "Dismiss" inmediato
-                                            userListsViewModel.removeRecipeLocally(listId, recipe._id)
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RecipeCard(
+                                        name = recipe.nameRecipe,
+                                        description = recipe.description,
+                                        imageUrl = recipe.image,
+                                        preptime = recipe.preptime,
+                                        modifier = Modifier.weight(1f)
+                                    )
 
-                                            // Llamar al backend para eliminar
-                                            removeRecipeFromListViewModel.removeRecipeFromList(
-                                                listId = listId,
-                                                recipeId = recipe._id
-                                            ) {
-                                                // Opcional: recargar listas completas si es necesario
-                                                userListsViewModel.fetchUserLists()
-                                            }
-                                        },
-                                    tint = Color.Red
-                                )
+                                    Icon(
+                                        imageVector = Icons.Filled.Cancel,
+                                        contentDescription = "Eliminar Receta",
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                            .clickable {
+                                                // "Dismiss" inmediato
+                                                userListsViewModel.removeRecipeLocally(
+                                                    listId,
+                                                    recipe._id
+                                                )
+
+                                                // Llamar al backend para eliminar
+                                                removeRecipeFromListViewModel.removeRecipeFromList(
+                                                    listId = listId,
+                                                    recipeId = recipe._id
+                                                ) {
+                                                    // Opcional: recargar listas completas si es necesario
+                                                    userListsViewModel.fetchUserLists()
+                                                }
+                                            },
+                                        tint = Color.Red
+                                    )
+                                }
                             }
                         }
                     }
