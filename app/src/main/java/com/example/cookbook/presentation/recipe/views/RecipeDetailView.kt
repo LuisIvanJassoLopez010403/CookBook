@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -92,7 +93,11 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
     when {
         isLoading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    color = Color(0xFFFFA500)
+                )
             }
         }
 
@@ -240,7 +245,7 @@ fun RecipeDetails(
                                         Text(
                                             text = "No",
                                             color = Color.White,
-                                            )
+                                        )
                                     }
                                 }
                             )
@@ -433,7 +438,8 @@ fun RecipeDetails(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(250.dp)
-                                    .clip(RoundedCornerShape(16.dp))
+                                    .clip(RoundedCornerShape(16.dp)),
+                                contentScale = ContentScale.FillWidth
                             )
                         } else {
                             // Imagen de marcador de posición en caso de error

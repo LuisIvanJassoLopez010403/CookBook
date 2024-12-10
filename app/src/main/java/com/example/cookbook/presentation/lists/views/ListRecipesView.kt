@@ -77,7 +77,11 @@ fun ListRecipesView(listId: String, navController: NavController) {
         Box(modifier = Modifier.fillMaxSize()) {
             when {
                 isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        color = Color(0xFFFFA500)
+                    )
                 }
                 errorMessage != null -> {
                     Text(

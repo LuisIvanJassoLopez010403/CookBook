@@ -120,7 +120,11 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            color = Color(0xFFFFA500)
+                        )
                     }
                 }
 

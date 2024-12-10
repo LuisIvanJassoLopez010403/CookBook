@@ -51,4 +51,8 @@
     //RecipeView
     <string name="DeleteRecipe">Delete Recipe</string>
     <string name="SureDeleteRecipe">Are you sure you want to Delete this Recipe??</string>
+    //UsersView
+    <string name="NoRecipes">You have no added recipes</string>
+    <string name="NoLists">You don\'t have any recipe lists created</string>
+    <string name="EmptyHistory">Empty history</string>
 </resources>

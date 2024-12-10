@@ -73,10 +73,6 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
     val isLoading = viewModel.isLoading
 
 
-
-
-
-
     Scaffold(
         bottomBar = {
             BottomNavBarView(navController = navController)
@@ -121,32 +117,50 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                 )
             }
 
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 130.dp),
+                    .fillMaxHeight(.94f)
+                    .align(Alignment.BottomCenter),
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    items(results) { recipe ->
-                        RecipeCards(
-                            recipe,
-                            navController
+
+                when {
+                    isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            color = Color(0xFFFFA500)
                         )
                     }
-                }
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    items(results) { recipe ->
-                        RecipeCards(
-                            recipe,
-                            navController
+                    results.isEmpty() -> {
+                        Text(
+                            text = stringResource(id = R.string.NoResults),
+                            modifier = Modifier.align(Alignment.Center),
+                            color = Color.Gray
                         )
+                    }
+
+                    results.isNotEmpty() -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            item {
+                                Spacer(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(75.dp)
+                                        .background(Color.Transparent) // Sin color
+                                )
+                            }
+
+                            items(results) { recipe ->
+                                RecipeCards(
+                                    recipe,
+                                    navController
+                                )
+                            }
+                        }
                     }
                 }
             }

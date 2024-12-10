@@ -117,7 +117,9 @@ fun LoginView(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         if (loginViewModel.isLoading) {
-            CircularProgressIndicator(color = Color.Blue)
+            CircularProgressIndicator(
+                color = Color(0xFFFFA500)
+            )
         }
 
         // Titulo de Vista

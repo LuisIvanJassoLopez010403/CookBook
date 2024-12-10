@@ -46,10 +46,14 @@
     <string name="Confirmnewpasswd">Confirmar Nueva Contraseña</string>
     //HomeView
     <string name="Description">Descripcion:</string>
-    //initialSearch
+    //Finder
     <string name="Search">Search</string>
     <string name="NoResults">No se encontraron resultados</string>
     //RecipeView
     <string name="DeleteRecipe">Eliminar Receta</string>
     <string name="SureDeleteRecipe">Estas seuro de querer Eliminar esta Receta?</string>
+    //UsersView
+    <string name="NoRecipes">No tienes Recetas agregadas</string>
+    <string name="NoLists">No tienes listas de recetas creadas</string>
+    <string name="EmptyHistory">Historial Vacio</string>
 </resources>

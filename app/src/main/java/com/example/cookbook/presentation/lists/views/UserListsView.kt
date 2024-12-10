@@ -12,8 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cookbook.R
 import com.example.cookbook.presentation.lists.viewmodels.UserListsViewModel
 
 @Composable
@@ -25,18 +27,22 @@ fun UserListsView(viewModel: UserListsViewModel = viewModel(), navController: Na
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    color = Color(0xFFFFA500)
+                )
             }
-            errorMessage != null -> {
+            /*errorMessage != null -> {
                 Text(
                     text = errorMessage,
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Red
                 )
-            }
+            }*/
             userLists.value.isEmpty() -> {
                 Text(
-                    text = "No hay listas disponibles.",
+                    text = stringResource(id = R.string.NoLists),
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Gray
                 )

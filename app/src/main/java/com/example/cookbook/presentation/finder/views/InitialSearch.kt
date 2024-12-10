@@ -209,6 +209,17 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                             }
 
                         }
+                        item{
+                            Box(
+                                modifier = Modifier
+                                    .height(115.dp)
+                                    .fillMaxWidth()
+                                    .background(Color.Black.copy(alpha = 0.20f)),
+                                contentAlignment = Alignment.Center
+                            ){
+                                //contenidov vacio
+                            }
+                        }
                     }
                 }
             }
