@@ -222,12 +222,13 @@ fun RecipeCards(
             } else {
                 // Imagen de marcador de posición en caso de error
                 Image(
-                    painter = rememberAsyncImagePainter("https://via.placeholder.com/150"),
+                    painter = rememberAsyncImagePainter("https://res.cloudinary.com/dlq6kbdw3/image/upload/v1733760478/cookbookplaceholder_p5owot.png"),
                     contentDescription = "Placeholder",
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .height(250.dp)
-                        .clip(RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentScale = ContentScale.Crop
                 )
             }
             // Detalles de la receta
