@@ -189,9 +189,6 @@ fun RecipeDetails(
                         IconButton(
                             onClick = {
                                 showDeleteConfirmation = true
-                                /*viewModel.deleteRecipe(recipe._id) {
-                                    navController.popBackStack()
-                                }*/
                             }
                         ) {
                             Icon(
