@@ -27,6 +27,7 @@ class GetRecipeViewModel(
     private val appContext: Context
 ) : ViewModel() {
 
+
     var recipe by mutableStateOf<GetRecipeResponse?>(null)
         private set
 
@@ -121,6 +122,8 @@ class GetRecipeViewModel(
     }
 
 }
+
+
 
 
 

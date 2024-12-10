@@ -11,9 +11,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cookbook.R
 import com.example.cookbook.presentation.user.viewmodels.HistoryViewModel
 
 @Composable
@@ -26,22 +28,26 @@ fun RecipeHistoryList(viewModel: HistoryViewModel = viewModel(), navController: 
         when {
             isLoading -> {
                 // Indicador de carga
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    color = Color(0xFFFFA500)
+                )
             }
 
-            errorMessage != null -> {
+            /*errorMessage != null -> {
                 // Mensaje de error
                 Text(
                     text = errorMessage,
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Red
                 )
-            }
+            }*/
 
             recipeHistory.value.isEmpty() -> {
                 // Mensaje de lista vacía
                 Text(
-                    text = "No tienes recetas en el historial",
+                    text = stringResource(id = R.string.EmptyHistory),
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Gray
                 )

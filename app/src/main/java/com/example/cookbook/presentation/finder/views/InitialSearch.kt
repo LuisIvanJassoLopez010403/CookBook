@@ -209,6 +209,17 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                             }
 
                         }
+                        item{
+                            Box(
+                                modifier = Modifier
+                                    .height(115.dp)
+                                    .fillMaxWidth()
+                                    .background(Color.Black.copy(alpha = 0.20f)),
+                                contentAlignment = Alignment.Center
+                            ){
+                                //contenidov vacio
+                            }
+                        }
                     }
                 }
             }
@@ -271,13 +282,13 @@ fun LazyColumnHome(Category: String) {
 
 @Composable
 fun LazyRowCategories(category: Category, viewModel: SpecifiedFinderViewModel) {
-    var isClicked by remember { mutableStateOf(false) }
+
+    val isClicked = viewModel.selectedcategories.contains(category._id)
     Box(
         modifier = Modifier
             .width(90.dp)
             .height(105.dp)
             .clickable(onClick = {
-                isClicked = !isClicked
                 viewModel.toggleCategoriesSelection(category._id)
             })
     ) {

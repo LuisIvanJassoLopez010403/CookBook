@@ -28,7 +28,7 @@ class HomeViewModel(
         loadRecipesByCategory()
     }
 
-    private fun loadRecipesByCategory() {
+    fun loadRecipesByCategory() {
         isLoading = true
         viewModelScope.launch {
             try {

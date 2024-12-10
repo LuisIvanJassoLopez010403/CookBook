@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,6 +67,7 @@ import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModel
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModelFactory
+import com.example.cookbook.presentation.recipe.viewmodels.SharedRecipeViewModel
 import com.example.cookbook.utils.base64ToBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +79,8 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
     val viewModel: GetRecipeViewModel = viewModel(
         factory = GetRecipeViewModelFactory(GetRecipeBodyRepository, appContext)
     )
+
+    val sharedRecipeViewModel: SharedRecipeViewModel = viewModel()
     LaunchedEffect(Unit) {
         viewModel.getRecipe(recipeId)
     }
@@ -89,7 +93,11 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
     when {
         isLoading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    color = Color(0xFFFFA500)
+                )
             }
         }
 
@@ -104,7 +112,8 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
                 recipe = recipe,
                 navController = navController,
                 userRole = userRole,
-                viewModel
+                viewModel = viewModel,
+                sharedRecipeViewModel = sharedRecipeViewModel
             )
         }
     }
@@ -115,7 +124,8 @@ fun RecipeDetails(
     recipe: GetRecipeResponse,
     navController: NavController,
     userRole: String,
-    viewModel: GetRecipeViewModel
+    viewModel: GetRecipeViewModel,
+    sharedRecipeViewModel: SharedRecipeViewModel
 ) {
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
@@ -192,7 +202,6 @@ fun RecipeDetails(
                         }
 
                         if (showDeleteConfirmation) {
-                            val context = LocalContext.current
 
                             AlertDialog(
                                 onDismissRequest = { showDeleteConfirmation = false },
@@ -209,6 +218,7 @@ fun RecipeDetails(
                                             showDeleteConfirmation = false
 
                                             viewModel.deleteRecipe(recipe._id) {
+                                                sharedRecipeViewModel.setDeletedRecipeId(recipe._id)
                                                 navController.popBackStack()
                                             }
                                         },
@@ -235,7 +245,7 @@ fun RecipeDetails(
                                         Text(
                                             text = "No",
                                             color = Color.White,
-                                            )
+                                        )
                                     }
                                 }
                             )
@@ -428,7 +438,8 @@ fun RecipeDetails(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(250.dp)
-                                    .clip(RoundedCornerShape(16.dp))
+                                    .clip(RoundedCornerShape(16.dp)),
+                                contentScale = ContentScale.FillWidth
                             )
                         } else {
                             // Imagen de marcador de posición en caso de error
