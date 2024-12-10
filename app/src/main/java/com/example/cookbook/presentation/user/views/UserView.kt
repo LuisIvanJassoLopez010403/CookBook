@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -40,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -119,30 +122,48 @@ fun UserView(navController: NavController) {
                         AlertDialog(
                             onDismissRequest = { showLogoutConfirmation = false },
                             title = {
-                                Text(text = "Cerrar Sesión")
+                                Text(text = stringResource(R.string.SignOut))
                             },
                             text = {
-                                Text("¿Estás seguro de que deseas cerrar sesión?")
+                                Text(text = stringResource(R.string.SignOutMessage))
                             },
                             confirmButton = {
                                 Button(onClick = {
                                     showLogoutConfirmation = false
 
-                                    // Limpiar el token y redirigir
+                                    // Limpiar el token
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        clearToken(context) // Eliminar el token del DataStore
+                                        clearToken(context)
                                     }
 
                                     navController.navigate(Routes.TitleView) {
-                                        popUpTo(Routes.UserView) { inclusive = true } // Asegura que el stack de navegación se limpie
+                                        popUpTo(Routes.UserView) { inclusive = true }
                                     }
-                                }) {
-                                    Text("Sí")
+                                },
+                                    colors = ButtonDefaults.buttonColors(Color.White),
+                                    modifier = Modifier
+                                        .border(
+                                            1.5.dp,
+                                            Color(0xFFFFA500),
+                                            RoundedCornerShape(20.dp)
+                                        )
+                                    ) {
+                                    Text(
+                                        text = "Sí",
+                                        color = Color(0xFFFFA500),
+                                        fontSize = 16.sp
+                                    )
                                 }
                             },
                             dismissButton = {
-                                Button(onClick = { showLogoutConfirmation = false }) {
-                                    Text("No")
+                                Button(
+                                    onClick = { showLogoutConfirmation = false },
+                                    colors = ButtonDefaults.buttonColors(Color(0xFFFFA500))
+                                ) {
+                                    Text(
+                                        text = "No",
+                                        color = Color.White
+                                    )
                                 }
                             }
                         )
@@ -150,7 +171,6 @@ fun UserView(navController: NavController) {
 
 
                     Spacer(modifier = Modifier.width(300.dp))
-                    //Spacer(modifier = Modifier.width(100.dp))
 
                     IconButton(onClick = {
                         navController.navigate(Routes.UserEditView) }) {

@@ -56,4 +56,6 @@
     <string name="NoRecipes">No tienes Recetas agregadas</string>
     <string name="NoLists">No tienes listas de recetas creadas</string>
     <string name="EmptyHistory">Historial Vacio</string>
+    <string name="SignOut">Cerrar Sesión</string>
+    <string name="SignOutMessage">¿Estas seguro de qué deseas cerrar sesión?</string>
 </resources>
