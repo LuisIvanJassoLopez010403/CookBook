@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,7 +84,7 @@ fun UserEditView(navController: NavController) {
         ) {
             TextButton(onClick = { navController.navigate(Routes.UserView) }) {
                 Text(
-                    text = "Cancel",
+                    text = stringResource(id = R.string.cancel),
                     fontSize = 18.sp,
                     color = Color(0xFFFFA500),
                     textAlign = TextAlign.Start
@@ -123,7 +124,7 @@ fun UserEditView(navController: NavController) {
 
             TextButton(onClick = { launcher.launch("image/*") }) {
                 Text(
-                    text = "Change Profile Picture",
+                    text = stringResource(id = R.string.changepicture),
                     fontSize = 18.sp,
                     color = Color(0xFFFFA500),
                     textAlign = TextAlign.Center
@@ -163,7 +164,7 @@ fun UserEditView(navController: NavController) {
                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
             ) {
                 Text(
-                    text = "Apply Changes",
+                    text = stringResource(id = R.string.appchanges),
                     fontSize = 18.sp,
                     color = Color(0xFFFFA500)
                 )

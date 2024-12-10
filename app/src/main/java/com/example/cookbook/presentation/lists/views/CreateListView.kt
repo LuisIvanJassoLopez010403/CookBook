@@ -79,7 +79,7 @@ fun CreateListView(navController: NavController, recipeId: String? = null) {
                     .padding(16.dp)
             ) {
                     Text(
-                        text = "Crear Nueva Lista",
+                        text = stringResource(id = R.string.createlist),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -90,7 +90,7 @@ fun CreateListView(navController: NavController, recipeId: String? = null) {
                     OutlinedTextField(
                         value = listName,
                         onValueChange = { listName = it },
-                        label = { Text(text = "Nombre de la Lista") },
+                        label = { Text(text = stringResource(id = R.string.namelist)) },
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -99,7 +99,7 @@ fun CreateListView(navController: NavController, recipeId: String? = null) {
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
-                        label = { Text(text = "Descripción (Opcional)") },
+                        label = { Text(text = stringResource(id = R.string.opdesc)) },
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -123,7 +123,7 @@ fun CreateListView(navController: NavController, recipeId: String? = null) {
                         colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                     ) {
                         Text(
-                            text = "Crear Lista",
+                            text = stringResource(id = R.string.crelist),
                             fontSize = 18.sp,
                             color = Color(0xFFFFA500)
                         )

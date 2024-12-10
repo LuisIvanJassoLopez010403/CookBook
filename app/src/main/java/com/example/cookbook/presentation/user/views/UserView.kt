@@ -240,19 +240,19 @@ fun UserView(navController: NavController) {
                     ) {
                         MenuButton(
                             icon = painterResource(id = R.drawable.bookicon),
-                            text = "My Recipes",
+                            text = stringResource(id = R.string.myrecipes),
                             isSelected = selectedTab == "My Recipes",
                             onClick = { selectedTab = "My Recipes" }
                         )
                         MenuButton(
                             icon = painterResource(id = R.drawable.clipboardicon),
-                            text = "Lists",
+                            text = stringResource(id = R.string.lists),
                             isSelected = selectedTab == "Lists",
                             onClick = { selectedTab = "Lists" }
                         )
                         MenuButton(
                             icon = painterResource(id = R.drawable.historyicon),
-                            text = "History",
+                            text = stringResource(id = R.string.history),
                             isSelected = selectedTab == "History",
                             onClick = { selectedTab = "History" }
                         )

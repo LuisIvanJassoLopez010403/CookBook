@@ -49,6 +49,8 @@
     //Finder
     <string name="Search">Search</string>
     <string name="NoResults">No se encontraron resultados</string>
+    <string name="Categories">Categorias</string>
+    <string name="Ingredients">Ingredientes</string>
     //RecipeView
     <string name="DeleteRecipe">Eliminar Receta</string>
     <string name="SureDeleteRecipe">Estas seuro de querer Eliminar esta Receta?</string>
@@ -58,4 +60,41 @@
     <string name="EmptyHistory">Historial Vacio</string>
     <string name="SignOut">Cerrar Sesión</string>
     <string name="SignOutMessage">¿Estas seguro de qué deseas cerrar sesión?</string>
+    <string name="myrecipes">Mis Recetas</string>
+    <string name="lists">listas</string>
+    <string name="history">Historial</string>
+    <string name="cancel">Cancelar</string>
+    <string name="changepicture">Cambiar Foto de Perfil</string>
+    <string name="appchanges">Aplicar Cambios</string>
+    //BottomNavigation
+    <string name="Home">Inicio</string>
+    <string name="Ssearch">Buscador</string>
+    <string name="Add">Agregar</string>
+    <string name="User">Usuario</string>
+    //AddRecipe
+    <string name="RecipeName">Nombre de la Receta</string>
+    <string name="adDescription">Descripcion</string>
+    <string name="category">Categoria</string>
+    <string name="prtime">Tiempo de Preparacion (min)</string>
+    <string name="ingredients">Ingredientes</string>
+    <string name="steps">Pasos</string>
+    <string name="selImage">Seleccionar Imagen</string>
+    <string name="AddRecipe">Agregar Receta</string>
+    <string name="amount">Cantidad</string>
+    <string name="unit">Unidad</string>
+    //RecipeView
+    <string name="listsoptions">Opciones de Lista</string>
+    <string name="createlist">Creear Nueva Lista</string>
+    <string name="preptime">Tiempo de Preparacion:</string>
+    <string name="addtolist">Agregar a Lista ya Existente</string>
+    <string name="namelist">Nombre de la Lista</string>
+    <string name="opdesc">Descripcion (Opcional)</string>
+    <string name="crelist">Crear Lista</string>
+    <string name="selists">Seleccionar Lista</string>
+    <string name="desc">Descripcion:</string>
+    <string name="ing">Ingredientes:</string>
+    <string name="ste">Pasos:</string>
+
+    //yes/no
+    <string name="yes">Si</string>
 </resources>
