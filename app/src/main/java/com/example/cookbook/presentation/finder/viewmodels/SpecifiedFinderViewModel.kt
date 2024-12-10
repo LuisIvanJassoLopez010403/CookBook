@@ -113,7 +113,7 @@ class SpecifiedFinderViewModel(
         }
     }
 
-    private fun loadIngredientsbyCategory() {
+    fun loadIngredientsbyCategory() {
         viewModelScope.launch {
             isLoading = true
             try {
@@ -144,6 +144,13 @@ class SpecifiedFinderViewModel(
         } else {
             selectedingredients.add(id)
         }
+    }
+
+    fun resetSearchForNewQuery(newQuery: String) {
+        searchQuery.value = newQuery
+        searchResponse.value = emptyList()
+        selectedingredients.clear()
+        selectedcategories.clear()
     }
 
 }
