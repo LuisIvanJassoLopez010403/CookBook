@@ -166,7 +166,7 @@ fun RecipeDetails(
                     ) {
                         TextButton(onClick = { navController.popBackStack() }) {
                             Text(
-                                text = "< Back",
+                                text = stringResource(id = R.string.Back),
                                 fontSize = 18.sp,
                                 color = Color(0xFFFFA500),
                                 textAlign = TextAlign.Start
@@ -228,7 +228,7 @@ fun RecipeDetails(
                                             )
                                     ) {
                                         Text(
-                                            text = "si",
+                                            text = stringResource(id = R.string.yes),
                                             color = Color(0xFFFFA500),
                                             fontSize = 16.sp
                                         )
@@ -292,7 +292,7 @@ fun RecipeDetails(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                "Opciones de Lista",
+                                stringResource(id = R.string.listsoptions),
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -313,7 +313,7 @@ fun RecipeDetails(
                                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
                                 Text(
-                                    text = "Crear Nueva Lista",
+                                    text = stringResource(id = R.string.createlist),
                                     fontSize = 16.sp,
                                     color = Color(0xFFFFA500)
                                 )
@@ -335,7 +335,7 @@ fun RecipeDetails(
                                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                             ) {
                                 Text(
-                                    text = "Agregar a Lista ya Existente",
+                                    text = stringResource(id = R.string.addtolist),
                                     fontSize = 16.sp,
                                     color = Color(0xFFFFA500)
                                 )
@@ -344,7 +344,7 @@ fun RecipeDetails(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             TextButton(onClick = { showPopup = false }) {
-                                Text("Cancelar", fontSize = 14.sp, color = Color(0xFFFFA500))
+                                Text(stringResource(id = R.string.cancel), fontSize = 14.sp, color = Color(0xFFFFA500))
                             }
                         }
                     }
@@ -373,7 +373,7 @@ fun RecipeDetails(
                                 )
                             } else {
                                 Text(
-                                    text = "Selecciona una Lista",
+                                    text = stringResource(id = R.string.selists),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -399,7 +399,7 @@ fun RecipeDetails(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             TextButton(onClick = { showDropdown = false }) {
-                                Text("Cancelar", fontSize = 14.sp, color = Color(0xFFFFA500))
+                                Text(stringResource(id = R.string.cancel), fontSize = 14.sp, color = Color(0xFFFFA500))
                             }
                         }
                     }
@@ -414,8 +414,8 @@ fun RecipeDetails(
                     )
                 } else if (addRecipeToListViewModel.errorMessage != null) {
                     Text(
-                        text = addRecipeToListViewModel.errorMessage!!,
-                        color = Color.Red,
+                        text = stringResource(id = R.string.NoRecipes),
+                        color = Color.Gray,
                         modifier = Modifier.padding(16.dp)
                     )
                 }
@@ -498,7 +498,7 @@ fun RecipeDetails(
                             Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
-                                text = "Tiempo de preparación:",
+                                text = stringResource(id = R.string.preptime),
                                 style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -506,7 +506,7 @@ fun RecipeDetails(
                             )
                         }
                         Text(
-                            text = "${recipe.preptime} minutos",
+                            text = "${recipe.preptime} min",
                             style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
                             color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
                         )
@@ -525,7 +525,7 @@ fun RecipeDetails(
                             Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
-                                text = "Descripción:",
+                                text = stringResource(id = R.string.desc),
                                 style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -551,7 +551,7 @@ fun RecipeDetails(
                             Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
-                                text = "Ingredientes:",
+                                text = stringResource(id = R.string.ing),
                                 style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -582,7 +582,7 @@ fun RecipeDetails(
                             Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
-                                text = "Pasos:",
+                                text = stringResource(id = R.string.ste),
                                 style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 ),

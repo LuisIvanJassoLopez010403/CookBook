@@ -48,6 +48,8 @@
     //initialSearch
     <string name="Search">Search</string>
     <string name="NoResults">No results found</string>
+    <string name="Categories">Categories</string>
+    <string name="Ingredients">Ingredients</string>
     //RecipeView
     <string name="DeleteRecipe">Delete Recipe</string>
     <string name="SureDeleteRecipe">Are you sure you want to Delete this Recipe??</string>
@@ -57,4 +59,41 @@
     <string name="EmptyHistory">Empty history</string>
     <string name="SignOut">Sign Out</string>
     <string name="SignOutMessage">Are you sure you want to sign out?</string>
+    <string name="myrecipes">My Recipes</string>
+    <string name="lists">lists</string>
+    <string name="history">History</string>
+    <string name="cancel">Cancel</string>
+    <string name="changepicture">Change Profile Picture</string>
+    <string name="appchanges">Apply Changes</string>
+    //BottomNavigation
+    <string name="Home">Home</string>
+    <string name="Ssearch">Search</string>
+    <string name="Add">Add</string>
+    <string name="User">User</string>
+    //AddRecipe
+    <string name="RecipeName">Recipe Name</string>
+    <string name="adDescription">Description</string>
+    <string name="category">Category</string>
+    <string name="prtime">Preparation Time (min)</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="steps">Steps</string>
+    <string name="selImage">Select Image</string>
+    <string name="AddRecipe">Add Recipe</string>
+    <string name="amount">Amount</string>
+    <string name="unit">Unit</string>
+    //RecipeView
+    <string name="listsoptions">List Options</string>
+    <string name="createlist">Create New List</string>
+    <string name="addtolist">Add to Existing List</string>
+    <string name="namelist">List Name</string>
+    <string name="opdesc">Description (Optional)</string>
+    <string name="crelist">Create List</string>
+    <string name="selists">Select List</string>
+    <string name="preptime">Preparation Time:</string>
+    <string name="desc">Description:</string>
+    <string name="ing">Ingredients:</string>
+    <string name="ste">Steps:</string>
+
+    //yes/no
+    <string name="yes">Yes</string>
 </resources>

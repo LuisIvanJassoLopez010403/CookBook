@@ -55,6 +55,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -70,6 +71,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cookbook.Ingredient
 import com.example.cookbook.IngredientDetails
+import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.addrecipe.viewmodels.AddRecipeViewModel
@@ -174,7 +176,7 @@ fun AddRecipeView(navController: NavController) {
                         OutlinedTextField(
                             value = recipeName,
                             onValueChange = { recipeName = it },
-                            label = { Text(text = "Recipe Name") },
+                            label = { Text(text = stringResource(id = R.string.RecipeName)) },
                             shape = RoundedCornerShape(15.dp),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text,
@@ -193,7 +195,7 @@ fun AddRecipeView(navController: NavController) {
                         OutlinedTextField(
                             value = description,
                             onValueChange = { description = it },
-                            label = { Text(text = "Description") },
+                            label = { Text(text = stringResource(id = R.string.adDescription)) },
                             shape = RoundedCornerShape(15.dp),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text,
@@ -216,7 +218,7 @@ fun AddRecipeView(navController: NavController) {
                                 value = addRecipeViewModel.categories.find { it.first == addRecipeViewModel.selectedCategoryId }?.second
                                     ?: "",
                                 onValueChange = {},
-                                label = { Text(text = "Category") },
+                                label = { Text(text = stringResource(id = R.string.category)) },
                                 shape = RoundedCornerShape(15.dp),
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -254,7 +256,7 @@ fun AddRecipeView(navController: NavController) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text = "Preparation Time (min)",
+                                text = stringResource(id = R.string.prtime),
                                 fontSize = 16.sp,
                                 modifier = Modifier.weight(1f)
                             )
@@ -288,7 +290,7 @@ fun AddRecipeView(navController: NavController) {
                             OutlinedTextField(
                                 value = addRecipeViewModel.selectedIngredientDetails.joinToString(", ") { it._idIngredient.nameIngredient },
                                 onValueChange = {},
-                                label = { Text(text = "Ingredients") },
+                                label = { Text(text = stringResource(id = R.string.ingredients)) },
                                 shape = RoundedCornerShape(15.dp),
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -361,7 +363,7 @@ fun AddRecipeView(navController: NavController) {
                                             unit
                                         )
                                     },
-                                    label = { Text("Cantidad") },
+                                    label = { Text(stringResource(id = R.string.amount)) },
                                     keyboardOptions = KeyboardOptions(
                                         keyboardType = KeyboardType.Number,
                                         imeAction = ImeAction.Done),
@@ -383,7 +385,7 @@ fun AddRecipeView(navController: NavController) {
                                         value = unit,
                                         onValueChange = {},
                                         readOnly = true,
-                                        label = { Text("Unidad") },
+                                        label = { Text(stringResource(id = R.string.unit)) },
                                         trailingIcon = {
                                             IconButton(onClick = { expandedUnitDropdown = !expandedUnitDropdown }) {
                                                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
@@ -428,7 +430,7 @@ fun AddRecipeView(navController: NavController) {
                         OutlinedTextField(
                             value = steps,
                             onValueChange = { steps = it },
-                            label = { Text(text = "Steps") },
+                            label = { Text(text = stringResource(id = R.string.steps)) },
                             shape = RoundedCornerShape(15.dp),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                             modifier = Modifier
@@ -468,7 +470,7 @@ fun AddRecipeView(navController: NavController) {
                             onClick = { launcher.launch("image/*") }
                         ) {
                             Text(
-                                text = "Select Image",
+                                text = stringResource(id = R.string.selImage),
                                 fontSize = 18.sp,
                                 color = Color(0xFFFFA500)
                             )
@@ -509,7 +511,7 @@ fun AddRecipeView(navController: NavController) {
                             shape = RoundedCornerShape(30.dp),
                             colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF))
                         ) {
-                            Text(text = "Add Recipe", fontSize = 18.sp, color = Color(0xFFFFA500))
+                            Text(text = stringResource(id = R.string.AddRecipe), fontSize = 18.sp, color = Color(0xFFFFA500))
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                     }

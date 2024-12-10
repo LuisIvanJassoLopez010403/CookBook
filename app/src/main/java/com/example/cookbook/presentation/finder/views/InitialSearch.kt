@@ -168,7 +168,7 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                         verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         item {
-                            LazyColumnHome("Categories")
+                            LazyColumnHome(stringResource(id = R.string.Categories))
                         }
                         item {
                             LazyRow(
@@ -182,7 +182,7 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                             }
                         }
                         item {
-                            LazyColumnHome("Ingredients")
+                            LazyColumnHome(stringResource(id = R.string.Ingredients))
                         }
                         items(groupedIngredient) { ingredientResponse ->
                             Row(
