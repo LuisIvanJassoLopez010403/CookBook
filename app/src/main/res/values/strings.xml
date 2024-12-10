@@ -93,6 +93,7 @@
     <string name="desc">Description:</string>
     <string name="ing">Ingredients:</string>
     <string name="ste">Steps:</string>
+    <string name="nolist">No list has been created yet</string>
 
     //yes/no
     <string name="yes">Yes</string>
