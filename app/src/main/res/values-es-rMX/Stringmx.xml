@@ -84,7 +84,7 @@
     <string name="unit">Unidad</string>
     //RecipeView
     <string name="listsoptions">Opciones de Lista</string>
-    <string name="createlist">Creear Nueva Lista</string>
+    <string name="createlist">Crear Nueva Lista</string>
     <string name="preptime">Tiempo de Preparacion:</string>
     <string name="addtolist">Agregar a Lista ya Existente</string>
     <string name="namelist">Nombre de la Lista</string>
@@ -94,6 +94,8 @@
     <string name="desc">Descripcion:</string>
     <string name="ing">Ingredientes:</string>
     <string name="ste">Pasos:</string>
+    <string name="nolist">Todavía no has creado ninguna lista</string>
+
 
     //yes/no
     <string name="yes">Si</string>

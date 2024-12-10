@@ -368,7 +368,7 @@ fun RecipeDetails(
                                 CircularProgressIndicator()
                             } else if (userListsViewModel.errorMessage != null) {
                                 Text(
-                                    text = "Error: ${userListsViewModel.errorMessage}",
+                                    text = stringResource(id = R.string.nolist),
                                     color = Color.Red
                                 )
                             } else {
