@@ -1,5 +1,6 @@
 package com.example.cookbook.presentation.finder.views
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,8 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -214,10 +217,19 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                                 modifier = Modifier
                                     .height(115.dp)
                                     .fillMaxWidth()
+                                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                                     .background(Color.Black.copy(alpha = 0.20f)),
                                 contentAlignment = Alignment.Center
                             ){
-                                //contenidov vacio
+                                Image(
+                                    painter = rememberAsyncImagePainter("https://res.cloudinary.com/dlq6kbdw3/image/upload/v1733760478/cookbookplaceholder_p5owot.png"),
+                                    contentDescription = "Placeholder",
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .height(250.dp)
+                                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                                    contentScale = ContentScale.FillWidth
+                                )
                             }
                         }
                     }
@@ -227,6 +239,7 @@ fun InitialFinderView(navController: NavController, viewModel: SpecifiedFinderVi
                 modifier = Modifier
                     .fillMaxHeight(0.15f)
                     .fillMaxWidth(0.91f)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                     .background(Color.Black.copy(alpha = 0.20f))
                     .align(Alignment.BottomCenter),
                 contentAlignment = Alignment.Center

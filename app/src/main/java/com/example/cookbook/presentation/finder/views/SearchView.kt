@@ -34,6 +34,8 @@ import com.example.cookbook.presentation.finder.viewmodels.SpecifiedFinderViewMo
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -179,7 +181,10 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                 ) {
                     TextField(
                         value = text,
-                        onValueChange = { text = it },
+                        onValueChange = { newValue ->
+                            text = newValue
+                            viewModel.searchQuery.value = newValue
+                        },
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
@@ -197,6 +202,40 @@ fun SearchView(navController: NavController, viewModel: SpecifiedFinderViewModel
                             )
                         }
                     )
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight(0.15f)
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(start = 25.dp, end = 25.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            viewModel.resetSearchForNewQuery(text)
+                            viewModel.searchRecipes(viewModel.searchQuery.value)
+                        },
+                        colors = ButtonDefaults.buttonColors(Color.White),
+                        modifier = Modifier
+                            .fillMaxWidth(0.45f)
+                            .fillMaxHeight(0.45f)
+                            .border(1.5.dp, Color(0xFFFFA500), RoundedCornerShape(25.dp))
+                            .shadow(10.dp, RoundedCornerShape(25.dp))
+                    ) {
+                        Text(
+                            text = "Search",
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFFA500),
+                            fontSize = 23.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
