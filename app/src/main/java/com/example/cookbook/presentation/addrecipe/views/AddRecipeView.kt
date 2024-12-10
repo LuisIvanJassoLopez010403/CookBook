@@ -8,6 +8,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -49,9 +51,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -64,7 +70,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cookbook.Ingredient
 import com.example.cookbook.IngredientDetails
-import com.example.cookbook.R
 import com.example.cookbook.navigation.BottomNavBarView
 import com.example.cookbook.navigation.Routes
 import com.example.cookbook.presentation.addrecipe.viewmodels.AddRecipeViewModel
@@ -88,7 +93,6 @@ fun AddRecipeView(navController: NavController) {
 
     // Variables de Dropdown Menu de Ingredientes
     var expandedIngredients by remember { mutableStateOf(false) }
-    var selectedIngredients by remember { mutableStateOf<List<Ingredient>>(emptyList()) }
 
     // Variables de Dropdown Menu de Unidades
     val unitOptions = listOf("kilograms", "grams", "ounces", "milliliter", "liter", "cup", "table spoon", "pieces", "slices")
@@ -96,27 +100,34 @@ fun AddRecipeView(navController: NavController) {
     //Variable de Toast
     val context = LocalContext.current
 
+    // Variables de keyboard
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     // Variable de imagen
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            val base64Image = uriToBase64(appContext, it)
+        if (uri != null) {
+            addRecipeViewModel.selectedImage = uri.toString()
+
+            val base64Image = uriToBase64(appContext, uri)
             if (base64Image != null) {
-                addRecipeViewModel.selectedImage = base64Image
+                addRecipeViewModel.base64Image = base64Image
             }
         }
     }
+
 
     // Gestionar la navegación basada en el estado
     LaunchedEffect(addRecipeViewModel.state) {
         if (addRecipeViewModel.state != 0) {
             if (addRecipeViewModel.recipeResponse.isSuccess) {
-                navController.navigate(Routes.TitleView) {
+                navController.navigate(Routes.UserView) {
                     popUpTo(Routes.AddRecipeView) { inclusive = true }
                 }
             } else {
-                Toast.makeText(context, "Error al crear receta", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Ha ocurrido un error al crear la receta o un campo esta vacío", Toast.LENGTH_SHORT).show()
             }
             addRecipeViewModel.resetState()
         }
@@ -129,7 +140,10 @@ fun AddRecipeView(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .fillMaxWidth()
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = { focusManager.clearFocus() })
+                    }
             ) {
                 Row(
                     horizontalArrangement = Arrangement.End,
@@ -162,7 +176,14 @@ fun AddRecipeView(navController: NavController) {
                             onValueChange = { recipeName = it },
                             label = { Text(text = "Recipe Name") },
                             shape = RoundedCornerShape(15.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    keyboardController?.hide()
+                                }
+                            ),
                             modifier = Modifier.fillMaxWidth()
                         )
 
@@ -174,7 +195,14 @@ fun AddRecipeView(navController: NavController) {
                             onValueChange = { description = it },
                             label = { Text(text = "Description") },
                             shape = RoundedCornerShape(15.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    keyboardController?.hide()
+                                }
+                            ),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(150.dp)
@@ -182,6 +210,7 @@ fun AddRecipeView(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(10.dp))
 
+                        // Dropdown de categorias
                         Box {
                             OutlinedTextField(
                                 value = addRecipeViewModel.categories.find { it.first == addRecipeViewModel.selectedCategoryId }?.second
@@ -254,10 +283,10 @@ fun AddRecipeView(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        // Dropdown Menu de ingredientes
+                        // Dropdown de ingredientes
                         Box {
                             OutlinedTextField(
-                                value = selectedIngredients.joinToString(", ") { it._idIngredient.nameIngredient },
+                                value = addRecipeViewModel.selectedIngredientDetails.joinToString(", ") { it._idIngredient.nameIngredient },
                                 onValueChange = {},
                                 label = { Text(text = "Ingredients") },
                                 shape = RoundedCornerShape(15.dp),
@@ -279,14 +308,12 @@ fun AddRecipeView(navController: NavController) {
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 addRecipeViewModel.ingredients.forEach { (id, name) ->
+                                    val alreadySelected = addRecipeViewModel.selectedIngredientDetails.any { it._idIngredient._id == id }
+
                                     DropdownMenuItem(
                                         text = { Text(name) },
                                         onClick = {
-                                            val existingIngredient = selectedIngredients.find { it._idIngredient._id == id }
-
-                                            val updatedIngredients = if (existingIngredient != null) {
-                                                selectedIngredients // No agregar duplicados
-                                            } else {
+                                            if (!alreadySelected) {
                                                 val newIngredient = Ingredient(
                                                     _idIngredient = IngredientDetails(
                                                         _id = id,
@@ -297,11 +324,8 @@ fun AddRecipeView(navController: NavController) {
                                                     unit = "",   // Sin valor inicial
                                                     amount = 0.0 // Sin valor inicial
                                                 )
-                                                selectedIngredients + newIngredient
+                                                addRecipeViewModel.addIngredient(newIngredient)
                                             }
-
-                                            selectedIngredients = updatedIngredients
-                                            addRecipeViewModel.updateSelectedIngredients(updatedIngredients)
                                             expandedIngredients = false
                                         }
                                     )
@@ -309,11 +333,10 @@ fun AddRecipeView(navController: NavController) {
                             }
                         }
 
-                        selectedIngredients.forEach { ingredient ->
-
-                            // Campo para la cantidad
-                            var quantity by remember { mutableStateOf(ingredient.amount.toString()) }
-                            var selectedUnit by remember { mutableStateOf(ingredient.unit) }
+                        // Campos de Ingredientes
+                        addRecipeViewModel.selectedIngredientDetails.forEach { ingredient ->
+                            val amount = addRecipeViewModel.ingredientDetails[ingredient._idIngredient._id]?.amount?.toString() ?: ""
+                            val unit = addRecipeViewModel.ingredientDetails[ingredient._idIngredient._id]?.unit ?: ""
                             var expandedUnitDropdown by remember { mutableStateOf(false) }
 
                             Row(
@@ -323,35 +346,41 @@ fun AddRecipeView(navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                // Nombre del ingrediente
                                 Text(
                                     text = ingredient._idIngredient.nameIngredient,
                                     modifier = Modifier.weight(1f)
                                 )
 
-                                // TextField para la cantidad
+                                // Textfield de cantidad
                                 OutlinedTextField(
-                                    value = quantity,
+                                    value = if (amount == "0.0") "" else amount,
                                     onValueChange = { newValue ->
-                                        quantity = newValue
                                         addRecipeViewModel.updateIngredientDetails(
                                             ingredient._idIngredient._id,
                                             newValue.toDoubleOrNull() ?: 0.0,
-                                            selectedUnit
+                                            unit
                                         )
                                     },
                                     label = { Text("Cantidad") },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Number,
+                                        imeAction = ImeAction.Done),
+                                    keyboardActions = KeyboardActions(
+                                        onDone = {
+                                            keyboardController?.hide()
+                                        }
+                                    ),
                                     shape = RoundedCornerShape(15.dp),
                                     modifier = Modifier.width(100.dp)
                                 )
+
 
                                 Spacer(modifier = Modifier.width(10.dp))
 
                                 // Dropdown de unidad
                                 Box {
                                     OutlinedTextField(
-                                        value = selectedUnit,
+                                        value = unit,
                                         onValueChange = {},
                                         readOnly = true,
                                         label = { Text("Unidad") },
@@ -372,22 +401,28 @@ fun AddRecipeView(navController: NavController) {
                                             DropdownMenuItem(
                                                 text = { Text(unitOption) },
                                                 onClick = {
-                                                    selectedUnit = unitOption
-                                                    expandedUnitDropdown = false
                                                     addRecipeViewModel.updateIngredientDetails(
                                                         ingredient._idIngredient._id,
-                                                        quantity.toDoubleOrNull() ?: 0.0,
+                                                        amount.toDoubleOrNull() ?: 0.0,
                                                         unitOption
                                                     )
+                                                    expandedUnitDropdown = false
                                                 }
                                             )
                                         }
                                     }
                                 }
+
+                                Spacer(modifier = Modifier.width(10.dp))
+
+                                // Botón eliminar ingrediente
+                                IconButton(onClick = {
+                                    addRecipeViewModel.removeIngredient(ingredient._idIngredient._id)
+                                }) {
+                                    Icon(imageVector = Icons.Default.Remove, contentDescription = "Eliminar Ingrediente")
+                                }
                             }
                         }
-
-                        Spacer(modifier = Modifier.height(10.dp))
 
                         //TextField de pasos
                         OutlinedTextField(
@@ -411,19 +446,21 @@ fun AddRecipeView(navController: NavController) {
                             contentAlignment = Alignment.Center
                         ) {
                             val imagePainter = rememberAsyncImagePainter(
-                                model = if (addRecipeViewModel.selectedImage.isEmpty()) {
-                                    null
-                                } else {
+                                model = if (addRecipeViewModel.selectedImage.isNotEmpty()) {
                                     addRecipeViewModel.selectedImage
+                                } else {
+                                    null
                                 }
                             )
 
                             Image(
                                 painter = imagePainter,
-                                contentDescription = "Selected Image",
+                                contentDescription = "Imagen Seleccionada",
                                 modifier = Modifier.size(140.dp)
                             )
                         }
+
+
 
                         Spacer(modifier = Modifier.height(10.dp))
 
@@ -447,7 +484,6 @@ fun AddRecipeView(navController: NavController) {
                                 val stepsValue = steps.text
                                 val categoryId = addRecipeViewModel.selectedCategoryId
                                 val ingredientsList = addRecipeViewModel.selectedIngredientDetails
-                                val image = "URL de imagen"
                                 val video = "URL de video"
                                 val grade = 0.0
 
@@ -458,7 +494,7 @@ fun AddRecipeView(navController: NavController) {
                                     ingredients = ingredientsList,
                                     steps = stepsValue,
                                     category = categoryId,
-                                    image = addRecipeViewModel.selectedImage,
+                                    image = addRecipeViewModel.base64Image,
                                     video = video,
                                     grade = grade
                                 )
@@ -475,9 +511,7 @@ fun AddRecipeView(navController: NavController) {
                         ) {
                             Text(text = "Add Recipe", fontSize = 18.sp, color = Color(0xFFFFA500))
                         }
-
                         Spacer(modifier = Modifier.height(10.dp))
-
                     }
                 }
             }
