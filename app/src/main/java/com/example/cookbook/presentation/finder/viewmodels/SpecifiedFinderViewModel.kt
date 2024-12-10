@@ -34,7 +34,7 @@ class SpecifiedFinderViewModel(
     var categories by mutableStateOf(emptyList<Triple<String, String, String?>>())
     var ingredientsbycategory by mutableStateOf(emptyList<IngredientResponse>())
     var selectedingredients = mutableStateListOf<String>()
-    var selectedcategories by mutableStateOf(mutableSetOf<String>())
+    var selectedcategories = mutableStateListOf<String>()
     var isLoading by mutableStateOf(false)
         private set
 

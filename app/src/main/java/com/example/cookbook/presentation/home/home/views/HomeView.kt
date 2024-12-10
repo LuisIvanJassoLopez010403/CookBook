@@ -26,6 +26,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -57,7 +58,10 @@ import com.example.cookbook.presentation.finder.views.SearchView
 import com.example.cookbook.presentation.home.home.models.HomeResponse
 import com.example.cookbook.presentation.home.home.network.HomeRepository
 import com.example.cookbook.presentation.home.home.viewmodels.HomeViewModel
+import com.example.cookbook.presentation.recipe.viewmodels.SharedRecipeViewModel
 import com.example.cookbook.utils.base64ToBitmap
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeView(navController: NavController, viewModel: HomeViewModel) {
@@ -68,6 +72,16 @@ fun HomeView(navController: NavController, viewModel: HomeViewModel) {
     val groupedRecipes = viewModel.groupRecipesByCategory(viewModel.recipesbycategory)
     val isLoading = viewModel.isLoading
     val recipes = viewModel.recipesbycategory
+
+    val sharedRecipeViewModel: SharedRecipeViewModel = viewModel()
+    val deletedRecipeId = sharedRecipeViewModel.deletedRecipeId.collectAsState().value
+
+    LaunchedEffect(deletedRecipeId) {
+        if (!deletedRecipeId.isNullOrEmpty()) {
+            viewModel.loadRecipesByCategory()  // Recargar la lista
+            sharedRecipeViewModel.setDeletedRecipeId("")  // Resetear el valor
+        }
+    }
 
     //Se utiliza un Scaffold para tener la barra de navegación en la parte inferior
     Scaffold(

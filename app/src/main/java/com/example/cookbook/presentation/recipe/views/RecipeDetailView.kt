@@ -66,6 +66,7 @@ import com.example.cookbook.presentation.recipe.models.GetRecipeResponse
 import com.example.cookbook.presentation.recipe.network.GetRecipeBodyRepository
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModel
 import com.example.cookbook.presentation.recipe.viewmodels.GetRecipeViewModelFactory
+import com.example.cookbook.presentation.recipe.viewmodels.SharedRecipeViewModel
 import com.example.cookbook.utils.base64ToBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +78,8 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
     val viewModel: GetRecipeViewModel = viewModel(
         factory = GetRecipeViewModelFactory(GetRecipeBodyRepository, appContext)
     )
+
+    val sharedRecipeViewModel: SharedRecipeViewModel = viewModel()
     LaunchedEffect(Unit) {
         viewModel.getRecipe(recipeId)
     }
@@ -104,7 +107,8 @@ fun RecipeDetailView(recipeId: String, navController: NavController) {
                 recipe = recipe,
                 navController = navController,
                 userRole = userRole,
-                viewModel
+                viewModel = viewModel,
+                sharedRecipeViewModel = sharedRecipeViewModel
             )
         }
     }
@@ -115,7 +119,8 @@ fun RecipeDetails(
     recipe: GetRecipeResponse,
     navController: NavController,
     userRole: String,
-    viewModel: GetRecipeViewModel
+    viewModel: GetRecipeViewModel,
+    sharedRecipeViewModel: SharedRecipeViewModel
 ) {
     var showPopup by remember { mutableStateOf(false) }
     var showDropdown by remember { mutableStateOf(false) }
@@ -192,7 +197,6 @@ fun RecipeDetails(
                         }
 
                         if (showDeleteConfirmation) {
-                            val context = LocalContext.current
 
                             AlertDialog(
                                 onDismissRequest = { showDeleteConfirmation = false },
@@ -209,6 +213,7 @@ fun RecipeDetails(
                                             showDeleteConfirmation = false
 
                                             viewModel.deleteRecipe(recipe._id) {
+                                                sharedRecipeViewModel.setDeletedRecipeId(recipe._id)
                                                 navController.popBackStack()
                                             }
                                         },
