@@ -3,7 +3,7 @@ package com.example.cookbook
 data class Ingredient(
     val _idIngredient: IngredientDetails,
     val unit: String,
-    val amount: Double
+    var amount: Double
 )
 
 data class IngredientDetails(

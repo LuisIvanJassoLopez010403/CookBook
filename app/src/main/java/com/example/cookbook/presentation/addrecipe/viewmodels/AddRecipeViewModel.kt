@@ -2,6 +2,7 @@ package com.example.cookbook.presentation.addrecipe.viewmodels
 
 import android.content.Context
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cookbook.Category
 import com.example.cookbook.CategoryRepository
 import com.example.cookbook.Ingredient
+import com.example.cookbook.IngredientDetails
 import com.example.cookbook.IngredientRepository
 import com.example.cookbook.preferences.getToken
 import com.example.cookbook.preferences.getUserIdFromToken
@@ -34,17 +36,30 @@ class AddRecipeViewModel(
     var selectedCategoryId by mutableStateOf("")
 
     var ingredients by mutableStateOf(emptyList<Pair<String, String>>())
+    val ingredientDetails = mutableStateMapOf<String, Ingredient>()
     var SelectedIngredientId by mutableStateOf("")
     var selectedIngredientDetails by mutableStateOf<List<Ingredient>>(emptyList())
 
-    var userId by mutableStateOf("")
-
     var selectedImage by mutableStateOf("")
+    var base64Image by mutableStateOf("")
+
+    var userId by mutableStateOf("")
 
     init {
         loadCategories()
         loadIngredients()
         loadUserId()
+    }
+
+    private fun loadUserId() {
+        viewModelScope.launch {
+            val token = getToken(appContext).firstOrNull()
+            userId = if (!token.isNullOrEmpty()) {
+                getUserIdFromToken(token) ?: ""
+            } else {
+                ""
+            }
+        }
     }
 
     private fun loadCategories() {
@@ -60,40 +75,35 @@ class AddRecipeViewModel(
     private fun loadIngredients() {
         viewModelScope.launch {
             try {
-                ingredients = IngredientRepository.getIngredients()
+                ingredients = IngredientRepository.getIngredients().sortedBy { it.second.lowercase() }
             } catch (exception: Exception) {
                 ingredients = emptyList()
             }
         }
     }
-//    fun updateSelectedIngredients(selected: List<Ingredient>) {
-//        selectedIngredientDetails = selected
-//        SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
-//    }
+    fun updateIngredientDetails(ingredientId: String, amount: Double, unit: String) {
+        ingredientDetails[ingredientId] = ingredientDetails[ingredientId]?.copy(amount = amount, unit = unit)
+            ?: Ingredient(
+                _idIngredient = IngredientDetails(ingredientId, "", "", 0),
+                amount = amount,
+                unit = unit
+            )
+        updateSelectedIngredients(ingredientDetails.values.toList())
+    }
 
     fun updateSelectedIngredients(selected: List<Ingredient>) {
         selectedIngredientDetails = selected.map { it.copy() }
         SelectedIngredientId = selected.joinToString(",") { it._idIngredient._id }
     }
 
-
-    fun updateIngredientDetails(ingredientId: String, amount: Double, unit: String) {
-        selectedIngredientDetails = selectedIngredientDetails.map {
-            if (it._idIngredient._id == ingredientId) {
-                it.copy(amount = amount, unit = unit)
-            } else it
-        }
+    fun addIngredient(ingredient: Ingredient) {
+        ingredientDetails[ingredient._idIngredient._id] = ingredient.copy(amount = 0.0, unit = "")
+        updateSelectedIngredients(ingredientDetails.values.toList())
     }
 
-    private fun loadUserId() {
-        viewModelScope.launch {
-            val token = getToken(appContext).firstOrNull()
-            userId = if (!token.isNullOrEmpty()) {
-                getUserIdFromToken(token) ?: ""
-            } else {
-                ""
-            }
-        }
+    fun removeIngredient(ingredientId: String) {
+        ingredientDetails.remove(ingredientId)
+        updateSelectedIngredients(ingredientDetails.values.toList())
     }
 
     private fun getCurrentDate(): String {
